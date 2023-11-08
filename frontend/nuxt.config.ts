@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default defineNuxtConfig({
-  devtools: { enabled: true },
+export default defineNuxtConfig({  
+  devtools: {
+    enabled: false
+  },
+  typescript: {
+    typeCheck: true
+  },
   css: ['@fortawesome/fontawesome-svg-core/styles.css', '~/assets/css/main.css'],
   postcss: {
     plugins: {
