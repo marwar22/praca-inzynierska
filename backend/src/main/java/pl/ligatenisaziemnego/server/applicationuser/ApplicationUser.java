@@ -32,8 +32,17 @@ public class ApplicationUser {
     @Column(nullable = false, unique = true)
     private String username;
 
+
+    @NotEmpty(message = "firstName can't be empty")
+    @Column(nullable = false)
+    private String firstName;
+
+    @NotEmpty(message = "lastName can't be empty")
+    @Column(nullable = false)
+    private String lastName;
+
     @NotEmpty(message = "email can't be empty")
-    @ValidEmail(message = "Email must be vaild email")
+    @ValidEmail(message = "email must be vaild email")
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -61,9 +70,12 @@ public class ApplicationUser {
     private List<ApplicationUserRole> roles;
 
 
-    public ApplicationUser(String username, String email, String password, List<ApplicationUserRole> roles) {
+    public ApplicationUser(String username, String email, String firstName, String lastName, String password,
+            List<ApplicationUserRole> roles) {
         this.username = username;
         this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
         this.roles = roles;
     }

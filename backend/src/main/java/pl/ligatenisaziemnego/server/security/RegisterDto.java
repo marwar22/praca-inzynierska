@@ -12,14 +12,20 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterDto {
-    @NotEmpty(message = "Username can't be empty")
+    @NotEmpty(message = "username can't be empty")
     @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters long")
     private String username;
 
-    @NotEmpty(message = "Email can't be empty")
-    @ValidEmail(message = "Email must be vaild email")
+    @NotEmpty(message = "email can't be empty")
+    @ValidEmail(message = "email must be vaild email")
     private String email;
 
-    @NotEmpty(message = "Password can't be empty")
+    @NotEmpty(message = "firstName can't be empty")
+    private String firstName;
+
+    @NotEmpty(message = "lastName can't be empty")
+    private String lastName;
+
+    @NotEmpty(message = "password can't be empty")
     private String password;
 }

@@ -27,8 +27,8 @@ public class SecurityService {
         if (applicationUserRepository.existsByEmail(registerDto.getEmail()))
             throw ApiError.BAD_REQUEST(Map.of("email", "There is already a user with this email"));
 
-        ApplicationUser applicationUser = new ApplicationUser(registerDto.getUsername(), registerDto.getEmail(),
-                passwordEncoder.encode(registerDto.getPassword()), List.of());
+        ApplicationUser applicationUser = new ApplicationUser(registerDto.getUsername(), registerDto.getEmail(), registerDto.getFirstName(),
+                registerDto.getLastName(), passwordEncoder.encode(registerDto.getPassword()), List.of());
 
         return applicationUserRepository.save(applicationUser);
     }
