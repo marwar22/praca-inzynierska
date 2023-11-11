@@ -2,15 +2,15 @@
 import axios from 'axios';
 import { type ApplicationUser } from '~/types/applicationuser.d';
 
-defineProps<{
+const props = defineProps<{
   numberOfPlayers: number;
+  selectedApplicationUsers: ApplicationUser[];
 }>();
-
+console.log(props.selectedApplicationUsers);
 const config = useRuntimeConfig();
 
 const playerSearchValue = ref('');
 const applicationUsers = ref([] as ApplicationUser[]);
-const selectedApplicationUsers = ref([] as ApplicationUser[]);
 
 let searchCounter = 0;
 let lastSearchCounterValue = 0;
@@ -31,15 +31,15 @@ async function onInput() {
 }
 
 function addApplicationUser(applicationUser: ApplicationUser) {
-  selectedApplicationUsers.value.push(applicationUser);
-  selectedApplicationUsers.value.sort((au1, au2) => {
+  props.selectedApplicationUsers.push(applicationUser);
+  props.selectedApplicationUsers.sort((au1, au2) => {
     const cmpLastName = au1.lastName.localeCompare(au2.lastName);
     if (cmpLastName !== 0) return cmpLastName;
     return au1.firstName.localeCompare(au2.firstName);
   });
 }
 function removeApplicationUser(index: number) {
-  selectedApplicationUsers.value.splice(index, 1);
+  props.selectedApplicationUsers.splice(index, 1);
 }
 </script>
 
@@ -58,7 +58,7 @@ function removeApplicationUser(index: number) {
     >
       <!-- <button class="mr-2 text-atlantis-600 hover:text-atlantis-700 active:text-atlantis-800"><font-awesome-icon icon="fa-solid fa-circle-plus" class="text-[1.75rem]"/></button> -->
       <button
-        class="after:text-neutral-600 h-full w-full border-b-2 bg-atlantis-50 px-2 py-1 text-left after:content-['_(Wybrany)'] hover:bg-atlantis-100 active:bg-atlantis-200 disabled:bg-zinc-200"
+        class="after:text-neutral-600 h-full w-full border-b-2 bg-atlantis-50 px-2 py-1 text-left disabled:after:content-['_(Wybrany)'] hover:bg-atlantis-100 active:bg-atlantis-200 disabled:bg-zinc-200"
         :disabled="selectedApplicationUsers.some((sau) => sau.id === applicationUser.id)"
         @click="addApplicationUser(applicationUser)"
       >

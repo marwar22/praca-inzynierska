@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
+import { errorToApiError } from '~/lib/utils';
+import type { ApiError } from '~/types/apierrror';
+import type { ApplicationUser } from '~/types/applicationuser';
+import VueDatePicker from '@vuepic/vue-datepicker';
+
+const config = useRuntimeConfig();
 
 const MIN_NUMBER_OF_PLAYERS = 1;
 const MAX_NUMBER_OF_PLAYERS = 128;
@@ -7,7 +14,9 @@ const MAX_NUMBER_OF_PLAYERS = 128;
 const MIN_NUMBER_OF_GROUPS = 1;
 const MAX_NUMBER_OF_GROUPS = 24;
 
+const apiError = ref(null as ApiError | null);
 const name = ref('');
+const date = ref([new Date(), new Date()]);
 const numberOfPlayers = ref(16);
 const isNumberOfPlayersInRange = computed(
   () => MIN_NUMBER_OF_PLAYERS <= numberOfPlayers.value && numberOfPlayers.value <= MAX_NUMBER_OF_PLAYERS
@@ -16,6 +25,9 @@ const numberOfGroups = ref(4);
 const isNumberOfGroupsInRange = computed(
   () => MIN_NUMBER_OF_GROUPS <= numberOfGroups.value && numberOfGroups.value <= MAX_NUMBER_OF_GROUPS
 );
+
+const selectedApplicationUsers = ref([] as ApplicationUser[]);
+const groups = ref([] as ApplicationUser[][]);
 
 const playersInGroups = computed(() => {
   const res = [];
@@ -28,7 +40,31 @@ const playersInGroups = computed(() => {
   }
   return res;
 });
+
 function onNumberOfPlayersInput() {}
+async function create() {
+  try {
+    const [startDate, endDate] = date.value;
+    const res = await axios.post(
+      `${config.public.BACKEND_API}/tournament`,
+      {
+        name: name.value,
+        numberOfPlayers: numberOfPlayers.value,
+        numberOfGroups: numberOfGroups.value,
+        playerIds: selectedApplicationUsers.value.map((sau) => sau.id),
+        groups: groups.value.map((group) => {
+          return { playerIds: group.map((au) => au.id) };
+        }),
+        startDate,
+        endDate
+      },
+      { withCredentials: true }
+    );
+    apiError.value = null;
+  } catch (error) {
+    apiError.value = await errorToApiError(error);
+  }
+}
 </script>
 <template>
   <div class="container__margin flex flex-col">
@@ -40,7 +76,7 @@ function onNumberOfPlayersInput() {}
           placeholder="Nazwa rozgrywki"
           v-model.number="name"
           @input="onNumberOfPlayersInput"
-          :error="''"
+          :error="name && name.trim().length < 5 ? 'Nazwa musi mieć co najmniej 5 znaków' : ''"
         >
         </ContestCreateInput>
       </label>
@@ -77,8 +113,35 @@ function onNumberOfPlayersInput() {}
         </ContestCreateInput>
       </label>
     </div>
-    <PlayerAdder :numberOfPlayers="numberOfPlayers" />
-    <GroupsCreator :numberOfGroups="numberOfGroups" :playersInGroups="playersInGroups"></GroupsCreator>
+    <label>
+      Czas trwania
+      <div class="datepicker rounded-lg border-4 border-atlantis-500">
+        <VueDatePicker
+          v-model="date"
+          range
+          :enableTimePicker="false"
+          format="dd.MM.yyyy"
+          locale="pl-PL"
+          select-text="Wybierz"
+          cancel-text="Anuluj"
+        />
+      </div>
+    </label>
+    <PlayerAdder :numberOfPlayers="numberOfPlayers" v-model:selectedApplicationUsers="selectedApplicationUsers" />
+    <GroupsCreator
+      v-model:groups="groups"
+      :numberOfGroups="numberOfGroups"
+      :playersInGroups="playersInGroups"
+      :selectedApplicationUsers="selectedApplicationUsers"
+    >
+    </GroupsCreator>
+    <button
+      class="my-2 rounded-lg bg-atlantis-600 py-1 text-lg font-bold text-white hover:bg-atlantis-700 active:bg-atlantis-800"
+      @click="create"
+    >
+      Utwórz
+    </button>
+    <ApiError :api-error="apiError"></ApiError>
   </div>
 </template>
 
