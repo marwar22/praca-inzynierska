@@ -2,7 +2,6 @@
 import type { Tournament } from '~/types/tournament';
 
 const config = useRuntimeConfig();
-const leagues = ['Lato 2023', 'Zima 2023', 'Lato 2022', 'Zima 2022'];
 const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACKEND_API}/tournament`);
 </script>
 <template>
@@ -21,8 +20,9 @@ const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACK
         Utwórz rozgrywkę
       </NuxtLink>
     </div>
-    <button
+    <NuxtLink
       v-for="tournament in tournaments"
+      :to="`/rozgrywki/${tournament.id}`"
       class="my-2 flex w-full items-center justify-between rounded-lg border-4 border-atlantis-500 px-2 py-1 text-left hover:bg-atlantis-50 active:bg-atlantis-100"
     >
       <div class="flex flex-col">
@@ -40,7 +40,7 @@ const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACK
         <font-awesome-icon icon="fa-solid fa-users" />
         <span class="ml-1">{{ tournament.groups.reduce((sum, t) => sum + t.playerIds.length, 0) }}</span>
       </div>
-    </button>
+    </NuxtLink>
   </div>
 </template>
 

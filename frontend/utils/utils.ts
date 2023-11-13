@@ -19,3 +19,12 @@ export async function errorToApiError(error: any): Promise<ApiError> {
     message: 'Unknown error'
   };
 }
+
+export function fetchErrorToApiError(error: any) {
+  if (error?.data) {
+    const { status, errors, message } = error.data;
+    return { status, errors, message };
+  } else {
+    return { status: error?.status?.toString() ?? '', errors: {}, message: 'Unknown fetch error' };
+  }
+}

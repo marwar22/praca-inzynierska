@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
-import { errorToApiError } from '~/lib/utils';
+
 import type { ApiError } from '~/types/apierrror';
 import type { ApplicationUser } from '~/types/applicationuser';
 import VueDatePicker from '@vuepic/vue-datepicker';

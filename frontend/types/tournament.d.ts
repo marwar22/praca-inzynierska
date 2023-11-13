@@ -1,8 +1,9 @@
 import type { ApplicationUser } from './applicationuser';
 type TournamentGroup = {
-    playerIds: number[],
-}
+  playerIds: number[];
+};
 export type Tournament = {
+  id: number;
   name: string;
   numberOfPlayers: number;
   numberOfGroups: number;

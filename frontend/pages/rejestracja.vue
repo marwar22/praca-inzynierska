@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import axios from 'axios';
+import type { ApiError } from '~/types/apierrror';
 
 const config = useRuntimeConfig();
 
+const pending = ref(false);
+const apiError = ref(null as ApiError | null);
 const username = ref('');
 const email = ref('');
 const firstName = ref('');
@@ -17,15 +20,18 @@ const isEveryFieldCorrect = computed(() => {
   return username.value && email.value && password.value && arePasswordsMatching.value;
 });
 async function onRegister() {
-  if (!isEveryFieldCorrect) return false;
-  const res = await axios.post(`${config.public.BACKEND_API}/auth/register`, {
-    username: username.value,
-    email: email.value,
-    firstName: firstName.value,
-    lastName: lastName.value,
-    password: password.value
-  });
-  console.log(res.data);
+  if (!isEveryFieldCorrect || !arePasswordsMatching) return;
+  try {
+    await axios.post(`${config.public.BACKEND_API}/auth/register`, {
+      username: username.value,
+      email: email.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      password: password.value
+    });
+  } catch (error) {
+    apiError.value = await errorToApiError(error);
+  }
 }
 </script>
 <template>
@@ -52,8 +58,11 @@ async function onRegister() {
         @click="onRegister()"
         class="my-1 h-12 rounded-lg bg-atlantis-600 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
       >
-        Zarejestruj
+        <font-awesome-icon v-if="pending" class="invisible mr-2" icon="fa-solid fa-arrows-rotate" />
+        Zarejestruj się
+        <font-awesome-icon v-if="pending" class="ml-2" icon="fa-solid fa-arrows-rotate" spin />
       </button>
+      <ApiError :api-error="apiError" />
     </div>
     <div class="flex-[5]"></div>
   </div>

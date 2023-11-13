@@ -1,3 +1,6 @@
+const applicationUserRoles = ['TOURNAMENT:CREATE', 'USER:CHANGE', 'ROLE:CHANGE'] as const;
+
+export type ApplicationUserRole = (typeof applicationUserRoles)[number];
 export type ApplicationUser = {
   id: number;
   username: string;
