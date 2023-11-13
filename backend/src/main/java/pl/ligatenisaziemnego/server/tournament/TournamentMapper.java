@@ -1,11 +1,7 @@
 package pl.ligatenisaziemnego.server.tournament;
 
-import jakarta.validation.constraints.NotNull;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
-import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
 
 import java.util.List;

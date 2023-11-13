@@ -1,6 +1,7 @@
 package pl.ligatenisaziemnego.server.tournament;
 
 import org.springframework.stereotype.Service;
+import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
@@ -20,6 +21,11 @@ public class TournamentService {
         this.tournamentMapper = tournamentMapper;
         this.tournamentRepository = tournamentRepository;
         this.applicationUserRepository = applicationUserRepository;
+    }
+
+
+    public Object getById(Long id) throws ExceptionWithResponseEntity {
+        return tournamentRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(Tournament.class, id));
     }
 
     public List<Tournament> getAll() {

@@ -3,7 +3,7 @@ package pl.ligatenisaziemnego.server.applicationuser;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ApplicationUserPermission {
-    LEAGUE__CREATE("LEAGUE:CREATE"),
+    TOURNAMENT__CREATE("TOURNAMENT:CREATE"),
     USER__CHANGE("USER:CHANGE"),
     ROLE__CHANGE("ROLE:CHANGE");
 

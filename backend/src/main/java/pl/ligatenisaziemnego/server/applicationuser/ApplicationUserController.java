@@ -1,10 +1,8 @@
 package pl.ligatenisaziemnego.server.applicationuser;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -16,6 +14,12 @@ public class ApplicationUserController {
         this.applicationUserService = applicationUserService;
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> getApplicationUser() throws ExceptionWithResponseEntity {
+        return ResponseEntity.ok(applicationUserService.getMyApplicationUser());
+    }
+
+    // TODO only return only necessary info
     @GetMapping()
     public ResponseEntity<?> getAllApplicationUsers(
             @RequestParam(name = "name", defaultValue = "") String name,
@@ -23,7 +27,7 @@ public class ApplicationUserController {
 
         int limit = Integer.parseInt(limitString);
 
-        var applicationUsers = applicationUserService.findAllByName(name, limit);
+        var applicationUsers = applicationUserService.getAllByName(name, limit);
         return ResponseEntity.ok(applicationUsers);
     }
 }

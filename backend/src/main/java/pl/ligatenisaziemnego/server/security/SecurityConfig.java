@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,19 +21,26 @@ import static pl.ligatenisaziemnego.server.security.LoginCustomDsl.loginCustomDs
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
+    private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
 
-    @Autowired
-    private RestAuthenticationFailureHandler restAuthenticationFailureHandler;
+    private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
 
-    @Autowired
-    private AccessDeniedHandler restAccessDeniedHandler;
+    private final RestAccessDeniedHandler restAccessDeniedHandler;
 
-    @Autowired
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    public SecurityConfig(RestAuthenticationSuccessHandler restAuthenticationSuccessHandler,
+            RestAuthenticationFailureHandler restAuthenticationFailureHandler,
+            RestAccessDeniedHandler restAccessDeniedHandler,
+            RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
+        this.restAuthenticationSuccessHandler = restAuthenticationSuccessHandler;
+        this.restAuthenticationFailureHandler = restAuthenticationFailureHandler;
+        this.restAccessDeniedHandler = restAccessDeniedHandler;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+    }
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,7 +63,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         corsConfiguration.setAllowedOrigins(
-                List.of("http://localhost:3000"));
+                List.of("http://localhost:3000", "https://localhost"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));

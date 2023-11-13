@@ -23,7 +23,6 @@ import java.util.Set;
 @Entity
 @Table(name = "application_user")
 public class ApplicationUser {
-    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
