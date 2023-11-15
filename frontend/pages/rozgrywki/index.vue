@@ -5,7 +5,7 @@ const config = useRuntimeConfig();
 const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACKEND_API}/tournament`);
 </script>
 <template>
-  <div class="container__margin flex flex-col">
+  <div class="page__margin flex flex-col">
     <h1 class="mb-2 mt-4 text-3xl font-bold">Rozgrywki</h1>
     <div class="flex h-12 items-center">
       <input
@@ -43,9 +43,3 @@ const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACK
     </NuxtLink>
   </div>
 </template>
-
-<style>
-.container__margin {
-  margin: 0 clamp(8px, calc((100% - 1100px) * 0.35), 16%);
-}
-</style>

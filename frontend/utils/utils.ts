@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import type { ApiError } from '~/types/apierrror';
+import type { ApplicationUser } from '~/types/applicationuser';
 
 export async function errorToApiError(error: any): Promise<ApiError> {
   if (error instanceof AxiosError) {
@@ -27,4 +28,9 @@ export function fetchErrorToApiError(error: any) {
   } else {
     return { status: error?.status?.toString() ?? '', errors: {}, message: 'Unknown fetch error' };
   }
+}
+
+
+export function nameFromApplicationUser(applicationUser: ApplicationUser) {
+  return `${applicationUser.firstName} ${applicationUser.lastName}`
 }
