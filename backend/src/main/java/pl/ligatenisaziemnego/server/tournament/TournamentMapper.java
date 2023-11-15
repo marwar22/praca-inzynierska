@@ -11,6 +11,7 @@ public interface TournamentMapper {
     Tournament toEntity(TournamentCreateDto tournamentCreateDto);
 
     static List<TournamentGroup> map(List<TournamentCreateDto.TournamentGroupDto> groups) {
-        return groups.stream().map(tournamentGroupDto -> new TournamentGroup(null, null, tournamentGroupDto.getPlayerIds())).toList();
+        return groups.stream().map(tournamentGroupDto -> new TournamentGroup(null, List.of(), null, tournamentGroupDto.getPlayerIds()))
+                     .toList();
     }
 }

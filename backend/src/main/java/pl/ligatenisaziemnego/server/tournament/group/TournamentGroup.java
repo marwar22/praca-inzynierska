@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
+import pl.ligatenisaziemnego.server.match.Match;
 
 import java.util.List;
 
@@ -22,6 +24,15 @@ public class TournamentGroup {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @NotNull(message = "matches can't be null")
+    @JoinTable(
+            name = "tournament_group_match",
+            joinColumns = @JoinColumn(name = "tournament_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "match_id")
+    )
+    private List<@NotNull(message = "match can't be null") Match> matches;
+
     @Setter(AccessLevel.NONE)
     @JsonIgnore
     @ManyToMany
@@ -29,11 +40,11 @@ public class TournamentGroup {
     @JoinTable(name = "tournament_group_player",
             joinColumns = @JoinColumn(name = "tournament_group_id", insertable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "player_id", insertable = false, updatable = false))
-    private List<ApplicationUser> players;
+    private List<@NotNull(message = "player can't be null") ApplicationUser> players;
 
     @NotEmpty(message = "playerIds can't be empty")
     @ElementCollection
     @CollectionTable(name = "tournament_group_player", joinColumns = @JoinColumn(name = "tournament_group_id"))
     @Column(name = "player_id")
-    private List<Long> playerIds;
+    private List<@NotNull(message = "playerId can't be null") Long> playerIds;
 }

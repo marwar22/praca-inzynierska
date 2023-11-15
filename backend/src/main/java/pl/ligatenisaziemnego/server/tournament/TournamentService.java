@@ -1,11 +1,12 @@
 package pl.ligatenisaziemnego.server.tournament;
 
 import org.springframework.stereotype.Service;
-import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
+import pl.ligatenisaziemnego.server.match.Match;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class TournamentService {
     }
 
 
-    public Object getById(Long id) throws ExceptionWithResponseEntity {
+    public Object get(Long id) throws ExceptionWithResponseEntity {
         return tournamentRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(Tournament.class, id));
     }
 
@@ -35,6 +36,19 @@ public class TournamentService {
     public Tournament create(TournamentCreateDto tournamentCreateDto) throws ExceptionWithResponseEntity {
         var tournament = tournamentMapper.toEntity(tournamentCreateDto);
         tournament.setPlayers(applicationUserRepository.findAllById(tournamentCreateDto.getPlayerIds()));
+        tournament.getGroups().forEach(tournamentGroup -> {
+            var matches = new ArrayList<Match>();
+            var playerIds = tournamentGroup.getPlayerIds();
+            for (int i = 0; i < playerIds.size(); i++) {
+                for (int j = i + 1; j < playerIds.size(); j++) {
+                    var match = new Match();
+                    match.setFirstPlayerId(playerIds.get(i));
+                    match.setSecondPlayerId(playerIds.get(j));
+                    matches.add(match);
+                }
+            }
+            tournamentGroup.setMatches(matches);
+        });
 
         if (tournament.getPlayers().size() != tournamentCreateDto.getPlayerIds().size())
             throw ApiError.BAD_REQUEST(Map.of("playerIds",

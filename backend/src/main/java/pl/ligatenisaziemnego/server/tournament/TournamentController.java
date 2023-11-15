@@ -26,12 +26,12 @@ public class TournamentController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> getTournament(@PathVariable Long id) throws ExceptionWithResponseEntity {
-        var tournament = tournamentService.getById(id);
+        var tournament = tournamentService.get(id);
         return new ResponseEntity<>(tournament, HttpStatus.OK);
 
     }
 
-    @PreAuthorize("hasAuthority('TOURNAMENT:CREATEE')")
+    @PreAuthorize("hasAuthority('TOURNAMENT:CREATE')")
     @PostMapping
     public ResponseEntity<?> postTournament(
             @RequestBody @Valid TournamentCreateDto tournamentCreateDto) throws ExceptionWithResponseEntity {
