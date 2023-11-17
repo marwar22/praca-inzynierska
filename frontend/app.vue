@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import type { AuthStatus } from './types/auth';
+
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
+
+$fetch<AuthStatus>(`${config.public.BACKEND_API}/auth/status`, { credentials: 'include' }).then((resAuthStatus) => {
+  if (resAuthStatus) authStatus.value = resAuthStatus;
+});
+
 const pages = [
   { href: '/', text: 'Home' },
   { href: '/rozgrywki', text: 'Rozgrywki' },

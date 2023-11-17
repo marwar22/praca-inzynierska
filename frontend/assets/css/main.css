@@ -6,6 +6,11 @@
     margin: 0 clamp(8px, calc((100% - 1100px) * 0.35), 16%);
 }
 
+.page__padding {
+    padding: 0 clamp(8px, calc((100% - 1100px) * 0.35), 16%);
+}
+
+
 :root:root {
     --dp-action-buttons-padding: 16px 8px;
     --dp-preview-font-size: 1rem;    
