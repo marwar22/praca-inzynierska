@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.match.Match;
+import pl.ligatenisaziemnego.server.tournament.Tournament;
 
 import java.util.List;
 
@@ -47,4 +48,9 @@ public class TournamentGroup {
     @CollectionTable(name = "tournament_group_player", joinColumns = @JoinColumn(name = "tournament_group_id"))
     @Column(name = "player_id")
     private List<@NotNull(message = "playerId can't be null") Long> playerIds;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "tournament_id", insertable = false, updatable = false)
+    private Tournament tournament;
 }

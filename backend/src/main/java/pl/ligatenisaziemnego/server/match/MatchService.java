@@ -26,8 +26,16 @@ public class MatchService {
         var match = matchMapper.update(matchUpdateDto, get(id));
         validate(id, match);
         var applicationUser = securityService.getApplicationUserFromAuthentication();
-        if (!applicationUser.getId().equals(match.getFirstPlayerId()) && !applicationUser.getId().equals(match.getSecondPlayerId()))
-            throw ApiError.FORBIDDEN("You can't change match that you don't participate in");
+        var tournamentGroup = match.getTournamentGroup();
+        if (tournamentGroup != null) {
+            var tournament = tournamentGroup.getTournament();
+            if (!applicationUser.getId().equals(tournament.getOrganizer().getId())) {
+                if (!applicationUser.getId().equals(match.getFirstPlayerId()) && !applicationUser.getId().equals(match.getSecondPlayerId()))
+                    throw ApiError.FORBIDDEN("You can't change match that you don't participate in or organize");
+            }
+        }
+
+
 
         return matchRepository.save(match);
     }

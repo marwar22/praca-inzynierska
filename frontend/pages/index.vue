@@ -62,12 +62,21 @@ function onTennisBallClick() {
     <div class="flex flex-col">
       <h1 class="mt-10 text-4xl font-bold text-white">Rozgrywki tenisa ziemnego</h1>
       <span class="mt-1 text-xl font-semibold text-white"
-        >System zarządzania rozgrywkami, planowania meczy,<br />obliczania wyników i rankingu</span
+        >System zarządzania rozgrywkami, planowania meczów,<br />obliczania wyników i rankingu</span
       >
       <div class="relative mt-16 flex">
         <div class="flex">
-          <button class="mr-5 w-40 rounded-lg bg-champagne-600 px-2 py-2.5 font-bold text-white">Rozgrywki</button>
-          <button class="w-40 rounded-lg bg-white px-2 py-2.5 font-bold text-champagne-700">Ranking</button>
+          <NuxtLink
+            to="/rozgrywki"
+            class="mr-5 flex w-40 items-center justify-center rounded-lg bg-champagne-600 px-2 py-2.5 font-bold text-white hover:bg-champagne-700 active:bg-champagne-800"
+            >Rozgrywki</NuxtLink
+          >
+          <NuxtLink
+            to="/ranking"
+            class="flex w-40 items-center justify-center rounded-lg bg-white px-2 py-2.5 font-bold text-champagne-700 hover:bg-neutral-100 active:bg-neutral-200 hover:text-champagne-800 active:text-champagne-900"
+          >
+            Ranking
+          </NuxtLink>
         </div>
         <button
           class="absolute bottom-0 right-0 flex h-36 -rotate-[20deg] items-center justify-center outline-none"

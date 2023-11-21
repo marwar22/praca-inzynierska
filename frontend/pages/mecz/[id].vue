@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ApiError } from '~/types/apierrror';
+import type { ApplicationUser } from '~/types/applicationuser';
 import type { Match } from '~/types/tournament';
 
 const route = useRoute();
@@ -7,12 +8,20 @@ const config = useRuntimeConfig();
 
 const apiError = ref(null as ApiError | null);
 const { data: match } = await useFetch<Match>(`${config.public.BACKEND_API}/match/${route.params.id}`);
-
+const { data: players } = await useAsyncData(async () => {
+  const [firstPlayer, secondPlayer] = await Promise.all([
+    $fetch<ApplicationUser>(`${config.public.BACKEND_API}/user/${match.value?.firstPlayerId}`),
+    $fetch<ApplicationUser>(`${config.public.BACKEND_API}/user/${match.value?.secondPlayerId}`)
+  ]);
+  return { firstPlayer, secondPlayer };
+});
 if (match.value) {
   match.value.result = match.value.result ?? {
     id: -1,
+    winnerId: -1,
     setResults: Array.from({ length: 3 }, () => ({ firstPlayerScore: 0, secondPlayerScore: 0 })),
-    winnerId: -1
+    firstPlayerScore: 0,
+    secondPlayerScore: 0
   };
 }
 
@@ -42,6 +51,12 @@ function updateWinnerId() {
   else if (matchResult.value[0] < matchResult.value[1]) match.value.result.winnerId = match.value.secondPlayerId;
   else match.value.result.winnerId = -1;
 }
+const winner = computed(() => {
+  if (!match.value?.result) return null;
+  if (match.value.result.winnerId === players.value?.firstPlayer.id) return players.value.firstPlayer;
+  if (match.value.result.winnerId === players.value?.secondPlayer.id) return players.value.secondPlayer;
+  return null;
+});
 
 async function onSave() {
   if (!match.value) return;
@@ -58,15 +73,17 @@ async function onSave() {
 }
 </script>
 <template>
-  {{ apiError }}
   <div class="page__margin" v-if="match">
     <h1 class="text-2xl font-bold">Edycja Meczu</h1>
+    <h2 class="text-lg font-bold">
+      {{ nameFromApplicationUser(players?.firstPlayer) }} vs {{ nameFromApplicationUser(players?.secondPlayer) }}
+    </h2>
     <div v-if="match.result" class="flex flex-col">
-      <span class="text-lg font-bold">
+      <span class="font-semibold">
         Wynik: {{ matchResult[0] }}:{{ matchResult[1] }}
         <font-awesome-icon icon="fa-solid fa-circle-info" size="sm" title="Obliczony na podstawie wyników setów" />
       </span>
-      Zwycięzca: {{ match.result.winnerId }}
+      Zwycięzca: {{ winner ? nameFromApplicationUser(winner) : 'brak (niepoprawny wynik)' }}
 
       <label class="mt-4">
         Ilość setów

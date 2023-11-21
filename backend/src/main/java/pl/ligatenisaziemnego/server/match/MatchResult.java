@@ -1,6 +1,7 @@
 package pl.ligatenisaziemnego.server.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -36,10 +37,15 @@ public class MatchResult {
     @CollectionTable(name = "match_result_set_result", joinColumns = @JoinColumn(name = "match_result_id"))
     private List<@NotNull(message = "setResult can't be null") SetResult> setResults;
 
+    @Transient
+    @JsonProperty
     private Long getFirstPlayerScore() {
-        return setResults.stream().mapToLong(SetResult::getFirstPlayerScore).sum();
+        return setResults.stream().mapToLong((sr) -> sr.getFirstPlayerScore() > sr.getSecondPlayerScore() ? 1 : 0).sum();
     }
+
+    @Transient
+    @JsonProperty
     private Long getSecondPlayerScore() {
-        return setResults.stream().mapToLong(SetResult::getSecondPlayerScore).sum();
+        return setResults.stream().mapToLong((sr) -> sr.getSecondPlayerScore() > sr.getFirstPlayerScore() ? 1 : 0).sum();
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
+import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
 
 
 @Getter
@@ -42,4 +43,14 @@ public class Match {
 //    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "second_player_id", insertable = false, updatable = false)
     private ApplicationUser secondPlayer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonIgnore
+    @JoinTable(
+            name = "tournament_group_match",
+            joinColumns = @JoinColumn(name = "match_id", insertable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "tournament_group_id", insertable = false, updatable = false)
+    )
+    private TournamentGroup tournamentGroup;
 }

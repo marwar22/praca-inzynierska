@@ -10,6 +10,13 @@ defineProps<{
   groupNumber: number;
   matches: Map<string, Match>;
 }>();
+const hoveredPlayerId = ref(-1);
+function onMouseEnter(playerId: number) {
+  hoveredPlayerId.value = playerId;
+}
+function onMouseLeave(playerId: number) {
+  if (hoveredPlayerId.value === playerId) hoveredPlayerId.value = -1;
+}
 </script>
 
 <template>
@@ -20,26 +27,38 @@ defineProps<{
           {{ `Grupa ${String.fromCharCode(65 + groupNumber)}` }}
         </td>
         <th
-          v-for="firstPlayerId in tournament.groups[groupNumber].playerIds"
+          v-for="secondPlayerId in tournament.groups[groupNumber].playerIds"
           class="h-12 w-40 min-w-[10rem] border-2 px-2 py-1"
-          :class="authStatus.applicationUserId === firstPlayerId ? 'bg-atlantis-300' : 'bg-atlantis-200'"
+          :class="[hoveredPlayerId === secondPlayerId ? 'bg-atlantis-300' : 'bg-atlantis-200']"
+          @mouseenter="onMouseEnter(secondPlayerId)"
+          @mouseleave="onMouseLeave(secondPlayerId)"
         >
-          {{ nameFromApplicationUser(players.get(firstPlayerId)!) }}
+          {{ nameFromApplicationUser(players.get(secondPlayerId)!) }}
         </th>
       </tr>
-      <tr v-for="firstPlayerId in tournament.groups[groupNumber].playerIds">
+      <tr
+        v-for="firstPlayerId in tournament.groups[groupNumber].playerIds"
+        @mouseenter="onMouseEnter(firstPlayerId)"
+        @mouseleave="onMouseLeave(firstPlayerId)"
+      >
         <th
           class="h-18 w-48 border-2 px-2 py-1"
-          :class="authStatus.applicationUserId === firstPlayerId ? 'bg-atlantis-300' : 'bg-atlantis-200'"
+          :class="[hoveredPlayerId === firstPlayerId ? 'bg-atlantis-300' : 'bg-atlantis-200']"
         >
           {{ nameFromApplicationUser(players.get(firstPlayerId)!) }}
         </th>
         <td v-for="secondPlayerId in tournament.groups[groupNumber].playerIds" class="h-16 border-2">
           <div
             v-if="firstPlayerId !== secondPlayerId"
-            class="relative flex h-full w-full items-center justify-center px-2 py-1"
+            class="relative flex h-full w-full items-center justify-center px-1.5 py-1"
           >
-            <MatchResultInTable :matches="matches" :firstPlayerId="firstPlayerId" :secondPlayerId="secondPlayerId" />
+            <MatchResultInTable
+              :matches="matches"
+              :firstPlayerId="firstPlayerId"
+              :secondPlayerId="secondPlayerId"
+              :organizerId="tournament.organizerId"
+              :hoveredPlayerId="hoveredPlayerId"
+            />
           </div>
           <div v-else class="text-center">---</div>
         </td>

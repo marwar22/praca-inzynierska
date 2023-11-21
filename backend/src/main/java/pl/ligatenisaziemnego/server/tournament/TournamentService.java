@@ -5,6 +5,7 @@ import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 import pl.ligatenisaziemnego.server.match.Match;
+import pl.ligatenisaziemnego.server.security.SecurityService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,15 @@ public class TournamentService {
     private final TournamentMapper tournamentMapper;
     private final TournamentRepository tournamentRepository;
     private final ApplicationUserRepository applicationUserRepository;
+    private final SecurityService securityService;
 
     public TournamentService(TournamentMapper tournamentMapper,
             TournamentRepository tournamentRepository,
-            ApplicationUserRepository applicationUserRepository) {
+            ApplicationUserRepository applicationUserRepository, SecurityService securityService) {
         this.tournamentMapper = tournamentMapper;
         this.tournamentRepository = tournamentRepository;
         this.applicationUserRepository = applicationUserRepository;
+        this.securityService = securityService;
     }
 
 
@@ -49,10 +52,11 @@ public class TournamentService {
             }
             tournamentGroup.setMatches(matches);
         });
-
         if (tournament.getPlayers().size() != tournamentCreateDto.getPlayerIds().size())
             throw ApiError.BAD_REQUEST(Map.of("playerIds",
                     "playerIds contains at least one entry that doesn't correspond to applicationUserId"));
+
+        tournament.setOrganizerId(securityService.getApplicationUserFromAuthentication().getId());
 
         validate(-1L, tournament);
         return tournamentRepository.save(tournament);

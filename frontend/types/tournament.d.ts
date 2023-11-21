@@ -8,7 +8,9 @@ type SetResult = {
 type MatchResult = {
   id: number;
   winnerId: number;
-  setResults: SetResult[];
+  firstPlayerScore: number;
+  secondPlayerScore: number;
+  setResults: SetResult[];  
 }
 
 export type Match = {
@@ -31,6 +33,7 @@ export type Tournament = {
   numberOfGroups: number;
   players: ApplicationUser[];
   groups: TournamentGroup[];
+  organizerId: number;
   startDate: string;
   endDate: string;
 };

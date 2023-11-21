@@ -31,7 +31,6 @@ const matches = computed(() => {
   }
   return map;
 });
-
 </script>
 <template>
   <div class="page__margin">
@@ -78,6 +77,7 @@ const matches = computed(() => {
           {{ `Grupa ${String.fromCharCode(65 + groupNumber)}` }}
         </button>
       </div>
+      <GroupRanking :tournament="tournament" :players="players" :groupNumber="selectedGroupNumber" :matches="matches" />
       <GroupResults :tournament="tournament" :players="players" :groupNumber="selectedGroupNumber" :matches="matches" />
     </div>
     <ApiError :api-error="apiError" />

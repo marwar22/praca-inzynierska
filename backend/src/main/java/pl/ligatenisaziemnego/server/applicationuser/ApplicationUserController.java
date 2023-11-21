@@ -9,9 +9,11 @@ import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity
 public class ApplicationUserController {
 
     private final ApplicationUserService applicationUserService;
+    private final ApplicationUserMapperImpl applicationUserMapper;
 
-    public ApplicationUserController(ApplicationUserService applicationUserService) {
+    public ApplicationUserController(ApplicationUserService applicationUserService, ApplicationUserMapperImpl applicationUserMapper) {
         this.applicationUserService = applicationUserService;
+        this.applicationUserMapper = applicationUserMapper;
     }
 
     @GetMapping("/me")
@@ -19,7 +21,13 @@ public class ApplicationUserController {
         return ResponseEntity.ok(applicationUserService.getMyApplicationUser());
     }
 
-    // TODO only return only necessary info
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getApplicationUser(@PathVariable Long id) throws ExceptionWithResponseEntity {
+        var applicationUser = applicationUserService.getById(id);
+        var applicationUserDto = applicationUserMapper.toDto(applicationUser);
+        return ResponseEntity.ok(applicationUserDto);
+    }
+
     @GetMapping()
     public ResponseEntity<?> getAllApplicationUsers(
             @RequestParam(name = "name", defaultValue = "") String name,

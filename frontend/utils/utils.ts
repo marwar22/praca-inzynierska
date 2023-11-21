@@ -30,7 +30,7 @@ export function fetchErrorToApiError(error: any) {
   }
 }
 
-
-export function nameFromApplicationUser(applicationUser: ApplicationUser) {
-  return `${applicationUser.firstName} ${applicationUser.lastName}`
+export function nameFromApplicationUser(applicationUser: ApplicationUser | null | undefined) {
+  if (!applicationUser) return '';
+  return `${applicationUser.firstName} ${applicationUser.lastName}`;
 }

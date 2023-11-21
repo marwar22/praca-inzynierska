@@ -58,7 +58,6 @@ public class Tournament {
     @JoinColumn(name = "tournament_id")
     private List<@NotNull(message = "tournamentGroup can't be null") TournamentGroup> groups;
 
-
     @NotNull(message = "start_date can't be null")
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
@@ -66,6 +65,15 @@ public class Tournament {
     @NotNull(message = "end_date can't be null")
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
+
+    @NotNull(message = "organizer_id can't be null")
+    @Column(name = "organizer_id")
+    private Long organizerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "organizer_id", insertable = false, updatable = false)
+    private ApplicationUser organizer;
 
     @CreationTimestamp
     @Column(name = "created_date_time", nullable = false, updatable = false)

@@ -7,23 +7,28 @@ import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity
 import pl.ligatenisaziemnego.server.security.SecurityService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationUserService {
     private final ApplicationUserRepository applicationUserRepository;
     private final SecurityService securityService;
+    private final ApplicationUserMapper applicationUserMapper;
 
-    public ApplicationUserService(ApplicationUserRepository applicationUserRepository, SecurityService securityService) {
+    public ApplicationUserService(ApplicationUserRepository applicationUserRepository, SecurityService securityService,
+            ApplicationUserMapper applicationUserMapper) {
         this.applicationUserRepository = applicationUserRepository;
         this.securityService = securityService;
+        this.applicationUserMapper = applicationUserMapper;
     }
 
     public ApplicationUser getById(long id) throws ExceptionWithResponseEntity {
         return applicationUserRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(ApplicationUser.class, id));
     }
 
-    public List<ApplicationUser> getAllByName(String name, int limit) {
-        return applicationUserRepository.findAllByFirstNameWithLastName(name, PageRequest.of(0, limit));
+    public List<ApplicationUserBasicDto> getAllByName(String name, int limit) {
+        return applicationUserRepository.findAllByFirstNameWithLastName(name, PageRequest.of(0, limit)).stream()
+                                        .map(applicationUserMapper::toDto).collect(Collectors.toList());
     }
 
     public Object getMyApplicationUser() throws ExceptionWithResponseEntity {
