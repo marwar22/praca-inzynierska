@@ -44,11 +44,11 @@ async function onLogin() {
     <div class="flex w-96 min-w-[30%] flex-col items-stretch justify-center">
       <h1 class="mb-3 mt-2 text-center text-3xl font-bold">Zaloguj się</h1>
 
-      <LoginInput v-model="username" placeholder="Nazwa użytkownika"></LoginInput>
-      <LoginInput v-model="password" placeholder="Hasło" type="password"></LoginInput>
+      <LoginInput v-model="username" placeholder="Nazwa użytkownika" label="Nazwa użytkownika"></LoginInput>
+      <LoginInput v-model="password" placeholder="Hasło" type="password" @enter="onLogin" label="Hasło"></LoginInput>
 
       <button
-        @click="onLogin()"
+        @click="onLogin"
         class="my-1 h-12 rounded-lg bg-atlantis-600 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
       >
         <font-awesome-icon v-if="pending" class="invisible mr-2" icon="fa-solid fa-arrows-rotate" />
@@ -58,7 +58,7 @@ async function onLogin() {
       <span v-if="incorrectUsernameOrPassword" class="text-left text-red-500">
         Niepoprawna nazwa użytkownika, lub hasło
       </span>
-      <ApiError :api-error="apiError"></ApiError>
+      <ApiError :api-error="apiError" />
     </div>
     <div class="flex-[5]"></div>
   </div>
