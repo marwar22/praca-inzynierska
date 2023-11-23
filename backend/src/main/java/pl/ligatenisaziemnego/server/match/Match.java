@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
+
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -53,4 +57,22 @@ public class Match {
             inverseJoinColumns = @JoinColumn(name = "tournament_group_id", insertable = false, updatable = false)
     )
     private TournamentGroup tournamentGroup;
+
+
+    @Column(name = "last_modified_by_id")
+    private Long lastModifiedById;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "last_modified_by_id", insertable = false, updatable = false)
+    private ApplicationUser lastModifiedBy;
+
+    @CreationTimestamp
+    @Column(name = "created_date_time", nullable = false, updatable = false)
+    private LocalDateTime createdDateTime;
+
+    @UpdateTimestamp
+    @Column(name = "updated_date_time", nullable = false)
+    private LocalDateTime updatedDateTime;
 }

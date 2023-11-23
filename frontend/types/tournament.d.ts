@@ -18,6 +18,9 @@ export type Match = {
   result: MatchResult | null;
   firstPlayerId: number;
   secondPlayerId: number;
+  lastModifiedById: number | null;
+  createdDateTime: string;
+  updatedDateTime: string;
 };
 
 type TournamentGroup = {

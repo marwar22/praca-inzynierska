@@ -25,7 +25,9 @@ public class MatchService {
     public Object update(Long id, MatchUpdateDto matchUpdateDto) throws ExceptionWithResponseEntity {
         var match = matchMapper.update(matchUpdateDto, get(id));
         validate(id, match);
+
         var applicationUser = securityService.getApplicationUserFromAuthentication();
+
         var tournamentGroup = match.getTournamentGroup();
         if (tournamentGroup != null) {
             var tournament = tournamentGroup.getTournament();
@@ -35,7 +37,7 @@ public class MatchService {
             }
         }
 
-
+        match.setLastModifiedById(applicationUser.getId());
 
         return matchRepository.save(match);
     }

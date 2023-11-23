@@ -61,7 +61,10 @@ const sortedPlayers = computed(() => {
   });
   players.sort((a, b) => {
     // prettier-ignore
-    if (a.points === b.points) return (b.gamesWon - b.gamesLost) - (a.gamesWon - b.gamesLost);
+    if (a.points === b.points) {
+      if (a.setsWon === b.setsWon) return (b.gamesWon - b.gamesLost) - (a.gamesWon - a.gamesLost);
+      return (b.setsWon - b.setsLost) - (a.setsWon-a.setsLost);
+    }
     return b.points - a.points;
   });
   return players;

@@ -28,10 +28,7 @@ function onMouseLeave(playerId: number) {
         </td>
         <th
           v-for="secondPlayerId in tournament.groups[groupNumber].playerIds"
-          class="h-12 w-40 min-w-[10rem] border-2 px-2 py-1"
-          :class="[hoveredPlayerId === secondPlayerId ? 'bg-atlantis-300' : 'bg-atlantis-200']"
-          @mouseenter="onMouseEnter(secondPlayerId)"
-          @mouseleave="onMouseLeave(secondPlayerId)"
+          class="h-12 w-40 min-w-[10rem] border-2 px-2 py-1 bg-atlantis-200"
         >
           {{ nameFromApplicationUser(players.get(secondPlayerId)!) }}
         </th>
@@ -47,10 +44,10 @@ function onMouseLeave(playerId: number) {
         >
           {{ nameFromApplicationUser(players.get(firstPlayerId)!) }}
         </th>
-        <td v-for="secondPlayerId in tournament.groups[groupNumber].playerIds" class="h-16 border-2">
+        <td v-for="secondPlayerId in tournament.groups[groupNumber].playerIds" class="h-16 border-2 hover:bg-atlantis-50">
           <div
             v-if="firstPlayerId !== secondPlayerId"
-            class="relative flex h-full w-full items-center justify-center px-1.5 py-1"
+            class="relative flex h-full w-full items-center justify-center"
           >
             <MatchResultInTable
               :matches="matches"
@@ -64,8 +61,5 @@ function onMouseLeave(playerId: number) {
         </td>
       </tr>
     </table>
-  </div>
-  <div v-if="!authStatus.loggedIn">
-    <font-awesome-icon icon="fa-solid fa-circle-info" /> Mecze mogą edytować tylko zalogowani użytkownicy
   </div>
 </template>

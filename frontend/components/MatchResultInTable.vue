@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Match } from '~/types/tournament';
 
-const authStatus = useAuthStatus();
-
 const props = defineProps<{
   firstPlayerId: number;
   secondPlayerId: number;
@@ -30,16 +28,12 @@ const matchScore = computed(() => {
   );
 });
 
-const canEdit = computed(() => {
-  return [props.firstPlayerId, props.secondPlayerId, props.organizerId].includes(authStatus.value.applicationUserId);
-});
-
 const hov1 = computed(() => props.hoveredPlayerId === props.firstPlayerId);
-const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId);
+const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId && false);
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center">
+  <NuxtLink :to="`/mecz/${match.id}`" class="flex flex-col items-center justify-center px-1.5 py-1">
     <div v-if="match.result">
       <div v-if="!match.inverse" class="flex flex-col items-center justify-start">
         <span class="text-xl font-bold">
@@ -77,21 +71,6 @@ const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId);
         </span>
       </div>
     </div>
-    <div v-else>Brak wyniku</div>
-    <NuxtLink
-      :to="`/mecz/${match.id}`"
-      v-if="canEdit"
-      class="absolute right-1.5 top-1.5 hover:text-atlantis-700 active:text-atlantis-400"
-      title="Edytuj"
-    >
-      <font-awesome-icon icon="fa-solid fa-file-pen" size="xl" class="pl-2" />
-    </NuxtLink>
-    <div
-      v-else-if="authStatus.loggedIn"
-      title="Edytować mogą tylko zawodnicy, lub organizator"
-      class="absolute right-1.5 top-1.5 cursor-not-allowed text-gray-300"
-    >
-      <font-awesome-icon icon="fa-solid fa-file-pen" size="xl" class="pl-2" />
-    </div>
-  </div>
+    <span v-else>Brak wyniku</span>
+  </NuxtLink>
 </template>

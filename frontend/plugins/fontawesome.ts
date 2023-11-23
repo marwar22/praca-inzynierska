@@ -1,14 +1,18 @@
 import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import { faDice } from '@fortawesome/free-solid-svg-icons';
-import { faFilePen } from '@fortawesome/free-solid-svg-icons';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowsRotate,
+  faCalendarDays,
+  faCircleInfo,
+  faCirclePlus,
+  faCircleUser,
+  faClock,
+  faDice,
+  faFilePen,
+  faUser,
+  faUsers,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons';
 
 library.add(
   faArrowsRotate,
@@ -16,8 +20,10 @@ library.add(
   faCircleInfo,
   faCirclePlus,
   faCircleUser,
+  faClock,
   faDice,
   faFilePen,
+  faUser,
   faUsers,
   faXmark
 );

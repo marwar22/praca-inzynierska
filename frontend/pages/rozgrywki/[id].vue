@@ -31,11 +31,23 @@ const matches = computed(() => {
   }
   return map;
 });
+const completedMatches = computed(() => {
+  let all = 0;
+  let completed = 0;
+  for (const group of tournament.value?.groups ?? []) {
+    for (const match of group.matches) {
+      all++;
+      if (match.result) completed++;
+    }
+  }
+  const fraction = completed / all;
+  return { completed, all, fraction };
+});
 </script>
 <template>
-  <div class="page__margin">
+  <div class="page__margin pb-10">
     <div v-if="tournament">
-      <h1 class="text-3xl font-bold">
+      <h1 class="mt-8 text-3xl font-bold">
         {{ tournament.name }}
       </h1>
       <div>
@@ -63,6 +75,11 @@ const matches = computed(() => {
           </table>
         </div>
       </div>
+
+      <div>
+        Ukończone mecze
+        <ProgressBar class="w-48" :completed="completedMatches.completed" :all="completedMatches.all" />
+      </div>
       <div class="mx-[1px] my-2 flex">
         <button
           v-for="(group, groupNumber) in tournament.groups"
@@ -78,6 +95,7 @@ const matches = computed(() => {
         </button>
       </div>
       <GroupRanking :tournament="tournament" :players="players" :groupNumber="selectedGroupNumber" :matches="matches" />
+      <div class="h-8"></div>
       <GroupResults :tournament="tournament" :players="players" :groupNumber="selectedGroupNumber" :matches="matches" />
     </div>
     <ApiError :api-error="apiError" />
