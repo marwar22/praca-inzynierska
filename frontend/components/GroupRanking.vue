@@ -21,7 +21,6 @@ const results = computed(() => {
 
   for (const match of group.value.matches) {
     if (!match.result) continue;
-    console.log(match);
     setsWon.set(match.firstPlayerId, (setsWon.get(match.firstPlayerId) ?? 0) + match.result.firstPlayerScore);
     setsWon.set(match.secondPlayerId, (setsWon.get(match.secondPlayerId) ?? 0) + match.result.secondPlayerScore);
 

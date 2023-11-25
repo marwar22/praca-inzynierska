@@ -28,7 +28,7 @@ public class ApplicationUserService {
 
     public List<ApplicationUserBasicDto> getAllByName(String name, int limit) {
         return applicationUserRepository.findAllByFirstNameWithLastName(name, PageRequest.of(0, limit)).stream()
-                                        .map(applicationUserMapper::toDto).collect(Collectors.toList());
+                                        .map(applicationUserMapper::toBasicDto).collect(Collectors.toList());
     }
 
     public Object getMyApplicationUser() throws ExceptionWithResponseEntity {

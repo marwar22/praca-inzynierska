@@ -45,4 +45,8 @@ public class MatchService {
     private void validate(Long id, Match match) throws ExceptionWithResponseEntity {
 
     }
+
+    public MatchDto getDto(Long id) throws ExceptionWithResponseEntity {
+        return matchMapper.toDto(get(id));
+    }
 }

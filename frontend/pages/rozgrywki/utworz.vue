@@ -52,9 +52,11 @@ async function create() {
         numberOfPlayers: numberOfPlayers.value,
         numberOfGroups: numberOfGroups.value,
         playerIds: selectedApplicationUsers.value.map((sau) => sau.id),
-        groups: groups.value.map((group) => {
-          return { playerIds: group.map((au) => au.id) };
-        }),
+        groups: groups.value
+          .map((group, index) => {
+            return { playerIds: group.map((au) => au.id).slice(0, playersInGroups.value[index]) };
+          })
+          .slice(0, numberOfGroups.value),
         startDate,
         endDate
       },

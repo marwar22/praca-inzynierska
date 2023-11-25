@@ -41,7 +41,7 @@ async function onLogin() {
 <template>
   <div class="flex flex-1 flex-col items-center">
     <div class="flex-[3]"></div>
-    <div class="flex w-96 min-w-[30%] flex-col items-stretch justify-center">
+    <div class="flex w-96 min-w-[30%] flex-col items-stretch justify-center shadow-[0_2px_6px_0px_rgba(0,0,0,0.15),0_0_4px_-1px_rgba(0,0,0,0.4)] rounded-xl pt-8 pb-8 px-4">
       <h1 class="mb-3 mt-2 text-center text-3xl font-bold">Zaloguj się</h1>
 
       <LoginInput v-model="username" placeholder="Nazwa użytkownika" label="Nazwa użytkownika"></LoginInput>
@@ -49,7 +49,7 @@ async function onLogin() {
 
       <button
         @click="onLogin"
-        class="my-1 h-12 rounded-lg bg-atlantis-600 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
+        class="mt-8 h-12 rounded-lg bg-atlantis-600 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
       >
         <font-awesome-icon v-if="pending" class="invisible mr-2" icon="fa-solid fa-arrows-rotate" />
         Zaloguj się

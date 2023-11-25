@@ -18,8 +18,8 @@ public class MatchController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> getMatch(@PathVariable Long id) throws ExceptionWithResponseEntity {
-        var match = matchService.get(id);
-        return new ResponseEntity<>(match, HttpStatus.OK);
+        var matchDto = matchService.getDto(id);
+        return new ResponseEntity<>(matchDto, HttpStatus.OK);
     }
 
     @PatchMapping("{id}")

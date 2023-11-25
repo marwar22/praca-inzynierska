@@ -14,8 +14,13 @@ const pages = [
   { href: '/ranking', text: 'Ranking' }
 ];
 async function logOut() {
-  const res = await $fetch(`${config.public.BACKEND_API}/auth/logout`, { method: 'POST', credentials: 'include' });
-  authStatus.value.loggedIn = false;
+  await $fetch(`${config.public.BACKEND_API}/auth/logout`, { method: 'POST', credentials: 'include' });
+  authStatus.value = {
+    loggedIn: false,
+    applicationUserId: -1,
+    roles: [],
+    username: ''
+  };
 }
 </script>
 

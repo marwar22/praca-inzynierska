@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ApiError } from '~/types/apierrror';
-import type { ApplicationUser } from '~/types/applicationuser';
+import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
 import type { Match } from '~/types/tournament';
 
 const route = useRoute();
@@ -10,8 +10,8 @@ const apiError = ref(null as ApiError | null);
 const { data: match } = await useFetch<Match>(`${config.public.BACKEND_API}/match/${route.params.id}`);
 const { data: players } = await useAsyncData(async () => {
   const [firstPlayer, secondPlayer] = await Promise.all([
-    $fetch<ApplicationUser>(`${config.public.BACKEND_API}/user/${match.value?.firstPlayerId}`),
-    $fetch<ApplicationUser>(`${config.public.BACKEND_API}/user/${match.value?.secondPlayerId}`)
+    $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value?.firstPlayerId}`),
+    $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value?.secondPlayerId}`)
   ]);
   return { firstPlayer, secondPlayer };
 });

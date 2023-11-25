@@ -13,3 +13,18 @@ export type ApplicationUser = {
   roles: string[];
   permissions: string[];
 };
+
+export type ApplicationUserBasic = {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type ApplicationUserContact = {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};

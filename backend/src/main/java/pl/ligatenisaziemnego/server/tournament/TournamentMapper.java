@@ -15,4 +15,8 @@ public interface TournamentMapper {
                      .map(tournamentGroupDto -> new TournamentGroup(null, List.of(), null, tournamentGroupDto.getPlayerIds(), null))
                      .toList();
     }
+
+
+    TournamentBasicDto toBasicDto(Tournament tournament);
+
 }

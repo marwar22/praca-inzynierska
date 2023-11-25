@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import type { ApiError } from '~/types/apierrror';
-import type { ApplicationUser } from '~/types/applicationuser';
+import type { ApplicationUser, ApplicationUserBasic, ApplicationUserContact } from '~/types/applicationuser';
 
 export async function errorToApiError(error: any): Promise<ApiError> {
   if (error instanceof AxiosError) {
@@ -30,7 +30,20 @@ export function fetchErrorToApiError(error: any) {
   }
 }
 
-export function nameFromApplicationUser(applicationUser: ApplicationUser | null | undefined) {
+export function nameFromApplicationUser(
+  applicationUser: ApplicationUser | ApplicationUserBasic | ApplicationUserContact | null | undefined
+) {
   if (!applicationUser) return '';
   return `${applicationUser.firstName} ${applicationUser.lastName}`;
+}
+
+interface Entity {
+  id: number;
+}
+export function entityArrayToMap<T extends Entity>(arr: T[] | null | undefined) {
+  const map = new Map<number, T>();
+  for (const obj of arr ?? []) {
+    map.set(obj.id, obj);
+  }
+  return map;
 }

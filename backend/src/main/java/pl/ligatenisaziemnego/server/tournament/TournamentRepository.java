@@ -17,4 +17,6 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     @Nonnull
     @Query("select t from Tournament t")
     List<Tournament> findAll();
+
+    Tournament findByGroups_Matches_Id(Long id);
 }

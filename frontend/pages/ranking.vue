@@ -12,7 +12,7 @@ const apiError = computed(() => {
 </script>
 <template>
   <div class="page__margin">
-    <h1 class="mt-2 mb-4 text-3xl font-bold">Ranking</h1>
+    <h1 class="mb-4 mt-2 text-3xl font-bold">Ranking</h1>
     <table>
       <tr>
         <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Ranking</th>
@@ -20,9 +20,9 @@ const apiError = computed(() => {
         <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Punkty</th>
       </tr>
       <tr v-for="(player, index) in players">
-        <td class="border px-2 py-1 border-champagne-900">{{ index }}</td>
-        <td class="border px-2 py-1 border-champagne-900">{{ nameFromApplicationUser(player) }}</td>
-        <td class="border px-2 py-1 border-champagne-900">0</td>
+        <td class="border border-champagne-900 px-2 py-1">{{ index + 1 }}</td>
+        <td class="border border-champagne-900 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
+        <td class="border border-champagne-900 px-2 py-1">0</td>
       </tr>
     </table>
     <ApiError :api-error="apiError" />

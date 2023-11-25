@@ -25,8 +25,10 @@ function generateGroups() {
   shuffleArray(players);
   let groupId = 0;
   for (let i = 0; i < players.length; i++) {
-    groups[groupId++].push(players[i]);
-    groupId %= props.numberOfGroups;
+    if (groups[groupId].length < props.playersInGroups[groupId]) {
+      groups[groupId].push(players[i]);
+    }
+    groupId = (groupId + 1) % props.numberOfGroups;
   }
   emit('update:groups', groups);
 }

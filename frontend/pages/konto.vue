@@ -2,11 +2,8 @@
 import type { ApplicationUser } from '~/types/applicationuser';
 
 definePageMeta({
-  middleware: [
-    'logged-in',
-  ],
+  middleware: ['logged-in']
 });
-
 
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
@@ -14,13 +11,14 @@ const authStatus = useAuthStatus();
 const { data: applicationUser } = await useFetch<ApplicationUser>(`${config.public.BACKEND_API}/user/me`, {
   credentials: 'include'
 });
-
 </script>
 <template>
-  <div v-if="authStatus.loggedIn && applicationUser" class="flex flex-col">
-    <h1 class="text-3xl font-bold">Twoje konto</h1>
-    <div>{{ `${applicationUser.firstName} ${applicationUser.lastName}` }}</div>
-    <div>Nazwa użytkownika: {{ applicationUser.username }}</div>
-    <div>Email: {{ applicationUser.email }}</div>
+  <div class="page__margin pt-8">
+    <div v-if="authStatus.loggedIn && applicationUser" class="flex flex-col">
+      <h1 class="text-3xl font-bold">Twoje konto</h1>
+      <div>{{ `${applicationUser.firstName} ${applicationUser.lastName}` }}</div>
+      <div>Nazwa użytkownika: {{ applicationUser.username }}</div>
+      <div>Email: {{ applicationUser.email }}</div>
+    </div>
   </div>
 </template>

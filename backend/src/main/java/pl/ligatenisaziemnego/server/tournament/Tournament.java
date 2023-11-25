@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Range;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
+import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracket;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
 
 import java.time.LocalDateTime;
@@ -57,6 +58,10 @@ public class Tournament {
     @OrderColumn(name = "group_number")
     @JoinColumn(name = "tournament_id")
     private List<@NotNull(message = "tournamentGroup can't be null") TournamentGroup> groups;
+
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "tournament_id")
+    private KnockoutBracket knockoutBracket;
 
     @NotNull(message = "start_date can't be null")
     @Column(name = "start_date", nullable = false)

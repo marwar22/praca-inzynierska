@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Tournament } from '~/types/tournament';
+import type { Tournament, TournamentBasic } from '~/types/tournament';
 
 const config = useRuntimeConfig();
-const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACKEND_API}/tournament`);
+const { data: tournaments } = await useFetch<TournamentBasic[]>(`${config.public.BACKEND_API}/tournament`);
 </script>
 <template>
   <div class="page__margin flex flex-col">
@@ -38,7 +38,7 @@ const { data: tournaments } = await useFetch<Tournament[]>(`${config.public.BACK
       </div>
       <div>
         <font-awesome-icon icon="fa-solid fa-users" />
-        <span class="ml-1">{{ tournament.groups.reduce((sum, t) => sum + t.playerIds.length, 0) }}</span>
+        <span class="ml-1">{{ tournament.numberOfPlayers }}</span>
       </div>
     </NuxtLink>
   </div>

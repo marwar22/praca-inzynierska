@@ -9,6 +9,7 @@ import {
   faClock,
   faDice,
   faFilePen,
+  faNetworkWired,
   faUser,
   faUsers,
   faXmark
@@ -23,6 +24,7 @@ library.add(
   faClock,
   faDice,
   faFilePen,
+  faNetworkWired,
   faUser,
   faUsers,
   faXmark

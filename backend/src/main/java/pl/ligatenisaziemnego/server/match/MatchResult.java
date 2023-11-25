@@ -37,15 +37,19 @@ public class MatchResult {
     @CollectionTable(name = "match_result_set_result", joinColumns = @JoinColumn(name = "match_result_id"))
     private List<@NotNull(message = "setResult can't be null") SetResult> setResults;
 
+    @Getter(AccessLevel.NONE)
     @Transient
-    @JsonProperty
-    private Long getFirstPlayerScore() {
+    private Long firstPlayerScore;
+
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private Long secondPlayerScore;
+
+    public Long getFirstPlayerScore() {
         return setResults.stream().mapToLong((sr) -> sr.getFirstPlayerScore() > sr.getSecondPlayerScore() ? 1 : 0).sum();
     }
 
-    @Transient
-    @JsonProperty
-    private Long getSecondPlayerScore() {
+    public Long getSecondPlayerScore() {
         return setResults.stream().mapToLong((sr) -> sr.getSecondPlayerScore() > sr.getFirstPlayerScore() ? 1 : 0).sum();
     }
 }

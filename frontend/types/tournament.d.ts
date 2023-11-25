@@ -19,6 +19,8 @@ export type Match = {
   firstPlayerId: number;
   secondPlayerId: number;
   lastModifiedById: number | null;
+  tournamentGroupId?: number;
+  tournamentId?: number;
   createdDateTime: string;
   updatedDateTime: string;
 };
@@ -29,6 +31,11 @@ type TournamentGroup = {
   matches: Match[];
 };
 
+type KnockoutBracket = {
+  id: number;
+  matches: Match[];
+}
+
 export type Tournament = {
   id: number;
   name: string;
@@ -36,7 +43,22 @@ export type Tournament = {
   numberOfGroups: number;
   players: ApplicationUser[];
   groups: TournamentGroup[];
+  knockoutBracket: KnockoutBracket;
   organizerId: number;
   startDate: string;
   endDate: string;
+  createdDateTime: string;
+  updatedDateTime: string;
+};
+
+export type TournamentBasic = {
+  id: number;
+  name: string;
+  numberOfPlayers: number;
+  numberOfGroups: number;
+  organizerId: number;
+  startDate: string;
+  endDate: string;
+  createdDateTime: string;
+  updatedDateTime: string;
 };
