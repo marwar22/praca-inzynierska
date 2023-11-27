@@ -1,13 +1,32 @@
 # Praca Inżynierska
 
-
 ## Instrukcja Uruchomienia
 
 ### Zmienne środowiskowe, certyfikat
 
-```
 TODO informacja o plikach .env, certyfikacie
+TODO domena powinna znajdować się w liście w getCorsConfiguration() w SecurityConfig.java; 
+
+Należy utworzyć pliki zawierające zmienne środowiskowe (.env)
+W `frontend/`
+```bash
+cp .env.example .env
+# należy ustawić wartości zmiennych środowiskowych
 ```
+
+W `/`
+```bash
+cp .env.example .env
+# należy ustawić wartości zmiennych środowiskowych
+```
+
+W folderze `certs/` stworzyć certyfikat ssl:
+```bash
+sudo openssl req -nodes -newkey rsa:2048 -keyout rozgrywkitenisa.key -x509 -out rozgrywkitenisa.crt
+```
+
+
+
 
 ### Instalacja zależności
 
@@ -19,22 +38,33 @@ Aby zbudować i uruchomić projekt należy zainstalować `Dockera` zgodnie z ins
 [Oficjalna instrukcja instalacji (Fedora)](https://docs.docker.com/engine/install/fedora/)\
 [Oficjalna instrukcja instalacji (CentOS)](https://docs.docker.com/engine/install/centos/)
 
+Użytkownik musi należeć do grupy docker
+
+```bash
+sudo usermod -aG docker nazwa_uzytkownika
+```
 
 ### Budowanie
 
 Aby zbudować projekt należy wykonać poniższe polecenie:
+
 ```bash
 docker compose build
 ```
+
 Po zbudowaniu można sprawdzić, czy powstały wymagane obrazy Dockera wpisując polecenie:
+
 ```bash
-docker images -a 
+docker images -a
 ```
+
 Wyświetlona lista powinna zawierać poniższe obrazy:
-- `rozgrywkitenisa/backend`  
-- `rozgrywkitenisa/frontend` 
+
+-   `rozgrywkitenisa/backend`
+-   `rozgrywkitenisa/frontend`
 
 Przykładowo
+
 ```
 REPOSITORY                 TAG       IMAGE ID       CREATED         SIZE
 rozgrywkitenisa/backend    latest    f418bc2334d5   4 seconds ago   369MB
@@ -43,15 +73,19 @@ rozgrywkitenisa/frontend   latest    7ca9fe683613   40 seconds ago  759MB
 ```
 
 ### Uruchamianie
+
 Przed uruchomieniem należy upewnić się, że żaden inny proces nie używa portu 80, lub 443.
 Domyślna instalacja KDE Neon i innych dystrybucji opartych na Ubuntu uruchamia apache2, który używa port 80.
 Aby go zatrzymać należy wykonać polecenie:
+
 ```bash
 sudo systemctl stop apache2
 ```
 
 Aby uruchomić projekt należy wykonać polecenie:
+
 ```bash
 docker compose up -d
 ```
+
 Flaga `-d` nie jest wymagana, uruchamia projekt w tle.
