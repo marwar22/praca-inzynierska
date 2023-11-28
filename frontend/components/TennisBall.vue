@@ -1,7 +1,12 @@
+<script setup lang="ts">
+const props = defineProps<{ size?: number; }>();
+</script>
+
+<!-- prettier-ignore -->
 <template>
 <svg
-   width="256"
-   height="266"
+   :width="size ?? 256"
+   :height="size ?? 256"
    viewBox="0 0 512 512"
    version="1.1"
    id="svg1"

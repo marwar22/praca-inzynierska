@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import gsap from 'gsap';
-import type { transform } from 'typescript';
 import TennisBall from '~/components/TennisBall.vue';
 
 const tweened = reactive({
   number: 0
 });
+let tween: gsap.core.Tween | null = null;
+let targetNumber = 360;
 
 function onTennisBallClick() {
   tweened.number = 0;
-  gsap.to(tweened, { duration: 0.5, number: 360 });
+  if ((tween?.ratio ?? 1) == 1) {
+    targetNumber = 360;
+    tween = gsap.to(tweened, { duration: 0.5, number: targetNumber });
+  } else if (tween?.ratio) {
+    const currentNumber = tween.ratio * targetNumber;
+    targetNumber = targetNumber + 720;
+
+    let duration = 0.5 + Math.sqrt(((targetNumber - currentNumber) / 720)) * 0.5;
+    tween = gsap.to(tweened, { duration, number: targetNumber });
+    tween.ratio = currentNumber / targetNumber;
+  }
 }
 </script>
 <template>
@@ -79,7 +90,7 @@ function onTennisBallClick() {
           </NuxtLink>
         </div>
         <button
-          class="absolute bottom-0 right-0 flex h-36 -rotate-[20deg] items-center justify-center outline-none"
+          class="absolute bottom-0 right-0 flex h-36 items-center justify-center outline-none"
           :style="`transform: rotate(${tweened.number - 20}deg)`"
           @click="onTennisBallClick"
         >

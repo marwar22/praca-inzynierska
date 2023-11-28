@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import gsap from 'gsap';
 import type { AuthStatus } from './types/auth';
+import { faTowerObservation } from '@fortawesome/free-solid-svg-icons';
 
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
@@ -22,12 +24,35 @@ async function logOut() {
     username: ''
   };
 }
+
+const tweened = reactive({
+  number: 0
+});
+let tween: gsap.core.Tween | null = null;
+let targetNumber = 360;
+
+function onTennisBallClick() {
+  tweened.number = 0;
+  if ((tween?.ratio ?? 1) == 1) {
+    targetNumber = 360;
+    tween = gsap.to(tweened, { duration: 0.5, number: targetNumber });
+  } else if (tween?.ratio) {
+    const currentNumber = tween.ratio * targetNumber;
+    targetNumber = targetNumber + 720;
+
+    let duration = 0.5 + Math.sqrt(((targetNumber - currentNumber) / 720)) * 0.5;
+    tween = gsap.to(tweened, { duration, number: targetNumber });
+    tween.ratio = currentNumber / targetNumber;
+  }
+}
 </script>
 
 <template>
   <div class="flex min-h-screen flex-col font-montserrat">
     <div class="flex h-12 items-center border-b-2 bg-atlantis-600">
-      <h1 class="text-xl">LIGA</h1>
+      <NuxtLink to="/" class="pl-2 pr-1" @click="onTennisBallClick">
+        <TennisBall :size="36" :style="`transform: rotate(${tweened.number - 20}deg)`" />
+      </NuxtLink>
       <nav class="mr-3 flex h-full flex-1 items-center text-white">
         <NuxtLink v-for="page in pages" :to="page.href" class="px-2 text-lg">{{ page.text }}</NuxtLink>
         <div class="flex-1"></div>

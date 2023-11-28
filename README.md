@@ -8,6 +8,7 @@ TODO informacja o plikach .env, certyfikacie
 TODO domena powinna znajdować się w liście w getCorsConfiguration() w SecurityConfig.java; 
 
 Należy utworzyć pliki zawierające zmienne środowiskowe (.env)
+
 W `frontend/`
 ```bash
 cp .env.example .env
@@ -30,7 +31,7 @@ sudo openssl req -nodes -newkey rsa:2048 -keyout rozgrywkitenisa.key -x509 -out 
 
 ### Instalacja zależności
 
-Aby zbudować i uruchomić projekt należy zainstalować `Dockera` zgodnie z instrukcjami zawartymi w oficjalnej dokumentacji\
+Aby zbudować i uruchomić projekt należy zainstalować `Docker` zgodnie z instrukcjami zawartymi w oficjalnej dokumentacji\
 [https://docs.docker.com/](https://docs.docker.com/)\
 [Oficjalna dokumentacja dla Linuxa](https://docs.docker.com/engine/install/)\
 [Oficjalna instrukcja instalacji (Debian)](https://docs.docker.com/engine/install/debian/)\
@@ -38,7 +39,7 @@ Aby zbudować i uruchomić projekt należy zainstalować `Dockera` zgodnie z ins
 [Oficjalna instrukcja instalacji (Fedora)](https://docs.docker.com/engine/install/fedora/)\
 [Oficjalna instrukcja instalacji (CentOS)](https://docs.docker.com/engine/install/centos/)
 
-Użytkownik musi należeć do grupy docker
+Użytkownik musi należeć do grupy `docker`
 
 ```bash
 sudo usermod -aG docker nazwa_uzytkownika
@@ -63,7 +64,7 @@ Wyświetlona lista powinna zawierać poniższe obrazy:
 -   `rozgrywkitenisa/backend`
 -   `rozgrywkitenisa/frontend`
 
-Przykładowo
+Przykładowo (`IMAGE ID` będzie inne)
 
 ```
 REPOSITORY                 TAG       IMAGE ID       CREATED         SIZE
