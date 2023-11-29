@@ -9,7 +9,8 @@ const authStatus = useAuthStatus();
 const selectedGroupNumber = ref(0);
 
 const { data: tournament, error } = await useFetch<Tournament>(
-  `${config.public.BACKEND_API}/tournament/${route.params.id}`
+  `${config.public.BACKEND_API}/tournament/${route.params.id}`,
+  { key: 'tournament' }
 );
 
 const apiError = computed(() => {
@@ -66,15 +67,34 @@ const completedMatches = computed(() => {
 });
 
 const groupStageFinished = computed(() => {
-  return completedMatches.value.completed === completedMatches.value.all || true;
+  return completedMatches.value.completed === completedMatches.value.all;
+});
+
+const numberOfPlayersKnockoutBracket = ref(4);
+
+const numberOfPlayersKnockoutBracketOptions = computed(() => {
+  let max = 1 << (31 - Math.clz32(tournament.value?.numberOfPlayers ?? 4));
+  console.log(tournament.value?.numberOfPlayers);
+  const res = [];
+  for (let i = max; i > 1; i /= 2) res.push(i);
+  res.reverse();
+  return res;
 });
 
 async function createKnockoutBracket() {
-  await $fetch(`${config.public.BACKEND_API}/tournament/${route.params.id}/create-knockout-bracket`, {
-    body: { numberOfPlayers: 4 },
+  await $fetch(`${config.public.BACKEND_API}/tournament/${route.params.id}/knockout-bracket`, {
+    body: { numberOfPlayers: numberOfPlayersKnockoutBracket.value },
     method: 'POST',
     credentials: 'include'
   });
+  refreshNuxtData('tournament');
+}
+async function deleteKnockoutBracket() {
+  await $fetch(`${config.public.BACKEND_API}/tournament/${route.params.id}/knockout-bracket`, {
+    method: 'DELETE',
+    credentials: 'include'
+  });
+  refreshNuxtData('tournament');
 }
 </script>
 <template>
@@ -139,30 +159,42 @@ async function createKnockoutBracket() {
 
       <div class="mt-16">
         Ukończone mecze fazy grupowej
-        <div class="flex items-center">
+        <div class="flex flex-col">
           <ProgressBar class="w-48" :completed="completedMatches.completed" :all="completedMatches.all" />
-          <button
-            v-if="tournament.knockoutBracket == null"
-            class="ml-2"
-            :class="{
-              ['cursor-not-allowed text-neutral-400']:
-                !groupStageFinished || tournament.organizerId !== authStatus.applicationUserId
-            }"
-            @click="createKnockoutBracket"
-          >
-            <font-awesome-icon icon="fa-solid fa-network-wired" rotation="90" />
-            <span v-if="groupStageFinished && tournament.organizerId === authStatus.applicationUserId" class="pl-1">
-              Utwórz drabinkę fazy pucharowej
-            </span>
-            <span v-else-if="tournament.organizerId !== authStatus.applicationUserId" class="pl-1"
-              >Drabinkę może utworzyć tylko organizator</span
+          <div class="flex">
+            <button
+              v-if="tournament.knockoutBracket == null"
+              class="my-2 flex items-center"
+              :class="{
+                ['cursor-not-allowed text-neutral-400']:
+                  !groupStageFinished || tournament.organizerId !== authStatus.applicationUserId
+              }"
+              @click="createKnockoutBracket"
             >
-            <span v-else class="pl-1">Drabinkę można utworzyć, gdy każdy mecz fazy grupowej ma wynik</span>
-          </button>
+              <font-awesome-icon icon="fa-solid fa-network-wired" rotation="90" />
+              <div v-if="groupStageFinished && tournament.organizerId === authStatus.applicationUserId" class="pl-1">
+                Utwórz drabinkę fazy pucharowej
+              </div>
+              <span v-else-if="tournament.organizerId !== authStatus.applicationUserId" class="pl-1"
+                >Drabinkę może utworzyć tylko organizator</span
+              >
+              <span v-else class="pl-1">Drabinkę można utworzyć, gdy każdy mecz fazy grupowej ma wynik</span>
+            </button>
+            <button v-else @click="deleteKnockoutBracket">
+              Usuń drabinkę
+            </button>
+
+            <label class="ml-2 flex items-center justify-center">
+              ilość finalistów
+              <select v-model="numberOfPlayersKnockoutBracket" class="px-1.5 py-1">
+                <option v-for="option in numberOfPlayersKnockoutBracketOptions" :value="option">{{ option }}</option>
+              </select>
+            </label>
+          </div>
         </div>
       </div>
       <h2 class="mt-4 text-xl font-bold">Faza Pucharowa</h2>
-      <KnockoutBracket />
+      <KnockoutBracket :tournament="tournament" :players="players" />
     </div>
     <ApiError :api-error="apiError" />
   </div>

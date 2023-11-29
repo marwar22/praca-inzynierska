@@ -2,6 +2,10 @@ import { AxiosError } from 'axios';
 import type { ApiError } from '~/types/apierrror';
 import type { ApplicationUser, ApplicationUserBasic, ApplicationUserContact } from '~/types/applicationuser';
 
+export function between(min: number, n: number, max: number) {
+  return min <= n && n <= max;
+}
+
 export async function errorToApiError(error: any): Promise<ApiError> {
   if (error instanceof AxiosError) {
     if (error.response) {

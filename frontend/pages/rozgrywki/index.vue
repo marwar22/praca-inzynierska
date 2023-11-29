@@ -2,7 +2,12 @@
 import type { Tournament, TournamentBasic } from '~/types/tournament';
 
 const config = useRuntimeConfig();
+const authStatus = useAuthStatus();
 const { data: tournaments } = await useFetch<TournamentBasic[]>(`${config.public.BACKEND_API}/tournament`);
+
+const canCreateTournament = computed(() => {
+  return authStatus.value.permissions.includes('TOURNAMENT:CREATE');
+});
 </script>
 <template>
   <div class="page__margin flex flex-col">
@@ -14,8 +19,13 @@ const { data: tournaments } = await useFetch<TournamentBasic[]>(`${config.public
       />
       <div class="flex-1"></div>
       <NuxtLink
-        to="/rozgrywki/utworz"
-        class="my-1 flex h-full items-center justify-center rounded-lg bg-champagne-500 px-4 py-1 text-lg font-bold text-white outline-none ring-champagne-800 hover:bg-champagne-600 focus-visible:ring-2 active:bg-champagne-700"
+        :to="canCreateTournament ? '/rozgrywki/utworz' : ''"
+        class="my-1 flex h-full items-center justify-center rounded-lg bg-champagne-500 px-4 py-1 text-lg font-bold text-white outline-none ring-champagne-800 focus-visible:ring-2"
+        :class="{
+          ['hover:bg-champagne-600 active:bg-champagne-700']: canCreateTournament,
+          ['cursor-not-allowed ']: !canCreateTournament
+        }"
+        :title="canCreateTournament ? '' : 'Musisz być zalogowany i mieć uprawnienia do tworzenia rozgrywek'"
       >
         Utwórz rozgrywkę
       </NuxtLink>

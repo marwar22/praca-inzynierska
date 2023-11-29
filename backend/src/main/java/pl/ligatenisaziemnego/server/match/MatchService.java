@@ -5,6 +5,10 @@ import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 import pl.ligatenisaziemnego.server.security.SecurityService;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 @Service
 public class MatchService {
 
@@ -35,11 +39,16 @@ public class MatchService {
                 if (!applicationUser.getId().equals(match.getFirstPlayerId()) && !applicationUser.getId().equals(match.getSecondPlayerId()))
                     throw ApiError.FORBIDDEN("You can't change match that you don't participate in or organize");
             }
+            if (tournament.getKnockoutBracket() != null) {
+                throw ApiError.FORBIDDEN("You can't change match when knockout bracket is created");
+            }
         }
 
-        match.setLastModifiedById(applicationUser.getId());
 
-        return matchRepository.save(match);
+        match.setLastModifiedById(applicationUser.getId());
+        match.setUpdatedDateTime(Instant.now());
+        match = matchRepository.save(match);
+        return matchMapper.toDto(match);
     }
 
     private void validate(Long id, Match match) throws ExceptionWithResponseEntity {

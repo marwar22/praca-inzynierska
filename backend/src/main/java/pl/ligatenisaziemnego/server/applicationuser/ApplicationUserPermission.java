@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum ApplicationUserPermission {
     TOURNAMENT__CREATE("TOURNAMENT:CREATE"),
+    TOURNAMENT__UPDATE_ANY("TOURNAMENT:UPDATE_ANY"),
     USER__CHANGE("USER:CHANGE"),
     ROLE__CHANGE("ROLE:CHANGE");
 

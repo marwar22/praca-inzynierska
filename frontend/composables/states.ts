@@ -6,6 +6,7 @@ export const useAuthStatus = () =>
       applicationUserId: -1,
       username: '',
       loggedIn: false,
-      roles: []
+      roles: [],
+      permissions: []
     };
   });

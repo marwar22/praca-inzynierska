@@ -25,7 +25,7 @@ public class MatchController {
     @PatchMapping("{id}")
     public ResponseEntity<?> updateMatch(@PathVariable Long id,
             @RequestBody @Valid MatchUpdateDto matchUpdateDto) throws ExceptionWithResponseEntity {
-        var match = matchService.update(id, matchUpdateDto);
-        return new ResponseEntity<>(match, HttpStatus.OK);
+        var matchDto = matchService.update(id, matchUpdateDto);
+        return new ResponseEntity<>(matchDto, HttpStatus.OK);
     }
 }

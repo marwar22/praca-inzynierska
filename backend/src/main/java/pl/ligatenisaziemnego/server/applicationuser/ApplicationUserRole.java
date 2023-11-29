@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import static pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-    ADMIN(Set.of()),
-    SUPER_ADMIN(Set.of(TOURNAMENT__CREATE, USER__CHANGE, ROLE__CHANGE));
+    ADMIN(Set.of(TOURNAMENT__CREATE)),
+    SUPER_ADMIN(Set.of(TOURNAMENT__CREATE, TOURNAMENT__UPDATE_ANY, USER__CHANGE, ROLE__CHANGE));
 
     private final Set<ApplicationUserPermission> permissions;
 

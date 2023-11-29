@@ -47,7 +47,7 @@ const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId && fa
               >:<span :class="[{ [`text-atlantis-700`]: hov2 }]">{{ setResult.secondPlayerScore }}</span
               >)</span
             ><span>,&nbsp;</span>
-            <wbr v-if="setNumber === 2" />
+            <br v-if="setNumber === 2" />
           </span>
         </span>
       </div>
@@ -66,7 +66,7 @@ const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId && fa
               >:<span :class="[{ [`text-atlantis-700`]: hov2 }]">{{ setResult.firstPlayerScore }}</span
               >)</span
             ><span>,&nbsp;</span>
-            <wbr v-if="setNumber === 2" />
+            <br v-if="setNumber === 2" />
           </span>
         </span>
       </div>

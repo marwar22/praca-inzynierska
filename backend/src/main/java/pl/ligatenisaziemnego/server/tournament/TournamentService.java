@@ -9,11 +9,13 @@ import lombok.ToString;
 import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Service;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
+import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracket;
 import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracketCreateDto;
+import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracketMatch;
 import pl.ligatenisaziemnego.server.match.Match;
 import pl.ligatenisaziemnego.server.security.SecurityService;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
@@ -112,6 +114,12 @@ public class TournamentService {
 
         var tournament = get(id);
 
+        var applicationUser = securityService.getApplicationUserFromAuthentication();
+        if (!tournament.getOrganizerId().equals(applicationUser.getId()) &&
+            !applicationUser.getPermissions().contains(ApplicationUserPermission.TOURNAMENT__UPDATE_ANY))
+            throw ApiError.FORBIDDEN("You have to be organizer or have permission to edit any tournament to create knockout bracket");
+
+
         if (tournament.getKnockoutBracket() != null) {
             throw ApiError.BAD_REQUEST(Map.of("knockoutBracket", "numberOfPlayers knockoutBracket has already been created"));
         }
@@ -180,7 +188,21 @@ public class TournamentService {
             var match = new Match();
             match.setFirstPlayerId(result.get(i).id);
             match.setSecondPlayerId(result.get(i + 1).id);
-            knockoutBracket.getMatches().add(match);
+            var knockoutBracketMatch = new KnockoutBracketMatch();
+            knockoutBracketMatch.setMatch(match);
+            knockoutBracketMatch.setStage(0L);
+            knockoutBracket.getMatches().add(knockoutBracketMatch);
+        }
+        int position = 0;
+        long stage = 1;
+        for (int prvStageSize = knockoutBracket.getMatches().size(); prvStageSize > 1; prvStageSize /= 2, stage++) {
+            for (int i = 0; i < prvStageSize; i += 2) {
+                var knockoutBracketMatch = new KnockoutBracketMatch();
+                knockoutBracketMatch.setStage(stage);
+                knockoutBracket.getMatches().get(position++).setNextKnockoutBracketMatch(knockoutBracketMatch);
+                knockoutBracket.getMatches().get(position++).setNextKnockoutBracketMatch(knockoutBracketMatch);
+                knockoutBracket.getMatches().add(knockoutBracketMatch);
+            }
         }
         tournament.setKnockoutBracket(knockoutBracket);
         tournamentRepository.save(tournament);
@@ -194,5 +216,17 @@ public class TournamentService {
             result.add(2 * length - 1 - sp);
         }
         return result;
+    }
+
+    public void deleteKnockoutBracket(Long id) throws ExceptionWithResponseEntity {
+        var tournament = get(id);
+
+        var applicationUser = securityService.getApplicationUserFromAuthentication();
+        if (!tournament.getOrganizerId().equals(applicationUser.getId()) &&
+            !applicationUser.getPermissions().contains(ApplicationUserPermission.TOURNAMENT__UPDATE_ANY))
+            throw ApiError.FORBIDDEN("You have to be organizer or have permission to edit any tournament to delete knockout bracket");
+
+        tournament.setKnockoutBracket(null);
+        tournamentRepository.save(tournament);
     }
 }

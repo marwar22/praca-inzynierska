@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import gsap from 'gsap';
 import type { AuthStatus } from './types/auth';
-import { faTowerObservation } from '@fortawesome/free-solid-svg-icons';
 
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
@@ -19,9 +18,10 @@ async function logOut() {
   await $fetch(`${config.public.BACKEND_API}/auth/logout`, { method: 'POST', credentials: 'include' });
   authStatus.value = {
     loggedIn: false,
+    username: '',
     applicationUserId: -1,
     roles: [],
-    username: ''
+    permissions: []
   };
 }
 
@@ -40,7 +40,7 @@ function onTennisBallClick() {
     const currentNumber = tween.ratio * targetNumber;
     targetNumber = targetNumber + 720;
 
-    let duration = 0.5 + Math.sqrt(((targetNumber - currentNumber) / 720)) * 0.5;
+    let duration = 0.5 + Math.sqrt((targetNumber - currentNumber) / 720) * 0.5;
     tween = gsap.to(tweened, { duration, number: targetNumber });
     tween.ratio = currentNumber / targetNumber;
   }

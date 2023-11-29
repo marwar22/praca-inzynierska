@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import type { ApplicationUser } from '~/types/applicationuser';
+import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
 import type { Match } from '~/types/tournament';
 
+const config = useRuntimeConfig();
+
 const props = defineProps<{
-  match: Match;
+  match: Match | null;
+  players: Map<number, ApplicationUser>;
   stage: number;
   bottom?: boolean;
   last?: boolean;
 }>();
 
-const users = Boolean(true)
-  ? {
-      firstPlayer: { id: 103, username: 'adam', firstName: 'Adam', lastName: 'Adamski' } as ApplicationUser,
-      secondPlayer: { id: 102, username: 'abcd', firstName: 'Abcd', lastName: 'Dcba' } as ApplicationUser,
-      lastModifiedById: { id: 104, username: 'jan12', firstName: 'Jan', lastName: 'Janowski' } as ApplicationUser
-    }
-  : {};
+const firstPlayer = computed(() => props.players.get(props.match?.firstPlayerId ?? -1));
+const secondPlayer = computed(() => props.players.get(props.match?.secondPlayerId ?? -1));
 
 const MATCH_PADDING = 0.5;
 const padding = computed(() => {
@@ -48,13 +46,13 @@ const lineTranslateY = computed(() => {
     <table class="h-[4.5rem] w-full">
       <tr>
         <td
-          class="border bg-champagne-300 px-2 py-1"
-          :class="{ 'font-bold': match.result?.winnerId === match.firstPlayerId }"
+          class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
+          :class="{ 'font-bold': match?.result?.winnerId === match?.firstPlayerId }"
         >
-          {{ nameFromApplicationUser(users?.firstPlayer) + 'a'.repeat(Math.random() * 10) }}
+          {{ nameFromApplicationUser(firstPlayer) }}
         </td>
         <td
-          v-for="setResult in match.result?.setResults ?? []"
+          v-for="setResult in match?.result?.setResults ?? []"
           class="w-[25px] border px-1.5 py-1"
           :class="{ 'bg-atlantis-50 font-bold': setResult.firstPlayerScore > setResult.secondPlayerScore }"
         >
@@ -62,17 +60,20 @@ const lineTranslateY = computed(() => {
             {{ setResult.firstPlayerScore }}
           </span>
         </td>
-        <td v-for="empty in 5 - (match.result?.setResults?.length ?? 0)" class="w-[25px] border px-1.5 py-1"></td>
+        <td
+          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"
+          class="w-[25px] border px-1.5 py-1"
+        ></td>
       </tr>
       <tr>
         <td
-          class="border bg-champagne-300 px-2 py-1"
-          :class="{ 'font-bold': match.result?.winnerId === match.secondPlayerId }"
+          class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
+          :class="{ 'font-bold': match?.result?.winnerId === match?.secondPlayerId }"
         >
-          {{ nameFromApplicationUser(users?.secondPlayer) }}
+          {{ nameFromApplicationUser(secondPlayer) }}
         </td>
         <td
-          v-for="setResult in match.result?.setResults ?? []"
+          v-for="setResult in match?.result?.setResults ?? []"
           class="w-[25px] border px-1.5 py-1"
           :class="{ 'bg-atlantis-50 font-bold': setResult.firstPlayerScore < setResult.secondPlayerScore }"
         >
@@ -80,7 +81,10 @@ const lineTranslateY = computed(() => {
             {{ setResult.secondPlayerScore }}
           </span>
         </td>
-        <td v-for="empty in 5 - (match.result?.setResults?.length ?? 0)" class="w-[25px] border px-1.5 py-1"></td>
+        <td
+          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"
+          class="w-[25px] border px-1.5 py-1"
+        ></td>
       </tr>
     </table>
   </div>

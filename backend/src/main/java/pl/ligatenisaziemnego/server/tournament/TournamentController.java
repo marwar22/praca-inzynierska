@@ -47,11 +47,18 @@ public class TournamentController {
         return new ResponseEntity<>(tournament, HttpStatus.OK);
     }
 
-    @PostMapping("{id}/create-knockout-bracket")
+    @PostMapping("{id}/knockout-bracket")
     public ResponseEntity<?> createKnockoutBracket(@PathVariable Long id,
             @RequestBody @Valid KnockoutBracketCreateDto knockoutBracketCreateDto) throws ExceptionWithResponseEntity {
         tournamentService.createKnockoutBracket(id, knockoutBracketCreateDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+    @DeleteMapping("{id}/knockout-bracket")
+    public ResponseEntity<?> deleteKnockoutBracket(@PathVariable Long id) throws ExceptionWithResponseEntity {
+        tournamentService.deleteKnockoutBracket(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 

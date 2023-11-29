@@ -73,7 +73,8 @@ async function onSave() {
 }
 </script>
 <template>
-  <div class="page__margin" v-if="match">
+  <!-- TODO delete this page -->
+  <!-- <div class="page__margin" v-if="match">
     <h1 class="text-2xl font-bold">Edycja Meczu</h1>
     <h2 class="text-lg font-bold">
       {{ nameFromApplicationUser(players?.firstPlayer) }} vs {{ nameFromApplicationUser(players?.secondPlayer) }}
@@ -113,6 +114,8 @@ async function onSave() {
         </div>
       </div>
     </div>
+    <MatchResultEditor :match="match" :first-player="players?.firstPlayer" :second-player="players?.secondPlayer" :edit-mode="true"/>
+
     <button
       class="my-4 h-10 rounded-lg bg-atlantis-600 px-2.5 py-1 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
       @click="onSave"
@@ -120,5 +123,5 @@ async function onSave() {
       Zapisz
     </button>
     <ApiError :api-error="apiError" />
-  </div>
+  </div> -->
 </template>

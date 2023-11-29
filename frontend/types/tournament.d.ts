@@ -1,17 +1,17 @@
 import type { ApplicationUser } from './applicationuser';
 
-type SetResult = {
+export type SetResult = {
   firstPlayerScore: number;
   secondPlayerScore: number;
-}
+};
 
 type MatchResult = {
   id: number;
   winnerId: number;
   firstPlayerScore: number;
   secondPlayerScore: number;
-  setResults: SetResult[];  
-}
+  setResults: SetResult[];
+};
 
 export type Match = {
   id: number;
@@ -31,10 +31,17 @@ type TournamentGroup = {
   matches: Match[];
 };
 
+export type KnockoutBracketMatch = {
+  id: number;
+  stage: number;
+  match: Match | null;
+  nextKnockoutBracketMatchId: number;
+};
+
 type KnockoutBracket = {
   id: number;
-  matches: Match[];
-}
+  matches: KnockoutBracketMatch[];
+};
 
 export type Tournament = {
   id: number;
@@ -43,7 +50,7 @@ export type Tournament = {
   numberOfGroups: number;
   players: ApplicationUser[];
   groups: TournamentGroup[];
-  knockoutBracket: KnockoutBracket;
+  knockoutBracket: KnockoutBracket | null;
   organizerId: number;
   startDate: string;
   endDate: string;

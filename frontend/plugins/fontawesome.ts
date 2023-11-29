@@ -9,7 +9,9 @@ import {
   faClock,
   faDice,
   faFilePen,
+  faFloppyDisk,
   faNetworkWired,
+  faPlus,
   faUser,
   faUsers,
   faXmark
@@ -24,7 +26,9 @@ library.add(
   faClock,
   faDice,
   faFilePen,
+  faFloppyDisk,
   faNetworkWired,
+  faPlus,
   faUser,
   faUsers,
   faXmark

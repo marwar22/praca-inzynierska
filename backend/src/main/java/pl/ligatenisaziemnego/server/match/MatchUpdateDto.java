@@ -42,8 +42,10 @@ public class MatchUpdateDto implements Serializable {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class SetResultDto implements Serializable {
+            @NotNull(message = "firstPlayerScore can't be null")
             @PositiveOrZero(message = "firstPlayerScore be positive or zero")
             Long firstPlayerScore;
+            @NotNull(message = "secondPlayerScore can't be null")
             @PositiveOrZero(message = "secondPlayerScore must be positive or zero")
             Long secondPlayerScore;
         }

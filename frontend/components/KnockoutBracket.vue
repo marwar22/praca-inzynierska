@@ -1,57 +1,32 @@
 <script setup lang="ts">
-import type { Match } from '~/types/tournament';
+import type { ApplicationUser } from '~/types/applicationuser';
+import type { KnockoutBracketMatch, Match, Tournament } from '~/types/tournament';
 
-let match = {
-  id: 1,
-  result: {
-    id: 1,
-    winnerId: 102,
-    setResults: [
-      {
-        firstPlayerScore: 2,
-        secondPlayerScore: 6
-      },
-      {
-        firstPlayerScore: 6,
-        secondPlayerScore: 7
-      },
-      {
-        firstPlayerScore: 6,
-        secondPlayerScore: 3
-      },
-      {
-        firstPlayerScore: 6,
-        secondPlayerScore: 1
-      },
-      {
-        firstPlayerScore: 4,
-        secondPlayerScore: 6
-      }
-    ],
-    firstPlayerScore: 2,
-    secondPlayerScore: 3
-  },
-  firstPlayerId: 103,
-  secondPlayerId: 102,
-  lastModifiedById: 104,
-  createdDateTime: '2023-11-22T22:52:32.322961',
-  updatedDateTime: '2023-11-22T23:07:56.140228'
-} as Match;
-match.result = null;
+const props = defineProps<{
+  tournament: Tournament;
+  players: Map<number, ApplicationUser>;
+}>();
+const knockoutBracket = computed(() => props.tournament.knockoutBracket);
+const stages = computed(() => {
+  const stages: KnockoutBracketMatch[][] = [];
+  for (const kbMatch of knockoutBracket.value?.matches ?? []) {
+    while (stages.length <= kbMatch.stage) stages.push([]);
+    stages[kbMatch.stage].push(kbMatch);
+  }
+  return stages;
+});
 </script>
 <template>
   <div class="flex overflow-x-auto overflow-y-hidden">
-    <div class="flex shrink-0 flex-col">
-      <KnockoutMatch :match="match" :stage="0" v-for="n in 8" :bottom="n % 2 == 1" />
-    </div>
-    <div class="flex shrink-0 flex-col">
-      <KnockoutMatch :match="match" :stage="1" v-for="n in 4" :bottom="n % 2 == 1" />
-    </div>
-    <div class="flex shrink-0 flex-col">
-      <KnockoutMatch :match="match" :stage="2" v-for="n in 2" :bottom="n % 2 == 1" />
-    </div>
-    <div class="flex shrink-0 flex-col">
-      <KnockoutMatch :match="match" :stage="3" v-for="n in 1" :bottom="n % 2 == 1" :last="true" />
+    <div class="flex shrink-0 flex-col" v-for="stage in stages">
+      <KnockoutMatch
+        :match="kbMatch.match"
+        :players="players"
+        :stage="kbMatch.stage"
+        v-for="(kbMatch, n) in stage"
+        :bottom="n % 2 == 0"
+        :last="kbMatch.id == knockoutBracket?.matches?.at(-1)?.id"
+      />
     </div>
   </div>
 </template>

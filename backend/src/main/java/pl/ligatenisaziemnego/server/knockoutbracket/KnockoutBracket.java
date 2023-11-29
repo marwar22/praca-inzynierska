@@ -22,12 +22,9 @@ public class KnockoutBracket {
 
     @OneToMany(cascade = CascadeType.PERSIST)
     @NotNull(message = "matches can't be null")
-    @JoinTable(
-            name = "knockout_bracket_match",
-            joinColumns = @JoinColumn(name = "knockout_bracket_id"),
-            inverseJoinColumns = @JoinColumn(name = "match_id")
-    )
-    private List<@NotNull(message = "match can't be null") Match> matches;
+    @JoinColumn(name = "knockout_bracket_id")
+    @OrderColumn(name = "position")
+    private List<@NotNull(message = "match can't be null") KnockoutBracketMatch> matches;
 
     @Min(value = 2, message = "numberOfPlayers must be greater or equal to 2")
     @Column(name = "number_of_players")

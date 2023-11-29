@@ -5,4 +5,5 @@ export type AuthStatus = {
     username: string;
     loggedIn: boolean;
     roles: ApplicationUserRole[];
+    permissions: ApplicationUserPermission[];
 }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -22,8 +22,8 @@ public class MatchDto implements Serializable {
     Long tournamentGroupId;
     Long tournamentId;
     Long lastModifiedById;
-    LocalDateTime createdDateTime;
-    LocalDateTime updatedDateTime;
+    Instant createdDateTime;
+    Instant updatedDateTime;
 
     /**
      * DTO for {@link MatchResult}
@@ -42,8 +42,10 @@ public class MatchDto implements Serializable {
          */
         @Value
         public static class SetResultDto implements Serializable {
+            @NotNull(message = "firstPlayerScore can't be null")
             @PositiveOrZero(message = "firstPlayerScore be positive or zero")
             Long firstPlayerScore;
+            @NotNull(message = "secondPlayerScore can't be null")
             @PositiveOrZero(message = "secondPlayerScore must be positive or zero")
             Long secondPlayerScore;
         }

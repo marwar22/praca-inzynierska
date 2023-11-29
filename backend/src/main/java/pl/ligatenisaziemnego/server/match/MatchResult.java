@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 
@@ -34,6 +35,7 @@ public class MatchResult {
 
     @NotEmpty(message = "setResults can't be empty")
     @ElementCollection
+    @OrderColumn(name = "set_number")
     @CollectionTable(name = "match_result_set_result", joinColumns = @JoinColumn(name = "match_result_id"))
     private List<@NotNull(message = "setResult can't be null") SetResult> setResults;
 

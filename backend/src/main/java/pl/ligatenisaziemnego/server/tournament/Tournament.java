@@ -60,7 +60,7 @@ public class Tournament {
     private List<@NotNull(message = "tournamentGroup can't be null") TournamentGroup> groups;
 
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "tournament_id")
+    @JoinColumn(name = "knockout_bracket_id")
     private KnockoutBracket knockoutBracket;
 
     @NotNull(message = "start_date can't be null")

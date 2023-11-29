@@ -9,7 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Getter
@@ -70,9 +72,9 @@ public class Match {
 
     @CreationTimestamp
     @Column(name = "created_date_time", nullable = false, updatable = false)
-    private LocalDateTime createdDateTime;
+    private Instant createdDateTime;
 
     @UpdateTimestamp
     @Column(name = "updated_date_time", nullable = false)
-    private LocalDateTime updatedDateTime;
+    private Instant updatedDateTime;
 }
