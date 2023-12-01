@@ -12,7 +12,7 @@ public interface TournamentMapper {
 
     static List<TournamentGroup> map(List<TournamentCreateDto.TournamentGroupDto> groups) {
         return groups.stream()
-                     .map(tournamentGroupDto -> new TournamentGroup(null, List.of(), null, tournamentGroupDto.getPlayerIds(), null))
+                     .map(tournamentGroupDto -> new TournamentGroup(null, List.of(), null, tournamentGroupDto.getPlayerIds()))
                      .toList();
     }
 

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { ApplicationUserBasic } from '~/types/applicationuser';
-import type { Match, SetResult } from '~/types/tournament';
+import type { Match } from '~/types/tournament';
 import { calculateTieBreakerSetIndex } from '~/utils/tournament';
 
 const props = defineProps<{
   match: Match;
-  firstPlayer?: ApplicationUserBasic;
-  secondPlayer?: ApplicationUserBasic;
+  firstPlayer: ApplicationUserBasic | null;
+  secondPlayer: ApplicationUserBasic | null;
   editMode: boolean;
 }>();
 
@@ -23,11 +23,11 @@ watchEffect(() => {
   props.match.result.secondPlayerScore = secondPlayerScore;
 });
 watchEffect(() => {
-  const match = props.match;
-  if (!match.result) return;
-  if (match.result.firstPlayerScore > match.result.secondPlayerScore) match.result.winnerId = match.firstPlayerId;
-  else if (match.result.firstPlayerScore < match.result.secondPlayerScore) match.result.winnerId = match.secondPlayerId;
-  else match.result.winnerId = -1;
+  const { result, firstPlayerId, secondPlayerId } = props.match;
+  if (!result || !firstPlayerId || !secondPlayerId) return;
+  if (result.firstPlayerScore > result.secondPlayerScore) result.winnerId = firstPlayerId;
+  else if (result.firstPlayerScore < result.secondPlayerScore) result.winnerId = secondPlayerId;
+  else result.winnerId = -1;
 });
 
 const canAddSetResult = computed(() => props.match.result && props.match.result.setResults.length < MAX_SETS_IN_MATCH);

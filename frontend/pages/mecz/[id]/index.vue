@@ -15,8 +15,12 @@ const { data: match } = await useFetch<Match>(`${config.public.BACKEND_API}/matc
 });
 const { data, error } = useAsyncData('data', async () => {
   const [firstPlayer, secondPlayer, lastModifiedBy, tournament] = await Promise.all([
-    $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value?.firstPlayerId}`),
-    $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value?.secondPlayerId}`),
+    match.value?.firstPlayerId
+      ? $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value?.firstPlayerId}`)
+      : null,
+    match.value?.secondPlayerId
+      ? $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value?.secondPlayerId}`)
+      : null,
     match.value?.lastModifiedById
       ? $fetch<ApplicationUserBasic>(`${config.public.BACKEND_API}/user/${match.value.lastModifiedById}`)
       : null,
@@ -96,8 +100,8 @@ async function save() {
       <div class="flex items-start">
         <MatchResultEditor
           :match="match"
-          :first-player="data?.firstPlayer"
-          :second-player="data?.secondPlayer"
+          :first-player="data?.firstPlayer ?? null"
+          :second-player="data?.secondPlayer ?? null"
           :editMode="editMode"
         />
         <button

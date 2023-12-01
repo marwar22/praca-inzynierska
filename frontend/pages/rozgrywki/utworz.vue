@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
 
 import type { ApiError } from '~/types/apierrror';
-import type { ApplicationUser } from '~/types/applicationuser';
+import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
 import VueDatePicker from '@vuepic/vue-datepicker';
 
 const config = useRuntimeConfig();
@@ -26,7 +26,7 @@ const isNumberOfGroupsInRange = computed(
   () => MIN_NUMBER_OF_GROUPS <= numberOfGroups.value && numberOfGroups.value <= MAX_NUMBER_OF_GROUPS
 );
 
-const selectedApplicationUsers = ref([] as ApplicationUser[]);
+const selectedApplicationUsers = ref([] as ApplicationUserBasic[]);
 const groups = ref([] as ApplicationUser[][]);
 
 const playersInGroups = computed(() => {
@@ -68,8 +68,9 @@ async function create() {
   }
 }
 </script>
+
 <template>
-  <div class="container__margin flex flex-col">
+  <div class="page__margin flex flex-col">
     <h1 class="mt-5 text-3xl font-bold">Tworzenie nowej rozgrywki</h1>
     <div class="flex">
       <label class="flex flex-1 flex-col">
@@ -146,9 +147,3 @@ async function create() {
     <ApiError :api-error="apiError"></ApiError>
   </div>
 </template>
-
-<style>
-.container__margin {
-  margin: 0 clamp(8px, calc((100% - 1100px) * 0.35), 16%);
-}
-</style>

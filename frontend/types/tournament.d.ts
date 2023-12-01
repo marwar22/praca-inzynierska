@@ -16,8 +16,8 @@ type MatchResult = {
 export type Match = {
   id: number;
   result: MatchResult | null;
-  firstPlayerId: number;
-  secondPlayerId: number;
+  firstPlayerId: number | null;
+  secondPlayerId: number | null;
   lastModifiedById: number | null;
   tournamentGroupId?: number;
   tournamentId?: number;
@@ -34,8 +34,8 @@ type TournamentGroup = {
 export type KnockoutBracketMatch = {
   id: number;
   stage: number;
-  match: Match | null;
-  nextKnockoutBracketMatchId: number;
+  match: Match;
+  nextMatchInKnockoutBracketId: number;
 };
 
 type KnockoutBracket = {

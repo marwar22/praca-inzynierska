@@ -6,7 +6,9 @@ const props = defineProps<{
   tournament: Tournament;
   players: Map<number, ApplicationUser>;
 }>();
+
 const knockoutBracket = computed(() => props.tournament.knockoutBracket);
+
 const stages = computed(() => {
   const stages: KnockoutBracketMatch[][] = [];
   for (const kbMatch of knockoutBracket.value?.matches ?? []) {
@@ -15,12 +17,22 @@ const stages = computed(() => {
   }
   return stages;
 });
+
+const knockoutBracketMatches = computed(() => {
+  const map = new Map<number, KnockoutBracketMatch>();
+  for (const kbMatch of props.tournament.knockoutBracket?.matches ?? []) {
+    map.set(kbMatch.id, kbMatch);
+  }
+  return map;
+});
+
 </script>
 <template>
   <div class="flex overflow-x-auto overflow-y-hidden">
     <div class="flex shrink-0 flex-col" v-for="stage in stages">
       <KnockoutMatch
-        :match="kbMatch.match"
+        :kbMatch="kbMatch"
+        :knockoutBracketMatches="knockoutBracketMatches"
         :players="players"
         :stage="kbMatch.stage"
         v-for="(kbMatch, n) in stage"

@@ -1,12 +1,7 @@
 package pl.ligatenisaziemnego.server.tournament;
 
 import jakarta.annotation.Nonnull;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Service;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission;
@@ -15,7 +10,7 @@ import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracket;
 import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracketCreateDto;
-import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracketMatch;
+import pl.ligatenisaziemnego.server.knockoutbracket.MatchInKnockoutBracket;
 import pl.ligatenisaziemnego.server.match.Match;
 import pl.ligatenisaziemnego.server.security.SecurityService;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
@@ -186,9 +181,11 @@ public class TournamentService {
         knockoutBracket.setNumberOfPlayers(knockoutBracketCreateDto.getNumberOfPlayers());
         for (int i = 0; i < result.size(); i += 2) {
             var match = new Match();
+            match.setTournamentId(tournament.getId());
             match.setFirstPlayerId(result.get(i).id);
             match.setSecondPlayerId(result.get(i + 1).id);
-            var knockoutBracketMatch = new KnockoutBracketMatch();
+
+            var knockoutBracketMatch = new MatchInKnockoutBracket();
             knockoutBracketMatch.setMatch(match);
             knockoutBracketMatch.setStage(0L);
             knockoutBracket.getMatches().add(knockoutBracketMatch);
@@ -197,10 +194,15 @@ public class TournamentService {
         long stage = 1;
         for (int prvStageSize = knockoutBracket.getMatches().size(); prvStageSize > 1; prvStageSize /= 2, stage++) {
             for (int i = 0; i < prvStageSize; i += 2) {
-                var knockoutBracketMatch = new KnockoutBracketMatch();
+                var match = new Match();
+                match.setTournamentId(tournament.getId());
+
+                var knockoutBracketMatch = new MatchInKnockoutBracket();
+                knockoutBracketMatch.setMatch(match);
                 knockoutBracketMatch.setStage(stage);
-                knockoutBracket.getMatches().get(position++).setNextKnockoutBracketMatch(knockoutBracketMatch);
-                knockoutBracket.getMatches().get(position++).setNextKnockoutBracketMatch(knockoutBracketMatch);
+
+                knockoutBracket.getMatches().get(position++).setNextMatchInKnockoutBracket(knockoutBracketMatch);
+                knockoutBracket.getMatches().get(position++).setNextMatchInKnockoutBracket(knockoutBracketMatch);
                 knockoutBracket.getMatches().add(knockoutBracketMatch);
             }
         }

@@ -62,7 +62,7 @@ public class ApplicationUser {
     private LocalDateTime updatedDateTime;
 
     @NotNull(message = "roles can't be null")
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "role")
     @CollectionTable(name = "application_user_role")
     @Enumerated(EnumType.STRING)

@@ -2,9 +2,9 @@ package pl.ligatenisaziemnego.server.knockoutbracket;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import pl.ligatenisaziemnego.server.match.Match;
@@ -14,28 +14,33 @@ import pl.ligatenisaziemnego.server.match.Match;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "knockout_bracket_match")
-public class KnockoutBracketMatch {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "match_in_knockout_bracket")
+public class MatchInKnockoutBracket {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @NotNull(message = "match can't be null")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "match_id")
+    private Match match;
 
     @NotNull(message = "stage can't be null")
     @PositiveOrZero(message = "stage must be positive or zero")
     @Column(name = "stage")
     private Long stage;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "match_id")
-    private Match match;
+    @Column(name = "bracket_position", updatable = false, insertable = false)
+    private Long bracketPosition;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
-    @JoinColumn(name = "next_knockout_bracket_match_id", updatable = false, insertable = false)
-    private KnockoutBracketMatch nextKnockoutBracketMatch;
+    @JoinColumn(name = "next_match_in_knockout_bracket_id")
+    private MatchInKnockoutBracket nextMatchInKnockoutBracket;
 
-    @Column(name = "next_knockout_bracket_match_id")
-    private Long nextKnockoutBracketMatchId;
+    @Column(name = "next_match_in_knockout_bracket_id", updatable = false, insertable = false)
+    private Long nextMatchInKnockoutBracketId;
 }

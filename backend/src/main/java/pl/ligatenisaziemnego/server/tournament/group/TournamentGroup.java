@@ -49,9 +49,9 @@ public class TournamentGroup {
     @Column(name = "player_id")
     private List<@NotNull(message = "playerId can't be null") Long> playerIds;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JsonIgnore
-    @JoinColumn(name = "tournament_id", insertable = false, updatable = false)
-    private Tournament tournament;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @ToString.Exclude
+//    @JsonIgnore
+//    @JoinColumn(name = "tournament_id", insertable = false, updatable = false)
+//    private Tournament tournament;
 }

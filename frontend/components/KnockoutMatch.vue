@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
-import type { Match } from '~/types/tournament';
+import type { ApplicationUser } from '~/types/applicationuser';
+import type { KnockoutBracketMatch, Match } from '~/types/tournament';
 
 const config = useRuntimeConfig();
 
 const props = defineProps<{
-  match: Match | null;
+  kbMatch: KnockoutBracketMatch;
+  knockoutBracketMatches: Map<number, KnockoutBracketMatch>;
   players: Map<number, ApplicationUser>;
   stage: number;
   bottom?: boolean;
   last?: boolean;
 }>();
 
-const firstPlayer = computed(() => props.players.get(props.match?.firstPlayerId ?? -1));
-const secondPlayer = computed(() => props.players.get(props.match?.secondPlayerId ?? -1));
+const match = computed(() => props.kbMatch.match);
+const nextKBMatch = computed(() => props.knockoutBracketMatches.get(props.kbMatch.nextMatchInKnockoutBracketId));
+const firstPlayer = computed(() => props.players.get(match.value?.firstPlayerId ?? -1));
+const secondPlayer = computed(() => props.players.get(match.value?.secondPlayerId ?? -1));
 
 const MATCH_PADDING = 0.5;
 const padding = computed(() => {
@@ -49,7 +52,7 @@ const lineTranslateY = computed(() => {
           class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
           :class="{ 'font-bold': match?.result?.winnerId === match?.firstPlayerId }"
         >
-          {{ nameFromApplicationUser(firstPlayer) }}
+          {{ nameFromApplicationUser(firstPlayer) }}&nbsp;
         </td>
         <td
           v-for="setResult in match?.result?.setResults ?? []"
@@ -64,13 +67,18 @@ const lineTranslateY = computed(() => {
           v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"
           class="w-[25px] border px-1.5 py-1"
         ></td>
+        <td rowspan="2" class="w-8 border" v-if="match && nextKBMatch?.match.result == null">
+          <NuxtLink :to="`/mecz/${match?.id}`" class="h-full pl-1">
+            <font-awesome-icon :icon="['fas', 'file-pen']" size="xl" />
+          </NuxtLink>
+        </td>
       </tr>
       <tr>
         <td
           class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
           :class="{ 'font-bold': match?.result?.winnerId === match?.secondPlayerId }"
         >
-          {{ nameFromApplicationUser(secondPlayer) }}
+          {{ nameFromApplicationUser(secondPlayer) }}&nbsp;
         </td>
         <td
           v-for="setResult in match?.result?.setResults ?? []"

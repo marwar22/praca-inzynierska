@@ -15,9 +15,7 @@ import java.util.List;
 public class MatchDto implements Serializable {
     Long id;
     MatchResultDto result;
-    @NotNull(message = "firstPlayerId can't be null")
     Long firstPlayerId;
-    @NotNull(message = "secondPlayerId can't be null")
     Long secondPlayerId;
     Long tournamentGroupId;
     Long tournamentId;

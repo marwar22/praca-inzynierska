@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import pl.ligatenisaziemnego.server.match.Match;
 
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class KnockoutBracket {
     @OneToMany(cascade = CascadeType.PERSIST)
     @NotNull(message = "matches can't be null")
     @JoinColumn(name = "knockout_bracket_id")
-    @OrderColumn(name = "position")
-    private List<@NotNull(message = "match can't be null") KnockoutBracketMatch> matches;
+    @OrderColumn(name = "bracket_position")
+    private List<@NotNull(message = "match can't be null") MatchInKnockoutBracket> matches;
 
     @Min(value = 2, message = "numberOfPlayers must be greater or equal to 2")
     @Column(name = "number_of_players")

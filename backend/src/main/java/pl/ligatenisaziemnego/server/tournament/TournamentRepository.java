@@ -7,10 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
+
+    @EntityGraph(attributePaths = {"knockoutBracket", "groups.playerIds"})
+    @Override
+    @Nonnull
+    Optional<Tournament> findById(@Nonnull Long id);
 
     @EntityGraph(attributePaths = {"players"})
     @Override

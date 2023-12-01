@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { ApplicationUser } from '~/types/applicationuser';
+import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
 
 const props = defineProps<{
   numberOfGroups: number;
   playersInGroups: number[];
-  selectedApplicationUsers: ApplicationUser[];
-  groups: ApplicationUser[][];
+  selectedApplicationUsers: ApplicationUserBasic[];
+  groups: ApplicationUserBasic[][];
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:groups', groups: ApplicationUser[][]): void;
+  (e: 'update:groups', groups: ApplicationUserBasic[][]): void;
 }>();
 
 function shuffleArray<T>(array: T[]) {
@@ -21,7 +21,7 @@ function shuffleArray<T>(array: T[]) {
 
 function generateGroups() {
   const players = [...props.selectedApplicationUsers];
-  const groups = Array.from({ length: props.numberOfGroups }, (_) => [] as ApplicationUser[]);
+  const groups = Array.from({ length: props.numberOfGroups }, (_) => [] as ApplicationUserBasic[]);
   shuffleArray(players);
   let groupId = 0;
   for (let i = 0; i < players.length; i++) {

@@ -1,5 +1,6 @@
 package pl.ligatenisaziemnego.server.tournament;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -76,7 +77,8 @@ public class Tournament {
     private Long organizerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "organizer_id", insertable = false, updatable = false)
     private ApplicationUser organizer;
 

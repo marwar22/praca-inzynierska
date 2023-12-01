@@ -1,17 +1,19 @@
 package pl.ligatenisaziemnego.server.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
+import pl.ligatenisaziemnego.server.knockoutbracket.MatchInKnockoutBracket;
+import pl.ligatenisaziemnego.server.tournament.Tournament;
 import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Getter
@@ -26,16 +28,14 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "match_result_id")
     private MatchResult result;
 
-    @NotNull(message = "firstPlayerId can't be null")
-    @Column(name = "first_player_id", nullable = false)
+    @Column(name = "first_player_id")
     private Long firstPlayerId;
 
-    @NotNull(message = "secondPlayerId can't be null")
-    @Column(name = "second_player_id", nullable = false)
+    @Column(name = "second_player_id")
     private Long secondPlayerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,16 +50,31 @@ public class Match {
     @JoinColumn(name = "second_player_id", insertable = false, updatable = false)
     private ApplicationUser secondPlayer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JsonIgnore
-    @JoinTable(
-            name = "tournament_group_match",
-            joinColumns = @JoinColumn(name = "match_id", insertable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "tournament_group_id", insertable = false, updatable = false)
-    )
-    private TournamentGroup tournamentGroup;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @ToString.Exclude
+//    @JsonIgnore
+//    @JoinTable(
+//            name = "tournament_group_match",
+//            joinColumns = @JoinColumn(name = "match_id", insertable = false, updatable = false),
+//            inverseJoinColumns = @JoinColumn(name = "tournament_group_id", insertable = false, updatable = false)
+//    )
+//    private TournamentGroup tournamentGroup;
+//
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "match")
+//    @LazyToOne(LazyToOneOption.NO_PROXY)
+//    @JsonIgnore
+//    @ToString.Exclude
+//    private MatchInKnockoutBracket matchInKnockoutBracket;
 
+    @NotNull(message = "tournament_id can't be null")
+    @Column(name = "tournament_id")
+    private Long tournamentId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ToString.Exclude
+    @JoinColumn(name = "tournament_id", updatable = false, insertable = false)
+    private Tournament tournament;
 
     @Column(name = "last_modified_by_id")
     private Long lastModifiedById;

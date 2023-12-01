@@ -20,15 +20,16 @@ const results = computed(() => {
   const gamesLost = new Map<number, number>();
 
   for (const match of group.value.matches) {
-    if (!match.result) continue;
-    setsWon.set(match.firstPlayerId, (setsWon.get(match.firstPlayerId) ?? 0) + match.result.firstPlayerScore);
-    setsWon.set(match.secondPlayerId, (setsWon.get(match.secondPlayerId) ?? 0) + match.result.secondPlayerScore);
+    const { firstPlayerId, secondPlayerId } = match;
+    if (!match.result || !firstPlayerId || !secondPlayerId) continue;
+    setsWon.set(firstPlayerId, (setsWon.get(firstPlayerId) ?? 0) + match.result.firstPlayerScore);
+    setsWon.set(secondPlayerId, (setsWon.get(secondPlayerId) ?? 0) + match.result.secondPlayerScore);
 
-    setsLost.set(match.firstPlayerId, (setsLost.get(match.firstPlayerId) ?? 0) + match.result.secondPlayerScore);
-    setsLost.set(match.secondPlayerId, (setsLost.get(match.secondPlayerId) ?? 0) + match.result.firstPlayerScore);
+    setsLost.set(firstPlayerId, (setsLost.get(firstPlayerId) ?? 0) + match.result.secondPlayerScore);
+    setsLost.set(secondPlayerId, (setsLost.get(secondPlayerId) ?? 0) + match.result.firstPlayerScore);
 
-    matchesPlayed.set(match.firstPlayerId, (matchesPlayed.get(match.firstPlayerId) ?? 0) + 1);
-    matchesPlayed.set(match.secondPlayerId, (matchesPlayed.get(match.secondPlayerId) ?? 0) + 1);
+    matchesPlayed.set(firstPlayerId, (matchesPlayed.get(firstPlayerId) ?? 0) + 1);
+    matchesPlayed.set(secondPlayerId, (matchesPlayed.get(secondPlayerId) ?? 0) + 1);
     points.set(match.result.winnerId, (points.get(match.result.winnerId) ?? 0) + 1);
     let firstPlayerGamesWon = 0;
     let secondPlayerGamesWon = 0;
@@ -36,11 +37,11 @@ const results = computed(() => {
       firstPlayerGamesWon += setResult.firstPlayerScore;
       secondPlayerGamesWon += setResult.secondPlayerScore;
     }
-    gamesWon.set(match.firstPlayerId, (gamesWon.get(match.firstPlayerId) ?? 0) + firstPlayerGamesWon);
-    gamesWon.set(match.secondPlayerId, (gamesWon.get(match.secondPlayerId) ?? 0) + secondPlayerGamesWon);
+    gamesWon.set(firstPlayerId, (gamesWon.get(firstPlayerId) ?? 0) + firstPlayerGamesWon);
+    gamesWon.set(secondPlayerId, (gamesWon.get(secondPlayerId) ?? 0) + secondPlayerGamesWon);
 
-    gamesLost.set(match.firstPlayerId, (gamesLost.get(match.firstPlayerId) ?? 0) + secondPlayerGamesWon);
-    gamesLost.set(match.secondPlayerId, (gamesLost.get(match.secondPlayerId) ?? 0) + firstPlayerGamesWon);
+    gamesLost.set(firstPlayerId, (gamesLost.get(firstPlayerId) ?? 0) + secondPlayerGamesWon);
+    gamesLost.set(secondPlayerId, (gamesLost.get(secondPlayerId) ?? 0) + firstPlayerGamesWon);
   }
   return { matchesPlayed, points, setsWon, setsLost, gamesWon, gamesLost };
 });

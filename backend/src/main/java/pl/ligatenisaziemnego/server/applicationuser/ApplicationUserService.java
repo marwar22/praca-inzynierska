@@ -26,9 +26,22 @@ public class ApplicationUserService {
         return applicationUserRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(ApplicationUser.class, id));
     }
 
-    public List<ApplicationUserBasicDto> getAllByName(String name, int limit) {
-        return applicationUserRepository.findAllByFirstNameWithLastName(name, PageRequest.of(0, limit)).stream()
+    private List<ApplicationUserBasicDto> findAllByName(String name, int limit, List<Long> exclude) {
+        if (exclude.isEmpty()) return applicationUserRepository.findAllByFirstNameWithLastName(name, PageRequest.of(0, limit)).stream()
+                                                               .map(applicationUserMapper::toBasicDto).collect(Collectors.toList());
+
+        return applicationUserRepository.findAllByFirstNameWithLastNameAndIdNotIn(name, exclude, PageRequest.of(0, limit)).stream()
                                         .map(applicationUserMapper::toBasicDto).collect(Collectors.toList());
+    }
+
+    public List<ApplicationUserBasicDto> getAllByName(String name, int limit, List<Long> exclude) {
+        var users = findAllByName(name, limit, exclude);
+        if (users.size() < limit) {
+            var extraUsersLimit = limit - users.size();
+            List<Long> foundUsersIds = users.stream().map(au -> au.id).toList();
+            users.addAll(findAllByName(name, extraUsersLimit, foundUsersIds));
+        }
+        return users;
     }
 
     public Object getMyApplicationUser() throws ExceptionWithResponseEntity {
