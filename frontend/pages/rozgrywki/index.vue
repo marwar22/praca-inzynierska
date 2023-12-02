@@ -14,7 +14,7 @@ const canCreateTournament = computed(() => {
     <h1 class="mb-2 mt-4 text-3xl font-bold">Rozgrywki</h1>
     <div class="flex h-12 items-center">
       <input
-        class="h-full rounded-lg border-4 border-atlantis-500 px-2 py-1 outline-none ring-atlantis-600 focus-visible:ring-2"
+        class="h-full rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus-visible:ring-2"
         placeholder="Wyszukaj"
       />
       <div class="flex-1"></div>
@@ -27,13 +27,14 @@ const canCreateTournament = computed(() => {
         }"
         :title="canCreateTournament ? '' : 'Musisz być zalogowany i mieć uprawnienia do tworzenia rozgrywek'"
       >
-        Utwórz rozgrywkę
+        <span class="max-md:hidden">Utwórz rozgrywkę</span>
+        <font-awesome-icon :icon="['fas', 'plus']" size="xl" class="md:hidden" />
       </NuxtLink>
     </div>
     <NuxtLink
       v-for="tournament in tournaments"
       :to="`/rozgrywki/${tournament.id}`"
-      class="my-2 flex w-full items-center justify-between rounded-lg border-4 border-atlantis-500 px-2 py-1 text-left hover:bg-atlantis-50 active:bg-atlantis-100"
+      class="my-2 flex w-full items-center justify-between rounded-lg border-4 border-olive-500 px-2 py-1 text-left hover:bg-olive-50 active:bg-olive-100"
     >
       <div class="flex flex-col">
         <div>

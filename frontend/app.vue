@@ -2,6 +2,7 @@
 import gsap from 'gsap';
 import type { AuthStatus } from './types/auth';
 
+const route = useRoute();
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
 
@@ -10,9 +11,9 @@ $fetch<AuthStatus>(`${config.public.BACKEND_API}/auth/status`, { credentials: 'i
 });
 
 const pages = [
-  { href: '/', text: 'Home' },
-  { href: '/rozgrywki', text: 'Rozgrywki' },
-  { href: '/ranking', text: 'Ranking' }
+  { href: '/', text: 'Home', icon: 'home' },
+  { href: '/rozgrywki', text: 'Rozgrywki', icon: 'network-wired', rotation: 90 },
+  { href: '/ranking', text: 'Ranking', icon: 'arrow-up-1-9' }
 ];
 async function logOut() {
   await $fetch(`${config.public.BACKEND_API}/auth/logout`, { method: 'POST', credentials: 'include' });
@@ -45,22 +46,61 @@ function onTennisBallClick() {
     tween.ratio = currentNumber / targetNumber;
   }
 }
-</script>
 
+const expanded = ref(false);
+
+const currPage = computed(() => {
+  const routeName = route.name?.toString();
+  if (routeName?.startsWith('rozgrywki')) return 1;
+  if (routeName?.startsWith('mecz')) return 1;
+  if (routeName?.startsWith('ranking')) return 2;
+  return 0;
+});
+</script>
 <template>
-  <div class="flex min-h-screen flex-col font-montserrat">
-    <div class="flex h-12 items-center border-b-2 bg-atlantis-600">
-      <NuxtLink to="/" class="pl-2 pr-1" @click="onTennisBallClick">
+  <div class="flex min-h-screen flex-col overflow-x-hidden font-montserrat">
+    <div class="flex h-12 items-center border-b-2 bg-olive-600">
+      <NuxtLink to="/" class="pl-2 pr-1 max-md:hidden" @click="onTennisBallClick">
         <TennisBall :size="36" :style="`transform: rotate(${tweened.number - 20}deg)`" />
       </NuxtLink>
+      <button @click="expanded = !expanded" class="flex h-full items-center justify-center px-4 text-white md:hidden">
+        <Transition mode="out-in">
+          <font-awesome-icon v-if="expanded" :icon="['fas', 'xmark']" size="2xl" />
+          <font-awesome-icon v-else :icon="['fas', 'bars']" size="2xl" />
+        </Transition>
+      </button>
       <nav class="mr-3 flex h-full flex-1 items-center text-white">
-        <NuxtLink v-for="page in pages" :to="page.href" class="px-2 text-lg">{{ page.text }}</NuxtLink>
+        <ul
+          @blur="console.log"
+          :class="[
+            'z-50 flex border-olive-600',
+            'max-md:absolute max-md:left-0 max-md:top-12 max-md:min-h-[calc(100vh-3rem)] max-md:w-60 max-md:flex-col max-md:border-r-4 max-md:bg-white max-md:text-black',
+            'md:flex',
+            { hidden: !expanded }
+          ]"
+        >
+          <li v-for="(page, index) in pages" class="w-full text-lg">
+            <NuxtLink
+              :to="page.href"
+              :class="[
+                'block w-full px-2 py-1.5 ',
+                ' md:hover:text-champagne-800 md:active:text-champagne-900',
+                currPage == index
+                  ? 'max-md:bg-olive-400 max-md:hover:bg-olive-500 max-md:active:bg-olive-600'
+                  : 'max-md:hover:bg-olive-400 max-md:active:bg-olive-600'
+              ]"
+            >
+              <font-awesome-icon :icon="['fas', page.icon]" :rotation="page.rotation" class="md:hidden" />
+              {{ page.text }}
+            </NuxtLink>
+          </li>
+        </ul>
         <div class="flex-1"></div>
-        <div v-if="!authStatus.loggedIn" class="flex h-full items-center">
+        <div v-if="!authStatus.loggedIn" class="flex h-full items-center max-md:hidden">
           <NuxtLink to="/logowanie" class="pr-2">Zaloguj się</NuxtLink>
           <NuxtLink to="/rejestracja" class="rounded-md border-4 border-white px-2 py-1"> Zarejestruj się </NuxtLink>
         </div>
-        <div v-else class="">
+        <div v-else class="max-md:hidden">
           <span class="mr-2 font-bold"> {{ authStatus.username }}</span>
           <button class="rounded-md border-4 border-white px-2 py-1" @click="logOut">Wyloguj się</button>
         </div>
@@ -74,3 +114,20 @@ function onTennisBallClick() {
     </main>
   </div>
 </template>
+
+<style>
+.v-enter-active {
+  transition: transform 150ms cubic-bezier(0.5, 1, 0.89, 1); /* easeOutQuad */
+}
+.v-leave-active {
+  transition: transform 150ms cubic-bezier(0.11, 0, 0.5, 0); /* easeInQuad */
+}
+
+.v-enter-from {
+  transform: rotate(-180deg);
+}
+
+.v-leave-to {
+  transform: rotate(180deg);
+}
+</style>

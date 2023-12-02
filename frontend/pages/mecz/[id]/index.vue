@@ -78,16 +78,16 @@ async function save() {
 }
 </script>
 <template>
-  <div class="page__margin" v-if="match">
+  <div class="page__margin max-md:text-md" v-if="match">
     <h1 class="mt-8 text-2xl font-bold">
       {{ nameFromApplicationUser(data?.firstPlayer) }} vs {{ nameFromApplicationUser(data?.secondPlayer) }}
     </h1>
     <h2 v-if="data?.tournament" class="text-lg font-semibold">Rozgrywki: {{ data.tournament.name }}</h2>
     <div>
-      <span v-if="match.result" class="text-lg">
+      <span v-if="match.result" class="max-md:text-base md:text-lg">
         Wynik: {{ match.result.firstPlayerScore }}:{{ match.result.secondPlayerScore }}</span
       >
-      <span>
+      <span class="">
         Zwycięzca:
         <span v-if="match.result?.winnerId === match.firstPlayerId">{{
           nameFromApplicationUser(data?.firstPlayer)
@@ -103,15 +103,16 @@ async function save() {
           :first-player="data?.firstPlayer ?? null"
           :second-player="data?.secondPlayer ?? null"
           :editMode="editMode"
+          class="md:mr-1"
         />
         <button
           v-if="canEdit"
-          class="ml-3 hover:text-atlantis-700 active:text-atlantis-400 disabled:cursor-not-allowed disabled:text-red-500"
+          class="-mr-2 -mt-2 p-2 hover:text-olive-700 active:text-olive-400 disabled:cursor-not-allowed disabled:text-red-500"
           :title="editMode ? 'Zapisz' : 'Edytuj'"
           @click="onEditModeChange"
           :disabled="editMode && !isResultCorrect(match)"
         >
-          <font-awesome-icon v-if="!editMode" icon="fa-solid fa-file-pen" size="xl" />
+          <font-awesome-icon v-if="!editMode" icon="fa-solid fa-file-pen" size="xl"/>
           <font-awesome-icon v-else :icon="['fas', 'floppy-disk']" size="xl" />
         </button>
         <div

@@ -10,6 +10,26 @@
     padding: 0 clamp(8px, calc((100% - 1100px) * 0.35), 16%);
 }
 
+.table__scrollbar::-webkit-scrollbar {
+    height: 0.5rem;
+}
+
+.table__scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table__scrollbar--champagne::-webkit-scrollbar-thumb {
+    background: #BB793B;
+}
+
+.table__scrollbar--olive::-webkit-scrollbar-thumb {
+    background: #799F2D;   
+}
+
+.table__scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 
 :root:root {
     --dp-action-buttons-padding: 16px 8px;

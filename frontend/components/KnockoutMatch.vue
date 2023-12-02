@@ -57,7 +57,7 @@ const lineTranslateY = computed(() => {
         <td
           v-for="setResult in match?.result?.setResults ?? []"
           class="w-[25px] border px-1.5 py-1"
-          :class="{ 'bg-atlantis-50 font-bold': setResult.firstPlayerScore > setResult.secondPlayerScore }"
+          :class="{ 'bg-olive-50 font-bold': setResult.firstPlayerScore > setResult.secondPlayerScore }"
         >
           <span>
             {{ setResult.firstPlayerScore }}
@@ -83,7 +83,7 @@ const lineTranslateY = computed(() => {
         <td
           v-for="setResult in match?.result?.setResults ?? []"
           class="w-[25px] border px-1.5 py-1"
-          :class="{ 'bg-atlantis-50 font-bold': setResult.firstPlayerScore < setResult.secondPlayerScore }"
+          :class="{ 'bg-olive-50 font-bold': setResult.firstPlayerScore < setResult.secondPlayerScore }"
         >
           <span>
             {{ setResult.secondPlayerScore }}

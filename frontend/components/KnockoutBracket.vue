@@ -28,7 +28,7 @@ const knockoutBracketMatches = computed(() => {
 
 </script>
 <template>
-  <div class="flex overflow-x-auto overflow-y-hidden">
+  <div class="flex overflow-x-auto overflow-y-hidden table__scrollbar table__scrollbar--champagne">
     <div class="flex shrink-0 flex-col" v-for="stage in stages">
       <KnockoutMatch
         :kbMatch="kbMatch"

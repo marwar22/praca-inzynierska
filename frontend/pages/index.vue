@@ -17,7 +17,7 @@ function onTennisBallClick() {
     const currentNumber = tween.ratio * targetNumber;
     targetNumber = targetNumber + 720;
 
-    let duration = 0.5 + Math.sqrt(((targetNumber - currentNumber) / 720)) * 0.5;
+    let duration = 0.5 + Math.sqrt((targetNumber - currentNumber) / 720) * 0.5;
     tween = gsap.to(tweened, { duration, number: targetNumber });
     tween.ratio = currentNumber / targetNumber;
   }
@@ -71,30 +71,33 @@ function onTennisBallClick() {
   </div>
   <div class="page__padding flex-1">
     <div class="flex flex-col">
-      <h1 class="mt-10 text-4xl font-bold text-white">Rozgrywki tenisa ziemnego</h1>
-      <span class="mt-1 text-xl font-semibold text-white"
-        >System zarządzania rozgrywkami, planowania meczów,<br />obliczania wyników i rankingu</span
-      >
-      <div class="relative mt-16 flex">
-        <div class="flex">
+      <h1 class="mt-7 text-3xl font-bold text-white md:mt-10 md:text-4xl">Rozgrywki tenisa ziemnego</h1>
+      <span class="mt-1 text-lg font-semibold text-white md:text-xl">
+        System zarządzania rozgrywkami, planowania meczów, <br class="max-md:hidden" />
+        obliczania wyników i rankingu
+      </span>
+      <div class="relative mt-16 flex flex-wrap">
+        <div class="flex flex-wrap max-md:w-full">
           <NuxtLink
             to="/rozgrywki"
-            class="mr-5 flex w-40 items-center justify-center rounded-lg bg-champagne-600 px-2 py-2.5 font-bold text-white hover:bg-champagne-700 active:bg-champagne-800"
-            >Rozgrywki</NuxtLink
+            class="mb-2 mr-5 flex items-center justify-center rounded-lg bg-champagne-600 px-4 py-2.5 font-bold text-white hover:bg-champagne-700 active:bg-champagne-800 md:w-40"
           >
+            Rozgrywki
+          </NuxtLink>
           <NuxtLink
             to="/ranking"
-            class="flex w-40 items-center justify-center rounded-lg bg-white px-2 py-2.5 font-bold text-champagne-700 hover:bg-neutral-100 active:bg-neutral-200 hover:text-champagne-800 active:text-champagne-900"
+            class="mb-2 flex items-center justify-center rounded-lg bg-white px-4 py-2.5 font-bold text-champagne-700 hover:bg-neutral-100 hover:text-champagne-800 active:bg-neutral-200 active:text-champagne-900 md:w-40"
           >
             Ranking
           </NuxtLink>
         </div>
         <button
-          class="absolute bottom-0 right-0 flex h-36 items-center justify-center outline-none"
+          class="flex h-36 items-center justify-center outline-none md:absolute md:bottom-0 md:right-0 max-md:ml-auto"
           :style="`transform: rotate(${tweened.number - 20}deg)`"
           @click="onTennisBallClick"
         >
-          <TennisBall />
+          <TennisBall class="md:hidden" :size="128" />
+          <TennisBall class="max-md:hidden" />
         </button>
       </div>
     </div>

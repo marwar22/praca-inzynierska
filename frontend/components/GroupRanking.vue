@@ -71,26 +71,28 @@ const sortedPlayers = computed(() => {
 });
 </script>
 <template>
-  <table>
-    <tr>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">#</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Zawodnik</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Punkty</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety wygrane</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety przegrane</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy wygrane</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy przegrane</th>
-      <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Mecze</th>
-    </tr>
-    <tr v-for="(player, place) in sortedPlayers">
-      <td class="border-2 px-2 py-1">{{ place + 1 }}</td>
-      <td class="border-2 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
-      <td class="border-2 px-2 py-1">{{ player.points }}</td>
-      <td class="border-2 px-2 py-1">{{ player.setsWon }}</td>
-      <td class="border-2 px-2 py-1">{{ player.setsLost }}</td>
-      <td class="border-2 px-2 py-1">{{ player.gamesWon }}</td>
-      <td class="border-2 px-2 py-1">{{ player.gamesLost }}</td>
-      <td class="border-2 px-2 py-1">{{ player.matchesPlayed }}</td>
-    </tr>
-  </table>
+  <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
+    <table>
+      <tr>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">#</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Zawodnik</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Punkty</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety wygrane</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety przegrane</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy wygrane</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy przegrane</th>
+        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Mecze</th>
+      </tr>
+      <tr v-for="(player, place) in sortedPlayers">
+        <td class="border-2 px-2 py-1">{{ place + 1 }}</td>
+        <td class="border-2 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
+        <td class="border-2 px-2 py-1">{{ player.points }}</td>
+        <td class="border-2 px-2 py-1">{{ player.setsWon }}</td>
+        <td class="border-2 px-2 py-1">{{ player.setsLost }}</td>
+        <td class="border-2 px-2 py-1">{{ player.gamesWon }}</td>
+        <td class="border-2 px-2 py-1">{{ player.gamesLost }}</td>
+        <td class="border-2 px-2 py-1">{{ player.matchesPlayed }}</td>
+      </tr>
+    </table>
+  </div>
 </template>

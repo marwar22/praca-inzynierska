@@ -70,17 +70,17 @@ function removeApplicationUser(index: number) {
   <h2 class="mt-2 text-2xl font-bold">Zawodnicy</h2>
   <input
     v-model="playerSearchValue"
-    class="z-10 mt-1 h-12 rounded-t-lg border-4 border-atlantis-500 px-2 py-1 outline-none ring-atlantis-600 focus:ring-2"
+    class="z-10 mt-1 h-12 rounded-t-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
     placeholder="Wyszukaj zawodnika"
     @input="onInput"
   />
   <div class="min-h-[11.25rem] pb-2">
     <div
       v-for="applicationUser in applicationUsers"
-      class="flex items-center border-x-4 border-x-atlantis-500 last:rounded-b-lg last:border-b-4 last:border-atlantis-500 [&:last-child>*]:rounded-b [&:last-child>*]:border-b-0"
+      class="flex items-center border-x-4 border-x-olive-500 last:rounded-b-lg last:border-b-4 last:border-olive-500 [&:last-child>*]:rounded-b [&:last-child>*]:border-b-0"
     >
       <button
-        class="h-full w-full border-b-2 bg-atlantis-50 px-2 py-1 text-left after:text-neutral-600 hover:bg-atlantis-100 active:bg-atlantis-200 disabled:bg-zinc-200 disabled:after:content-['_(Wybrany)']"
+        class="h-full w-full border-b-2 bg-olive-50 px-2 py-1 text-left after:text-neutral-600 hover:bg-olive-100 active:bg-olive-200 disabled:bg-zinc-200 disabled:after:content-['_(Wybrany)']"
         :disabled="selectedApplicationUsers.some((sau) => sau.id === applicationUser.id)"
         @click="addApplicationUser(applicationUser)"
       >
@@ -89,7 +89,7 @@ function removeApplicationUser(index: number) {
     </div>
     <div
       v-if="applicationUsers.length === 0 && playerSearchValue !== ''"
-      class="rounded-b border-4 border-t-0 border-atlantis-500 bg-zinc-100 px-2 py-1 text-neutral-500"
+      class="rounded-b border-4 border-t-0 border-olive-500 bg-zinc-100 px-2 py-1 text-neutral-500"
     >
       brak wyników
     </div>
@@ -100,7 +100,7 @@ function removeApplicationUser(index: number) {
   <div class="flex flex-wrap">
     <div
       v-for="(selectedApplicationUser, index) in selectedApplicationUsers"
-      class="mb-2 mr-2 flex items-center rounded-lg bg-atlantis-50"
+      class="mb-2 mr-2 flex items-center rounded-lg bg-olive-50"
     >
       <span class="pl-2">{{ selectedApplicationUser.firstName }} {{ selectedApplicationUser.lastName }}</span>
       <button

@@ -19,7 +19,7 @@ function onKeyPress(e: KeyboardEvent) {
   <label>
     <span class="pl-0.5"> {{ label }} </span>
     <input
-      class="mb-1 h-12 w-full rounded-lg border-4 border-atlantis-500 px-2 py-1 outline-none ring-atlantis-600 focus:ring-2"
+      class="mb-1 h-12 w-full rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
       :class="error ? 'border-red-500 ring-red-600' : ''"
       :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"

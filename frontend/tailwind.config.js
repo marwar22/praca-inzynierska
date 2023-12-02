@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        atlantis: {
+        olive: {
           50: '#e5f1c6',
           100: '#dbebad',
           200: '#c9e08a',
@@ -39,6 +39,11 @@ export default {
       },
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif']
+      },
+      fontSize: {
+        md: ['0.9375rem', '1.375rem'],
+        '2.5xl': ['1.6875rem', '2.125rem'],
+        '3.5xl': ['2.0625rem', '2.375rem']
       }
     }
   },

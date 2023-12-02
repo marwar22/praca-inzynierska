@@ -100,14 +100,14 @@
               type="number"
               min="0"
               v-model="setResult.firstPlayerScore"
-              class="w-16 rounded-l-lg border-4 border-r-2 border-atlantis-500 px-2 py-1 outline-none ring-atlantis-600 focus-visible:z-[1] focus-visible:ring-2"
+              class="w-16 rounded-l-lg border-4 border-r-2 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus-visible:z-[1] focus-visible:ring-2"
               @input="updateWinnerId"
             />
             <input
               type="number"
               min="0"
               v-model="setResult.secondPlayerScore"
-              class="w-16 rounded-r-lg border-4 border-l-2 border-atlantis-500 px-2 py-1 outline-none ring-atlantis-600 focus-visible:ring-2"
+              class="w-16 rounded-r-lg border-4 border-l-2 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus-visible:ring-2"
               @input="updateWinnerId"
             />
           </div>
@@ -117,7 +117,7 @@
     <MatchResultEditor :match="match" :first-player="players?.firstPlayer" :second-player="players?.secondPlayer" :edit-mode="true"/>
 
     <button
-      class="my-4 h-10 rounded-lg bg-atlantis-600 px-2.5 py-1 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
+      class="my-4 h-10 rounded-lg bg-olive-600 px-2.5 py-1 text-lg font-bold text-white outline-none ring-olive-800 hover:bg-olive-700 focus-visible:ring-2 active:bg-olive-800"
       @click="onSave"
     >
       Zapisz

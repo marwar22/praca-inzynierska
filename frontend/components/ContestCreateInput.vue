@@ -20,7 +20,7 @@ function emitValue(event: Event) {
 </script>
 <template>
   <input
-    class="my-1 h-12 rounded-lg border-4 border-atlantis-500 px-2 py-1 outline-none ring-atlantis-600 focus:ring-2"
+    class="my-1 h-12 rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
     :class="error ? 'border-red-500 ring-red-600' : ''"
     :value="modelValue"
     @input="emitValue"

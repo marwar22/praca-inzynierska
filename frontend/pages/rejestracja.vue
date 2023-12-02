@@ -67,7 +67,7 @@ async function onRegister() {
       />
       <button
         @click="onRegister()"
-        class="mt-3 h-12 rounded-lg bg-atlantis-600 text-lg font-bold text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
+        class="mt-3 h-12 rounded-lg bg-olive-600 text-lg font-bold text-white outline-none ring-olive-800 hover:bg-olive-700 focus-visible:ring-2 active:bg-olive-800"
       >
         <font-awesome-icon v-if="pending" class="invisible mr-2" icon="fa-solid fa-arrows-rotate" />
         Zarejestruj się

@@ -37,7 +37,7 @@ function generateGroups() {
   <div class="mt-4 flex items-center">
     <h2 class="text-2xl font-bold">Grupy</h2>
     <button
-      class="ml-2 rounded-lg bg-atlantis-600 px-2.5 py-1 text-white outline-none ring-atlantis-800 hover:bg-atlantis-700 focus-visible:ring-2 active:bg-atlantis-800"
+      class="ml-2 rounded-lg bg-olive-600 px-2.5 py-1 text-white outline-none ring-olive-800 hover:bg-olive-700 focus-visible:ring-2 active:bg-olive-800"
       @click="generateGroups()"
     >
       Wylosuj skład grup
@@ -51,7 +51,7 @@ function generateGroups() {
           <th class="bg-champagne-300 px-2 py-1 text-left">{{ `Grupa ${String.fromCharCode(65 + group)}` }}</th>
         </tr>
         <tr v-for="(_, player) in playersInGroups[group]" class="border-2">
-          <td class="min-w-[12rem] px-2 py-1 hover:bg-atlantis-50">
+          <td class="min-w-[12rem] px-2 py-1 hover:bg-olive-50">
             <span v-if="groups[group] && groups[group][player]">
               {{ groups[group][player].firstName }} {{ groups[group][player].lastName }}</span
             >

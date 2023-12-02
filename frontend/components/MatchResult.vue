@@ -20,7 +20,7 @@ defineProps<{
       <td
         class="border px-1.5 py-1"
         v-for="setResult in match.result.setResults"
-        :class="{ 'bg-atlantis-50 font-bold': setResult.firstPlayerScore > setResult.secondPlayerScore }"
+        :class="{ 'bg-olive-50 font-bold': setResult.firstPlayerScore > setResult.secondPlayerScore }"
       >
         <span>
           {{ setResult.firstPlayerScore }}
@@ -37,7 +37,7 @@ defineProps<{
       <td
         class="border px-1.5 py-1"
         v-for="setResult in match.result.setResults"
-        :class="{ 'bg-atlantis-50 font-bold': setResult.firstPlayerScore < setResult.secondPlayerScore }"
+        :class="{ 'bg-olive-50 font-bold': setResult.firstPlayerScore < setResult.secondPlayerScore }"
       >
         <span>
           {{ setResult.secondPlayerScore }}

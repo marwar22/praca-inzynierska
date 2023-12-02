@@ -120,7 +120,7 @@ async function deleteKnockoutBracket() {
               </th>
             </tr>
             <tr v-for="playerId in group.playerIds" class="border-2">
-              <td class="min-w-[12rem] px-2 py-1 hover:bg-atlantis-50">
+              <td class="min-w-[12rem] px-2 py-1 hover:bg-olive-50">
                 <span v-if="playerId" class="flex justify-between">
                   <span>{{ nameFromApplicationUser(players.get(playerId)) }}</span>
                   <span v-if="showContacts && contacts.get(playerId)" class="pl-3">{{

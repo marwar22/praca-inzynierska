@@ -37,14 +37,14 @@ const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId && fa
     <div v-if="match.result">
       <div v-if="!match.inverse" class="flex flex-col items-center justify-start">
         <span class="text-xl font-bold">
-          <span :class="[{ [`text-atlantis-700`]: hov1 }]">{{ matchScore[0] }}</span
-          >:<span :class="[{ [`text-atlantis-700`]: hov2 }]">{{ matchScore[1] }}</span>
+          <span :class="[{ [`text-olive-700`]: hov1 }]">{{ matchScore[0] }}</span
+          >:<span :class="[{ [`text-olive-700`]: hov2 }]">{{ matchScore[1] }}</span>
         </span>
         <span class="text-center text-sm">
           <span v-for="(setResult, setNumber) in match.result.setResults" class="[&:last-child>*:nth-child(2)]:hidden">
             <span
-              >(<span :class="[{ [`text-atlantis-700`]: hov1 }]">{{ setResult.firstPlayerScore }}</span
-              >:<span :class="[{ [`text-atlantis-700`]: hov2 }]">{{ setResult.secondPlayerScore }}</span
+              >(<span :class="[{ [`text-olive-700`]: hov1 }]">{{ setResult.firstPlayerScore }}</span
+              >:<span :class="[{ [`text-olive-700`]: hov2 }]">{{ setResult.secondPlayerScore }}</span
               >)</span
             ><span>,&nbsp;</span>
             <br v-if="setNumber === 2" />
@@ -53,8 +53,8 @@ const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId && fa
       </div>
       <div v-else class="flex flex-col items-center justify-center">
         <span class="text-xl font-bold">
-          <span :class="[{ [`text-atlantis-700`]: hov1 }]">{{ matchScore[1] }}</span
-          >:<span :class="[{ [`text-atlantis-700`]: hov2 }]">{{ matchScore[0] }}</span>
+          <span :class="[{ [`text-olive-700`]: hov1 }]">{{ matchScore[1] }}</span
+          >:<span :class="[{ [`text-olive-700`]: hov2 }]">{{ matchScore[0] }}</span>
         </span>
         <span class="text-center text-sm">
           <span
@@ -62,8 +62,8 @@ const hov2 = computed(() => props.hoveredPlayerId === props.secondPlayerId && fa
             class="[&:last-child>*:nth-child(2)]:hidden [&>span]:inline-block"
           >
             <span
-              >(<span :class="[{ [`text-atlantis-700`]: hov1 }]">{{ setResult.secondPlayerScore }}</span
-              >:<span :class="[{ [`text-atlantis-700`]: hov2 }]">{{ setResult.firstPlayerScore }}</span
+              >(<span :class="[{ [`text-olive-700`]: hov1 }]">{{ setResult.secondPlayerScore }}</span
+              >:<span :class="[{ [`text-olive-700`]: hov2 }]">{{ setResult.firstPlayerScore }}</span
               >)</span
             ><span>,&nbsp;</span>
             <br v-if="setNumber === 2" />

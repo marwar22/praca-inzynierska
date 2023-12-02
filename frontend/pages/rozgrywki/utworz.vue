@@ -72,19 +72,18 @@ async function create() {
 <template>
   <div class="page__margin flex flex-col">
     <h1 class="mt-5 text-3xl font-bold">Tworzenie nowej rozgrywki</h1>
-    <div class="flex">
-      <label class="flex flex-1 flex-col">
+    <div class="flex max-md:flex-col">
+      <label class="flex flex-1 flex-col mr-5">
         Nazwa
         <ContestCreateInput
           placeholder="Nazwa rozgrywki"
           v-model.number="name"
           @input="onNumberOfPlayersInput"
           :error="name && name.trim().length < 5 ? 'Nazwa musi mieć co najmniej 5 znaków' : ''"
-        >
-        </ContestCreateInput>
+        />
       </label>
 
-      <label class="mx-5 flex w-64 flex-col">
+      <label class="flex w-64 flex-col mr-5">
         Liczba zawodników
         <ContestCreateInput
           placeholder="Liczba grup"
@@ -96,8 +95,7 @@ async function create() {
               ? `Liczba graczy musi być w przedziale od ${MIN_NUMBER_OF_PLAYERS} do ${MAX_NUMBER_OF_PLAYERS}`
               : ''
           "
-        >
-        </ContestCreateInput>
+        />
       </label>
 
       <label class="flex w-64 flex-col">
@@ -112,13 +110,12 @@ async function create() {
               ? `Liczba grup musi być w przedziale od ${MIN_NUMBER_OF_GROUPS} do ${MAX_NUMBER_OF_GROUPS}`
               : ''
           "
-        >
-        </ContestCreateInput>
+        />
       </label>
     </div>
     <label>
       Czas trwania
-      <div class="datepicker rounded-lg border-4 border-atlantis-500">
+      <div class="datepicker rounded-lg border-4 border-olive-500">
         <VueDatePicker
           v-model="date"
           range
@@ -139,7 +136,7 @@ async function create() {
     >
     </GroupsCreator>
     <button
-      class="my-2 rounded-lg bg-atlantis-600 py-1 text-lg font-bold text-white hover:bg-atlantis-700 active:bg-atlantis-800"
+      class="my-2 rounded-lg bg-olive-600 py-1 text-lg font-bold text-white hover:bg-olive-700 active:bg-olive-800"
       @click="create"
     >
       Utwórz
