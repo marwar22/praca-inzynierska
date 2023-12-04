@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -28,6 +29,7 @@ public class ApplicationUser {
     private Long id;
 
     @NotEmpty(message = "username can't be empty")
+    @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters long")
     @Column(nullable = false, unique = true)
     private String username;
 

@@ -38,8 +38,8 @@ public class TournamentService {
         return tournamentRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(Tournament.class, id));
     }
 
-    public List<Tournament> getAll() {
-        return tournamentRepository.findAll();
+    public List<Tournament> getAllByName(String name) {
+        return tournamentRepository.findAllByNameContainsIgnoreCase(name);
     }
 
     public Tournament create(TournamentCreateDto tournamentCreateDto) throws ExceptionWithResponseEntity {

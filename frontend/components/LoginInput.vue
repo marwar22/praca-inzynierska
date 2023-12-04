@@ -14,9 +14,11 @@ const emit = defineEmits<{
 function onKeyPress(e: KeyboardEvent) {
   if (e.key === 'Enter') emit('enter');
 }
+const input = ref<HTMLInputElement>();
+defineExpose({ input });
 </script>
 <template>
-  <label>
+  <label class="flex flex-col">
     <span class="pl-0.5"> {{ label }} </span>
     <input
       class="mb-1 h-12 w-full rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
@@ -26,7 +28,8 @@ function onKeyPress(e: KeyboardEvent) {
       @keypress="onKeyPress"
       :placeholder="placeholder"
       :type="type"
+      ref="input"
     />
+    <span v-if="error" class="font-semibold text-red-500">{{ error }}</span>
   </label>
-  <span v-if="error" class="font-semibold text-red-500">{{ error }}</span>
 </template>

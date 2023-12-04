@@ -26,8 +26,8 @@ public class TournamentController {
 
     // TODO paging
     @GetMapping
-    public ResponseEntity<?> getAllTournaments() {
-        var tournaments = tournamentService.getAll();
+    public ResponseEntity<?> getAllTournaments(@RequestParam(name = "name", defaultValue = "") String name) {
+        var tournaments = tournamentService.getAllByName(name);
         var tournamentsDto = tournaments.stream().map(tournamentMapper::toBasicDto).toList();
         return new ResponseEntity<>(tournamentsDto, HttpStatus.OK);
 

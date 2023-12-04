@@ -16,7 +16,6 @@ const { data: applicationUsersData } = useAsyncData(
     return $fetch<ApplicationUserBasic[]>(`${config.public.BACKEND_API}/user`, {
       method: 'GET',
       query: {
-        test: 'a',
         name: playerSearchValue.value.trim(),
         limit: 5,
         exclude: props.selectedApplicationUsers.map((sau) => sau.id)
@@ -28,29 +27,6 @@ const { data: applicationUsersData } = useAsyncData(
 
 const applicationUsers = computed(() => applicationUsersData.value ?? []);
 
-let searchCounter = 0;
-let lastSearchCounterValue = 0;
-
-async function onInput() {
-  // if (playerSearchValue.value.trim() === '') {
-  //   lastSearchCounterValue = searchCounter;
-  //   applicationUsers.value = [];
-  //   return;
-  // }
-  // const mySearchCounterValue = ++searchCounter;
-  // const res = await $fetch<ApplicationUserBasic[]>(`${config.public.BACKEND_API}/user`, {
-  //   method: 'GET',
-  //   query: {
-  //     name: playerSearchValue.value.trim(),
-  //     limit: 5,
-  //     exclude: props.selectedApplicationUsers.map((sau) => sau.id)
-  //   }
-  // });
-  // if (mySearchCounterValue <= lastSearchCounterValue) return;
-  // lastSearchCounterValue = mySearchCounterValue;
-  // applicationUsers.value = res;
-}
-
 function addApplicationUser(applicationUser: ApplicationUserBasic) {
   props.selectedApplicationUsers.push(applicationUser);
   props.selectedApplicationUsers.sort((au1, au2) => {
@@ -58,11 +34,9 @@ function addApplicationUser(applicationUser: ApplicationUserBasic) {
     if (cmpLastName !== 0) return cmpLastName;
     return au1.firstName.localeCompare(au2.firstName);
   });
-  onInput();
 }
 function removeApplicationUser(index: number) {
   props.selectedApplicationUsers.splice(index, 1);
-  onInput();
 }
 </script>
 
@@ -72,7 +46,6 @@ function removeApplicationUser(index: number) {
     v-model="playerSearchValue"
     class="z-10 mt-1 h-12 rounded-t-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
     placeholder="Wyszukaj zawodnika"
-    @input="onInput"
   />
   <div class="min-h-[11.25rem] pb-2">
     <div

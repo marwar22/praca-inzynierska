@@ -3,17 +3,33 @@ import type { Tournament, TournamentBasic } from '~/types/tournament';
 
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
-const { data: tournaments } = await useFetch<TournamentBasic[]>(`${config.public.BACKEND_API}/tournament`);
+// const { data: tournaments } = await useFetch<TournamentBasic[]>(`${config.public.BACKEND_API}/tournament`);
 
 const canCreateTournament = computed(() => {
   return authStatus.value.permissions.includes('TOURNAMENT:CREATE');
 });
+
+const tournamentNameSearch = ref('');
+const { data: tournamentsData } = useAsyncData(
+  async () => {
+    return $fetch<TournamentBasic[]>(`${config.public.BACKEND_API}/tournament`, {
+      method: 'GET',
+      query: {
+        name: tournamentNameSearch.value
+      }
+    });
+  },
+  { watch: [tournamentNameSearch] }
+);
+
+const tournaments = computed(() => tournamentsData.value ?? []);
 </script>
 <template>
   <div class="page__margin flex flex-col">
     <h1 class="mb-2 mt-4 text-3xl font-bold">Rozgrywki</h1>
     <div class="flex h-12 items-center">
       <input
+        v-model="tournamentNameSearch"
         class="h-full rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus-visible:ring-2"
         placeholder="Wyszukaj"
       />

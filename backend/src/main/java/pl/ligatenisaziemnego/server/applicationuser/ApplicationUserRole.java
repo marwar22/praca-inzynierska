@@ -9,7 +9,7 @@ import static pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermis
 
 public enum ApplicationUserRole {
     ADMIN(Set.of(TOURNAMENT__CREATE)),
-    SUPER_ADMIN(Set.of(TOURNAMENT__CREATE, TOURNAMENT__UPDATE_ANY, USER__CHANGE, ROLE__CHANGE));
+    SUPER_ADMIN(Set.of(TOURNAMENT__CREATE, TOURNAMENT__UPDATE_ANY, ROLE__CHANGE));
 
     private final Set<ApplicationUserPermission> permissions;
 

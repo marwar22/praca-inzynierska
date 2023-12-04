@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { LoginInput } from '#build/components';
 import axios from 'axios';
+import type { VNodeRef } from 'vue';
 import type { ApiError } from '~/types/apierrror';
 
 const config = useRuntimeConfig();
@@ -36,15 +38,24 @@ async function onLogin() {
   }
   pending.value = false;
 }
+
+const loginInput = ref<InstanceType<typeof LoginInput>>();
+onMounted(() => loginInput.value?.input?.focus());
 </script>
 
 <template>
   <div class="flex flex-1 flex-col items-center">
     <div class="flex-[3]"></div>
-    <div class="flex w-96 min-w-[30%] flex-col items-stretch justify-center shadow-[0_2px_6px_0px_rgba(0,0,0,0.15),0_0_4px_-1px_rgba(0,0,0,0.4)] rounded-xl pt-8 pb-8 px-4">
+    <div
+      class="flex w-96 min-w-[30%] flex-col items-stretch justify-center rounded-xl px-4 pb-8 pt-8 shadow-[0_2px_6px_0px_rgba(0,0,0,0.15),0_0_4px_-1px_rgba(0,0,0,0.4)]"
+    >
       <h1 class="mb-3 mt-2 text-center text-3xl font-bold">Zaloguj się</h1>
-
-      <LoginInput v-model="username" placeholder="Nazwa użytkownika" label="Nazwa użytkownika"></LoginInput>
+      <LoginInput
+        v-model="username"
+        placeholder="Nazwa użytkownika"
+        label="Nazwa użytkownika"
+        ref="loginInput"
+      ></LoginInput>
       <LoginInput v-model="password" placeholder="Hasło" type="password" @enter="onLogin" label="Hasło"></LoginInput>
 
       <button

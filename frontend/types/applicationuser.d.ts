@@ -1,5 +1,5 @@
 const applicationUserRoles = ['ADMIN', 'SUPER_ADMIN'] as const;
-const applicationUserPermissions = ['TOURNAMENT:CREATE', 'USER:CHANGE', 'ROLE:CHANGE'] as const;
+const applicationUserPermissions = ['TOURNAMENT:CREATE', 'TOURNAMENT:UPDATE_ANY', 'ROLE:CHANGE'] as const;
 
 export type ApplicationUserRole = (typeof applicationUserRoles)[number];
 export type ApplicationUserPermission = (typeof applicationUserPermissions)[number];

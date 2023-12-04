@@ -19,6 +19,20 @@ const { data: applicationUser } = await useFetch<ApplicationUser>(`${config.publ
       <div>{{ `${applicationUser.firstName} ${applicationUser.lastName}` }}</div>
       <div>Nazwa użytkownika: {{ applicationUser.username }}</div>
       <div>Email: {{ applicationUser.email }}</div>
+      <div class="flex flex-col">
+        Role:
+        <ul class="list-inside list-disc">
+          <li v-for="role in applicationUser.roles">{{ roleToLabel(role) }}</li>
+          <li v-if="applicationUser.roles.length == 0">Nie masz żadnej roli</li>
+        </ul>
+      </div>
+      <div class="flex flex-col">
+        Uprawnienia administratorskie:
+        <ul class="list-inside list-disc">
+          <li v-for="permission in applicationUser.permissions">{{ permissionToLabel(permission) }}</li>
+          <li v-if="applicationUser.roles.length == 0">Nie masz żadnych uprawnień</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

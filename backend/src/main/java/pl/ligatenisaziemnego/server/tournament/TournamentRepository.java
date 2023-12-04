@@ -18,11 +18,12 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     @Nonnull
     Optional<Tournament> findById(@Nonnull Long id);
 
-    @EntityGraph(attributePaths = {"players"})
-    @Override
-    @Nonnull
-    @Query("select t from Tournament t")
-    List<Tournament> findAll();
+//    @EntityGraph(attributePaths = {"players"})
+//    @Override
+//    @Nonnull
+//    @Query("select t from Tournament t")
+//    List<Tournament> findAll();
 
-    Tournament findByGroups_Matches_Id(Long id);
+    @EntityGraph(attributePaths = {"players"})
+    List<Tournament> findAllByNameContainsIgnoreCase(String name);
 }
