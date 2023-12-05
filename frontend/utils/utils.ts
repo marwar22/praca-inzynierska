@@ -25,10 +25,10 @@ export async function errorToApiError(error: any): Promise<ApiError> {
   };
 }
 
-export function fetchErrorToApiError(error: any) {
+export function fetchErrorToApiError(error: any): ApiError {
   if (error?.data) {
     const { status, errors, message } = error.data;
-    return { status, errors, message };
+    return { status: status ?? '', errors: errors ?? {}, message: message ?? '' };
   } else {
     return { status: error?.status?.toString() ?? '', errors: {}, message: 'Unknown fetch error' };
   }

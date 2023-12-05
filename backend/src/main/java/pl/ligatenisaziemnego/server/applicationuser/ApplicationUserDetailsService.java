@@ -14,7 +14,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
+        ApplicationUser applicationUser = applicationUserRepository.findByUsernameOrEmail(username);
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }

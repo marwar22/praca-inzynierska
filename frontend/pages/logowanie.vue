@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { LoginInput } from '#build/components';
-import axios from 'axios';
-import type { VNodeRef } from 'vue';
 import type { ApiError } from '~/types/apierrror';
+import type { AuthStatus } from '~/types/auth';
 
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
@@ -17,20 +16,20 @@ async function onLogin() {
   if (pending.value) return;
   pending.value = true;
   try {
-    const res = await axios.post(
-      `${config.public.BACKEND_API}/auth/login`,
-      {
+    const res = await $fetch<AuthStatus>(`${config.public.BACKEND_API}/auth/login`, {
+      method: 'POST',
+      body: {
         username: username.value,
         password: password.value
       },
-      { withCredentials: true }
-    );
-    authStatus.value = await res.data;
+      credentials: 'include'
+    });
+    authStatus.value = res
     apiError.value = null;
     incorrectUsernameOrPassword.value = false;
     await navigateTo('/konto');
   } catch (error) {
-    apiError.value = await errorToApiError(error);
+    apiError.value = fetchErrorToApiError(error);
     if (apiError.value.errors['auth'] === 'Username or password is incorrect') {
       apiError.value = null;
       incorrectUsernameOrPassword.value = true;
@@ -52,8 +51,8 @@ onMounted(() => loginInput.value?.input?.focus());
       <h1 class="mb-3 mt-2 text-center text-3xl font-bold">Zaloguj się</h1>
       <LoginInput
         v-model="username"
-        placeholder="Nazwa użytkownika"
-        label="Nazwa użytkownika"
+        placeholder="Nazwa użytkownika, lub email"
+        label="Nazwa użytkownika, lub email"
         ref="loginInput"
       ></LoginInput>
       <LoginInput v-model="password" placeholder="Hasło" type="password" @enter="onLogin" label="Hasło"></LoginInput>

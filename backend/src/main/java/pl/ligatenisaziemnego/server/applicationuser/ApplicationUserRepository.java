@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
+
     @Query("UPDATE ApplicationUser u SET u.lastLogin=:lastLogin WHERE u.username=:username")
     @Modifying
     @Transactional
@@ -32,10 +33,7 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
     List<ApplicationUser> findAllByFirstNameWithLastName(String name, Pageable pageable);
 
     @EntityGraph(attributePaths = {"roles"})
-    ApplicationUser findByUsername(String username);
+    @Query("select a from ApplicationUser a where a.username = ?1 or a.email = ?1")
+    ApplicationUser findByUsernameOrEmail(String usernameOrEmail);
 
-//    @Query("select a from ApplicationUser a where a.id not in ?1")
-//    List<ApplicationUser> findByIdNotIn(Collection<Long> ids);
-
-    Optional<ApplicationUser> findByEmail(String email);
 }

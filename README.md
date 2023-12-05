@@ -4,29 +4,32 @@
 
 ### Zmienne środowiskowe, certyfikat
 
-TODO informacja o plikach .env, certyfikacie
 TODO domena powinna znajdować się w liście w getCorsConfiguration() w SecurityConfig.java; 
 
 Należy utworzyć pliki zawierające zmienne środowiskowe (.env)
 
-W `frontend/`
-```bash
-cp .env.example .env
-# należy ustawić wartości zmiennych środowiskowych
-```
-
 W `/`
 ```bash
 cp .env.example .env
-# należy ustawić wartości zmiennych środowiskowych
+# należy ustawić wartości zmiennych środowiskowych w pliku .env
 ```
 
-W folderze `certs/` stworzyć certyfikat ssl:
+W `frontend/`
 ```bash
-sudo openssl req -nodes -newkey rsa:2048 -keyout rozgrywkitenisa.key -x509 -out rozgrywkitenisa.crt
+cd frontend
+cp .env.example .env
+# należy ustawić wartości zmiennych środowiskowych w pliku .env
 ```
 
+W przypadku uruchamiania projektu w środowisku testowym należy ręcznie wygenerować `certyfikat SSL`
+```bash
+./generate_cert.sh
 
+# Zawartość pliku generate_cert.sh:
+#
+# mkdir -p data/certbot/letsencrypt/live/rozgrywkitenisa.pl
+# openssl req -nodes -newkey rsa:2048 -keyout data/certbot/letsencrypt/live/rozgrywkitenisa.pl/privkey.pem -x509 -out data/certbot/letsencrypt/live/rozgrywkitenisa.pl/fullchain.pem
+```
 
 
 ### Instalacja zależności
@@ -45,12 +48,24 @@ Użytkownik musi należeć do grupy `docker`
 sudo usermod -aG docker nazwa_uzytkownika
 ```
 
+### Budowanie i Uruchamianie wersja TL;DR
+
+```bash
+# środowisko produkcyjne
+docker compose up -d --build
+# środowisko lokalne
+docker compose -f docker-compose-localhost.yml up -d --build
+```
+
 ### Budowanie
 
 Aby zbudować projekt należy wykonać poniższe polecenie:
 
 ```bash
+# środowisko produkcyjne
 docker compose build
+# środowisko lokalne
+docker compose -f docker-compose-localhost.yml build
 ```
 
 Po zbudowaniu można sprawdzić, czy powstały wymagane obrazy Dockera wpisując polecenie:
@@ -86,7 +101,18 @@ sudo systemctl stop apache2
 Aby uruchomić projekt należy wykonać polecenie:
 
 ```bash
+# środowisko produkcyjne
 docker compose up -d
+# środowisko lokalne
+docker compose -f docker-compose-localhost.yml up -d
 ```
 
 Flaga `-d` nie jest wymagana, uruchamia projekt w tle.
+
+
+### Wyłączanie
+
+```bash
+# środowisko produkcyjne, lub lokalne
+docker compose down
+```

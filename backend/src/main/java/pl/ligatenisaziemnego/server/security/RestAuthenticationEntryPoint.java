@@ -12,8 +12,7 @@ import java.io.IOException;
 
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    final
-    ObjectMapper objectMapper;
+    final ObjectMapper objectMapper;
 
     public RestAuthenticationEntryPoint(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
