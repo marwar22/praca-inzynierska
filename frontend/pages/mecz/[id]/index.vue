@@ -31,16 +31,19 @@ const { data, error } = useAsyncData('data', async () => {
   return { firstPlayer, secondPlayer, lastModifiedBy, tournament };
 });
 
+const setsToWin = computed(() => data.value?.tournament?.setsToWin ?? 2);
+
 watchEffect(() => {
   if (match.value && !match.value.result) {
     match.value.result = match.value.result ?? {
       id: -1,
       winnerId: -1,
-      setResults: Array.from({ length: 3 }, () => ({ firstPlayerScore: 0, secondPlayerScore: 0 })),
+      scratch: false,
+      walkover: false,
+      setResults: Array.from({ length: 3 }, () => ({ firstPlayerScore: 0, secondPlayerScore: 0, gamesScored: [0, 0] })),
       firstPlayerScore: 0,
       secondPlayerScore: 0
     };
-    editMode.value = true;
   }
 });
 
@@ -61,7 +64,7 @@ function onEditModeChange() {
 
 async function save() {
   if (!match.value) return;
-  if (!isResultCorrect(match.value)) return;
+  if (!isResultCorrect(match.value, setsToWin.value)) return;
   try {
     const res = await $fetch<Match>(`${config.public.BACKEND_API}/match/${match.value.id}`, {
       method: 'PATCH',
@@ -110,9 +113,9 @@ async function save() {
           class="-mr-2 -mt-2 p-2 hover:text-olive-700 active:text-olive-400 disabled:cursor-not-allowed disabled:text-red-500"
           :title="editMode ? 'Zapisz' : 'Edytuj'"
           @click="onEditModeChange"
-          :disabled="editMode && !isResultCorrect(match)"
+          :disabled="editMode && !isResultCorrect(match, setsToWin)"
         >
-          <font-awesome-icon v-if="!editMode" icon="fa-solid fa-file-pen" size="xl"/>
+          <font-awesome-icon v-if="!editMode" icon="fa-solid fa-file-pen" size="xl" />
           <font-awesome-icon v-else :icon="['fas', 'floppy-disk']" size="xl" />
         </button>
         <div

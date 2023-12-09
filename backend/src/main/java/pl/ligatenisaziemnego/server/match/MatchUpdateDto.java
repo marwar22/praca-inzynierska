@@ -31,8 +31,15 @@ public class MatchUpdateDto implements Serializable {
     public static class MatchResultDto implements Serializable {
         @NotNull(message = "winnerId can't be null")
         Long winnerId;
-        @NotEmpty(message = "setResults can't be empty")
+
+        @NotNull(message = "setResults can't be null")
         List<@NotNull(message = "setResult can't be null") SetResultDto> setResults;
+
+        @NotNull(message = "walkover can't be null")
+        private Boolean walkover;
+
+        @NotNull(message = "scratch can't be null")
+        private Boolean scratch;
 
         /**
          * DTO for {@link SetResult}

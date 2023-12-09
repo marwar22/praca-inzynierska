@@ -33,7 +33,15 @@ public class MatchResult {
     @JoinColumn(name = "winner_id", insertable = false, updatable = false)
     private ApplicationUser winner;
 
-    @NotEmpty(message = "setResults can't be empty")
+    @NotNull(message = "walkover can't be null")
+    @Column(name = "walkover")
+    private Boolean walkover;
+
+    @NotNull(message = "scratch can't be null")
+    @Column(name = "scratch")
+    private Boolean scratch;
+
+    @NotNull(message = "setResults can't be null")
     @ElementCollection
     @OrderColumn(name = "set_number")
     @CollectionTable(name = "match_result_set_result", joinColumns = @JoinColumn(name = "match_result_id"))

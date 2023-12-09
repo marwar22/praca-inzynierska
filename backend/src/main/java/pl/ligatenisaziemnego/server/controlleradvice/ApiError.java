@@ -3,6 +3,7 @@ package pl.ligatenisaziemnego.server.controlleradvice;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -74,7 +75,7 @@ public class ApiError {
                             "message", e.getMessage()));
 
         }
-        return ApiError.INTERNAL_SERVER_ERROR(e.getMessage());
+        return ApiError.INTERNAL_SERVER_ERROR(ObjectUtils.firstNonNull(e.getMessage(), e.getClass().getSimpleName()));
     }
 
     public static ExceptionWithResponseEntity FORBIDDEN(String message) {

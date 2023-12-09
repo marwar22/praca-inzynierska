@@ -1,7 +1,6 @@
 package pl.ligatenisaziemnego.server.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
@@ -9,11 +8,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
-import pl.ligatenisaziemnego.server.knockoutbracket.MatchInKnockoutBracket;
 import pl.ligatenisaziemnego.server.tournament.Tournament;
-import pl.ligatenisaziemnego.server.tournament.group.TournamentGroup;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Getter
@@ -50,21 +49,9 @@ public class Match {
     @JoinColumn(name = "second_player_id", insertable = false, updatable = false)
     private ApplicationUser secondPlayer;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @ToString.Exclude
-//    @JsonIgnore
-//    @JoinTable(
-//            name = "tournament_group_match",
-//            joinColumns = @JoinColumn(name = "match_id", insertable = false, updatable = false),
-//            inverseJoinColumns = @JoinColumn(name = "tournament_group_id", insertable = false, updatable = false)
-//    )
-//    private TournamentGroup tournamentGroup;
-//
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "match")
-//    @LazyToOne(LazyToOneOption.NO_PROXY)
-//    @JsonIgnore
-//    @ToString.Exclude
-//    private MatchInKnockoutBracket matchInKnockoutBracket;
+    @Getter(AccessLevel.NONE)
+    @Transient
+    private List<Long> playerIds;
 
     @NotNull(message = "tournament_id can't be null")
     @Column(name = "tournament_id")
@@ -92,4 +79,8 @@ public class Match {
     @UpdateTimestamp
     @Column(name = "updated_date_time", nullable = false)
     private Instant updatedDateTime;
+
+    public List<Long> getPlayerIds() {
+        return Arrays.asList(firstPlayerId, secondPlayerId, null);
+    }
 }

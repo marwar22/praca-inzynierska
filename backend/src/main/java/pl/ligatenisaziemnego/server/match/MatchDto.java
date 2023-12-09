@@ -29,10 +29,21 @@ public class MatchDto implements Serializable {
     @Value
     public static class MatchResultDto implements Serializable {
         Long id;
+
         @NotNull(message = "winnerId can't be null")
         Long winnerId;
-        List<SetResultDto> setResults;
+
+        @NotNull(message = "walkover can't be null")
+        Boolean walkover;
+
+        @NotNull(message = "scratch can't be null")
+        Boolean scratch;
+
+        @NotNull(message = "setResults can't be null")
+        List<@NotNull(message = "setResult can't be null") SetResultDto> setResults;
+
         Long firstPlayerScore;
+
         Long secondPlayerScore;
 
         /**

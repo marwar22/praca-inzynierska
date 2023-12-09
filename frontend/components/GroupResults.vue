@@ -44,15 +44,11 @@ function onMouseLeave(playerId: number) {
         >
           {{ nameFromApplicationUser(players.get(firstPlayerId)!) }}
         </th>
-        <td
-          v-for="secondPlayerId in tournament.groups[groupNumber].playerIds"
-          class="h-16 border-2 hover:bg-olive-50"
-        >
+        <td v-for="secondPlayerId in tournament.groups[groupNumber].playerIds" class="h-16 border-2 hover:bg-olive-50">
           <div v-if="firstPlayerId !== secondPlayerId" class="relative flex h-full w-full items-center justify-center">
             <MatchResultInTable
               :matches="matches"
-              :firstPlayerId="firstPlayerId"
-              :secondPlayerId="secondPlayerId"
+              :playerIds="[firstPlayerId, secondPlayerId]"
               :organizerId="tournament.organizerId"
               :hoveredPlayerId="hoveredPlayerId"
             />
@@ -63,8 +59,3 @@ function onMouseLeave(playerId: number) {
     </table>
   </div>
 </template>
-<style>
-div::-webkit-scrollbar-thumb {
-  background: green;
-}
-</style>

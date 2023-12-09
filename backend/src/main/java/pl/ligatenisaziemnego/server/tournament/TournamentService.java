@@ -3,6 +3,7 @@ package pl.ligatenisaziemnego.server.tournament;
 import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
@@ -42,6 +43,7 @@ public class TournamentService {
         return tournamentRepository.findAllByNameContainsIgnoreCase(name);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Tournament create(TournamentCreateDto tournamentCreateDto) throws ExceptionWithResponseEntity {
         var tournament = tournamentMapper.toEntity(tournamentCreateDto);
         tournament.setPlayers(applicationUserRepository.findAllById(tournamentCreateDto.getPlayerIds()));
@@ -64,7 +66,15 @@ public class TournamentService {
         tournament.setOrganizerId(securityService.getApplicationUserFromAuthentication().getId());
 
         validate(-1L, tournament);
-        return tournamentRepository.save(tournament);
+        var tournamentGroups = tournament.getGroups();
+        tournament.setGroups(null);
+        tournamentRepository.save(tournament);
+        var tournamentId = tournament.getId();
+        tournamentGroups.forEach(tournamentGroup -> tournamentGroup.getMatches().forEach(match -> match.setTournamentId(tournamentId)));
+        tournament.setGroups(new ArrayList<>(tournamentGroups));
+        tournamentRepository.save(tournament);
+
+        return tournament;
     }
 
     private void validate(Long id, Tournament tournament) throws ExceptionWithResponseEntity {

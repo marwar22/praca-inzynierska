@@ -25,7 +25,7 @@ public class TournamentGroup {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @NotNull(message = "matches can't be null")
     @JoinTable(
             name = "tournament_group_match",

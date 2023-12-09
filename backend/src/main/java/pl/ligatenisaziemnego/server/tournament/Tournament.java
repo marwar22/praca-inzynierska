@@ -47,6 +47,12 @@ public class Tournament {
     @Column(name = "number_of_groups", nullable = false)
     private Long numberOfGroups;
 
+    @Range(min = 2, max = 3, message = "setsToWin must be in range <2, 3>")
+    @NotNull(message = "setsToWin can't be null")
+    @Column(name = "sets_to_win", nullable = false)
+    private Long setsToWin;
+
+
     @NotEmpty(message = "players can't be empty")
     @ManyToMany
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

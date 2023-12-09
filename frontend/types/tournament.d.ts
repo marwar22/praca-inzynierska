@@ -3,11 +3,14 @@ import type { ApplicationUser } from './applicationuser';
 export type SetResult = {
   firstPlayerScore: number;
   secondPlayerScore: number;
+  gamesScored: [number, number];
 };
 
 type MatchResult = {
   id: number;
   winnerId: number;
+  scratch: boolean;
+  walkover: boolean;
   firstPlayerScore: number;
   secondPlayerScore: number;
   setResults: SetResult[];
@@ -18,6 +21,7 @@ export type Match = {
   result: MatchResult | null;
   firstPlayerId: number | null;
   secondPlayerId: number | null;
+  playerIds: [number | null, number | null];
   lastModifiedById: number | null;
   tournamentGroupId?: number;
   tournamentId?: number;
@@ -48,6 +52,7 @@ export type Tournament = {
   name: string;
   numberOfPlayers: number;
   numberOfGroups: number;
+  setsToWin: number;
   players: ApplicationUser[];
   groups: TournamentGroup[];
   knockoutBracket: KnockoutBracket | null;

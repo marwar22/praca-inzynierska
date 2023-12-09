@@ -11,14 +11,22 @@ import {
   faClock,
   faDice,
   faFilePen,
+  faFlag,
   faFloppyDisk,
   faHouse,
+  faHouseMedicalFlag,
+  faListOl,
   faNetworkWired,
   faPlus,
   faUser,
   faUsers,
   faXmark
 } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  faFlag as faFlagWhite,
+} from '@fortawesome/free-regular-svg-icons';
+
 
 library.add(
   faArrowsRotate,
@@ -31,8 +39,12 @@ library.add(
   faClock,
   faDice,
   faFilePen,
+  faFlag,
+  faFlagWhite,
   faFloppyDisk,
   faHouse,
+  faHouseMedicalFlag,
+  faListOl,
   faNetworkWired,
   faPlus,
   faUser,

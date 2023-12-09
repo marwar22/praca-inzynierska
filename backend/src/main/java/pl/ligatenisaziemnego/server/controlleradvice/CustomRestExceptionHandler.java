@@ -1,5 +1,6 @@
 package pl.ligatenisaziemnego.server.controlleradvice;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -55,7 +56,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         System.err.printf("NotWritable %s%n", ex.getLocalizedMessage());
         var apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(),
-                Map.of("NotWritable", ex.getMostSpecificCause().getMessage()));
+                Map.of("NotWritable", ObjectUtils.firstNonNull(ex.getMostSpecificCause().getMessage(), ex.getLocalizedMessage())));
         return super.handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 

@@ -17,14 +17,26 @@ const MAX_NUMBER_OF_GROUPS = 24;
 const apiError = ref(null as ApiError | null);
 const name = ref('');
 const date = ref([new Date(), new Date()]);
+const setsToWin = ref(2);
+
 const numberOfPlayers = ref(16);
 const isNumberOfPlayersInRange = computed(
   () => MIN_NUMBER_OF_PLAYERS <= numberOfPlayers.value && numberOfPlayers.value <= MAX_NUMBER_OF_PLAYERS
 );
+
 const numberOfGroups = ref(4);
 const isNumberOfGroupsInRange = computed(
   () => MIN_NUMBER_OF_GROUPS <= numberOfGroups.value && numberOfGroups.value <= MAX_NUMBER_OF_GROUPS
 );
+
+const numberOfPlayersKnockoutBracket = ref(4);
+const numberOfPlayersKnockoutBracketOptions = computed(() => {
+  let max = 1 << (31 - Math.clz32(numberOfPlayers.value));
+  const res = [];
+  for (let i = max; i > 1; i /= 2) res.push(i);
+  res.reverse();
+  return res;
+});
 
 const selectedApplicationUsers = ref([] as ApplicationUserBasic[]);
 const groups = ref([] as ApplicationUser[][]);
@@ -41,7 +53,6 @@ const playersInGroups = computed(() => {
   return res;
 });
 
-function onNumberOfPlayersInput() {}
 async function create() {
   try {
     const [startDate, endDate] = date.value;
@@ -51,6 +62,8 @@ async function create() {
         name: name.value,
         numberOfPlayers: numberOfPlayers.value,
         numberOfGroups: numberOfGroups.value,
+        setsToWin: setsToWin.value,
+        numberOfPlayersKnockoutBracket: numberOfPlayersKnockoutBracket.value,
         playerIds: selectedApplicationUsers.value.map((sau) => sau.id),
         groups: groups.value
           .map((group, index) => {
@@ -73,23 +86,21 @@ async function create() {
   <div class="page__margin flex flex-col">
     <h1 class="mt-5 text-3xl font-bold">Tworzenie nowej rozgrywki</h1>
     <div class="flex max-md:flex-col">
-      <label class="flex flex-1 flex-col mr-5">
+      <label class="mr-5 flex flex-1 flex-col">
         Nazwa
         <ContestCreateInput
           placeholder="Nazwa rozgrywki"
           v-model.number="name"
-          @input="onNumberOfPlayersInput"
           :error="name && name.trim().length < 5 ? 'Nazwa musi mieć co najmniej 5 znaków' : ''"
         />
       </label>
 
-      <label class="flex w-64 flex-col mr-5">
+      <label class="mr-5 flex w-64 flex-col">
         Liczba zawodników
         <ContestCreateInput
           placeholder="Liczba grup"
           type="number"
           v-model.number="numberOfPlayers"
-          @input="onNumberOfPlayersInput"
           :error="
             !isNumberOfPlayersInRange
               ? `Liczba graczy musi być w przedziale od ${MIN_NUMBER_OF_PLAYERS} do ${MAX_NUMBER_OF_PLAYERS}`
@@ -104,7 +115,6 @@ async function create() {
           placeholder="Liczba grup"
           type="number"
           v-model.number="numberOfGroups"
-          @input="onNumberOfPlayersInput"
           :error="
             !isNumberOfGroupsInRange
               ? `Liczba grup musi być w przedziale od ${MIN_NUMBER_OF_GROUPS} do ${MAX_NUMBER_OF_GROUPS}`
@@ -127,6 +137,16 @@ async function create() {
         />
       </div>
     </label>
+    <div class="flex">
+      <div class="mb-2 flex flex-col">
+        Ilość finalistów
+        <RadioGroup v-model="numberOfPlayersKnockoutBracket" :values="numberOfPlayersKnockoutBracketOptions" />
+      </div>
+      <div class="mb-2 flex flex-col">
+        Ilość setów do wygranej
+        <RadioGroup v-model="setsToWin" :values="[2, 3]" />
+      </div>
+    </div>
     <PlayerAdder :numberOfPlayers="numberOfPlayers" v-model:selectedApplicationUsers="selectedApplicationUsers" />
     <GroupsCreator
       v-model:groups="groups"
