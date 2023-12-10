@@ -1,8 +1,6 @@
 import type { ApplicationUser } from './applicationuser';
 
 export type SetResult = {
-  firstPlayerScore: number;
-  secondPlayerScore: number;
   gamesScored: [number, number];
 };
 
@@ -11,8 +9,7 @@ type MatchResult = {
   winnerId: number;
   scratch: boolean;
   walkover: boolean;
-  firstPlayerScore: number;
-  secondPlayerScore: number;
+  setsScored: [number, number];
   setResults: SetResult[];
 };
 

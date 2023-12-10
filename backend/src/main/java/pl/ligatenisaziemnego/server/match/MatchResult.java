@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -49,11 +51,7 @@ public class MatchResult {
 
     @Getter(AccessLevel.NONE)
     @Transient
-    private Long firstPlayerScore;
-
-    @Getter(AccessLevel.NONE)
-    @Transient
-    private Long secondPlayerScore;
+    private List<Long> setsScored;
 
     public Long getFirstPlayerScore() {
         return setResults.stream().mapToLong((sr) -> sr.getFirstPlayerScore() > sr.getSecondPlayerScore() ? 1 : 0).sum();
@@ -61,5 +59,9 @@ public class MatchResult {
 
     public Long getSecondPlayerScore() {
         return setResults.stream().mapToLong((sr) -> sr.getSecondPlayerScore() > sr.getFirstPlayerScore() ? 1 : 0).sum();
+    }
+
+    public List<Long> getSetsScored() {
+        return List.of(getFirstPlayerScore(), getSecondPlayerScore());
     }
 }

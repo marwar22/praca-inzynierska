@@ -57,11 +57,9 @@ const lineTranslateY = computed(() => {
         <td
           v-for="setResult in match?.result?.setResults ?? []"
           class="w-[25px] border px-1.5 py-1"
-          :class="{ 'bg-olive-50 font-bold': setResult.firstPlayerScore > setResult.secondPlayerScore }"
+          :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] > setResult.gamesScored[1] }"
         >
-          <span>
-            {{ setResult.firstPlayerScore }}
-          </span>
+          <span>{{ setResult.gamesScored[0] }}</span>
         </td>
         <td
           v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"
@@ -83,11 +81,9 @@ const lineTranslateY = computed(() => {
         <td
           v-for="setResult in match?.result?.setResults ?? []"
           class="w-[25px] border px-1.5 py-1"
-          :class="{ 'bg-olive-50 font-bold': setResult.firstPlayerScore < setResult.secondPlayerScore }"
+          :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] < setResult.gamesScored[1] }"
         >
-          <span>
-            {{ setResult.secondPlayerScore }}
-          </span>
+          <span>{{ setResult.gamesScored[1] }}</span>
         </td>
         <td
           v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"

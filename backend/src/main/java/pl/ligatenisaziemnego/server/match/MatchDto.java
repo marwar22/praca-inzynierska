@@ -46,6 +46,8 @@ public class MatchDto implements Serializable {
 
         Long secondPlayerScore;
 
+        List<Long> setsScored;
+
         /**
          * DTO for {@link SetResult}
          */
@@ -57,6 +59,8 @@ public class MatchDto implements Serializable {
             @NotNull(message = "secondPlayerScore can't be null")
             @PositiveOrZero(message = "secondPlayerScore must be positive or zero")
             Long secondPlayerScore;
+
+            List<Long> gamesScored;
         }
     }
 }

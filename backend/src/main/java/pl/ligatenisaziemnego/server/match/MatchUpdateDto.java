@@ -41,6 +41,9 @@ public class MatchUpdateDto implements Serializable {
         @NotNull(message = "scratch can't be null")
         private Boolean scratch;
 
+        @NotEmpty(message = "setsScored can't be null")
+        List<@NotNull(message = "setScore can't be null") @PositiveOrZero(message = "setScore must be positve or zero") Long> setsScored;
+
         /**
          * DTO for {@link SetResult}
          */
@@ -49,12 +52,8 @@ public class MatchUpdateDto implements Serializable {
         @NoArgsConstructor
         @AllArgsConstructor
         public static class SetResultDto implements Serializable {
-            @NotNull(message = "firstPlayerScore can't be null")
-            @PositiveOrZero(message = "firstPlayerScore be positive or zero")
-            Long firstPlayerScore;
-            @NotNull(message = "secondPlayerScore can't be null")
-            @PositiveOrZero(message = "secondPlayerScore must be positive or zero")
-            Long secondPlayerScore;
+            @NotEmpty(message = "gamesScored can't be null")
+            List<@NotNull(message = "gameScore can't be null") @PositiveOrZero(message = "gameScore must be positve or zero") Long> gamesScored;
         }
     }
 }

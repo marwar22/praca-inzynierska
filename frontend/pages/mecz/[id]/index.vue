@@ -40,9 +40,8 @@ watchEffect(() => {
       winnerId: -1,
       scratch: false,
       walkover: false,
-      setResults: Array.from({ length: 3 }, () => ({ firstPlayerScore: 0, secondPlayerScore: 0, gamesScored: [0, 0] })),
-      firstPlayerScore: 0,
-      secondPlayerScore: 0
+      setResults: Array.from({ length: 3 }, () => ({ gamesScored: [0, 0] })),
+      setsScored: [0, 0]
     };
   }
 });
@@ -88,8 +87,8 @@ async function save() {
     <h2 v-if="data?.tournament" class="text-lg font-semibold">Rozgrywki: {{ data.tournament.name }}</h2>
     <div>
       <span v-if="match.result" class="max-md:text-base md:text-lg">
-        Wynik: {{ match.result.firstPlayerScore }}:{{ match.result.secondPlayerScore }}</span
-      >
+        Wynik: {{ match.result.setsScored[0] }}:{{ match.result.setsScored[1] }}
+      </span>
       <span class="">
         Zwycięzca:
         <span v-if="match.result?.winnerId === match.firstPlayerId">{{
@@ -143,6 +142,6 @@ async function save() {
     <div v-if="!authStatus.loggedIn">
       <font-awesome-icon icon="fa-solid fa-circle-info" /> Mecze mogą edytować tylko zalogowani użytkownicy
     </div>
-    <ApiError :api-error="apiError" />
+    <ApiError :api-error="apiError" /> 
   </div>
 </template>

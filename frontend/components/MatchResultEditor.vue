@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { faL } from '@fortawesome/free-solid-svg-icons';
 import type { ApplicationUserBasic } from '~/types/applicationuser';
 import type { Match } from '~/types/tournament';
 import { calculateTieBreakerSetIndex } from '~/utils/tournament';
@@ -13,22 +12,21 @@ const props = defineProps<{
 
 watchEffect(() => {
   if (!props.match.result) return;
-  const [firstPlayerScore, secondPlayerScore] = (props.match.result.setResults ?? []).reduce(
-    (matchResult, setResult) => [
-      matchResult[0] + (setResult.firstPlayerScore > setResult.secondPlayerScore ? 1 : 0),
-      matchResult[1] + (setResult.secondPlayerScore > setResult.firstPlayerScore ? 1 : 0)
-    ],
+  props.match.result.setsScored = (props.match.result.setResults ?? []).reduce<[number, number]>(
+    (matchResult, setResult) =>
+      [0, 1].map(
+        (index) => matchResult[index] + (setResult.gamesScored[index] > setResult.gamesScored[1 - index] ? 1 : 0)
+      ) as [number, number],
     [0, 0]
   );
-  props.match.result.firstPlayerScore = firstPlayerScore;
-  props.match.result.secondPlayerScore = secondPlayerScore;
 });
 watchEffect(() => {
   const { result, firstPlayerId, secondPlayerId } = props.match;
   if (!result || !firstPlayerId || !secondPlayerId) return;
   if (result.scratch || result.walkover) return;
-  if (result.firstPlayerScore > result.secondPlayerScore) result.winnerId = firstPlayerId;
-  else if (result.firstPlayerScore < result.secondPlayerScore) result.winnerId = secondPlayerId;
+  
+  if (result.setsScored[0] > result.setsScored[1]) result.winnerId = firstPlayerId;
+  else if (result.setsScored[0] < result.setsScored[1]) result.winnerId = secondPlayerId;
   else result.winnerId = -1;
 });
 
@@ -44,7 +42,7 @@ const tieBreakerSetIndex = computed(() => calculateTieBreakerSetIndex(props.matc
 
 function addSetResult() {
   if (!canAddSetResult) return;
-  props.match.result?.setResults.push({ firstPlayerScore: 0, secondPlayerScore: 0, gamesScored: [0, 0] });
+  props.match.result?.setResults.push({ gamesScored: [0, 0] });
 }
 
 function removeSetResult(index: number) {
@@ -89,8 +87,8 @@ function onScratch(winnerId: number | null) {
 const _playerFields = computed(
   () =>
     [
-      { id: 'firstPlayerId', score: 'firstPlayerScore', player: props.firstPlayer },
-      { id: 'secondPlayerId', score: 'secondPlayerScore', player: props.secondPlayer }
+      { id: 'firstPlayerId', score: 0, player: props.firstPlayer },
+      { id: 'secondPlayerId', score: 1, player: props.secondPlayer }
     ] as const
 );
 const playerFields = computed(() => [
@@ -112,7 +110,7 @@ const playerFields = computed(() => [
             :class="[
               'text-center',
               isSetResultCorrect(match.result, index, tieBreakerSetIndex)
-                ? setResult[score] > setResult[otherScore]
+                ? setResult.gamesScored[score] > setResult.gamesScored[otherScore]
                   ? 'bg-olive-50 font-bold'
                   : ''
                 : 'bg-red-100'
@@ -122,10 +120,10 @@ const playerFields = computed(() => [
               v-if="editMode"
               type="number"
               :disabled="match.result.walkover"
-              v-model="setResult[score]"
+              v-model="setResult.gamesScored[score]"
               class="w-6 border-b-2 bg-transparent px-0.5 outline-none"
             />
-            <span v-else class="px-0.5 py-0.5">{{ setResult[score] }}</span>
+            <span v-else class="px-0.5 py-0.5">{{ setResult.gamesScored[score] }}</span>
           </td>
           <td v-if="index === 0 && editMode && canAddSetResult" rowspan="2" class="border p-0">
             <button

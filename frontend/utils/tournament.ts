@@ -4,10 +4,10 @@ export function isSetResultCorrect(matchResult: MatchResult, setIndex: number, t
   const setResult = matchResult.setResults[setIndex];
   const isLastSet = matchResult.setResults.length - 1 === setIndex;
   const isTieBreaker = setIndex === tieBreakerSetIndex;
-  if (setResult.firstPlayerScore < 0 || setResult.secondPlayerScore < 0) return false;
+  if (setResult.gamesScored[0] < 0 || setResult.gamesScored[1] < 0) return false;
 
-  const diff = Math.abs(setResult.firstPlayerScore - setResult.secondPlayerScore);
-  const max = Math.max(setResult.firstPlayerScore, setResult.secondPlayerScore);
+  const diff = Math.abs(setResult.gamesScored[0] - setResult.gamesScored[1]);
+  const max = Math.max(setResult.gamesScored[0], setResult.gamesScored[1]);
   if (isLastSet && matchResult.scratch) {
     if (isTieBreaker) return max < 10 || diff < 2;
     if (max === 7) return false;
@@ -25,28 +25,23 @@ export function calculateTieBreakerSetIndex(result: MatchResult | null) {
   if (result == null) return -1;
   const sets = result.setResults.length;
   if (sets === 0) return -1;
-  let { firstPlayerScore, secondPlayerScore } = result;
-  const { firstPlayerScore: last1PS, secondPlayerScore: last2PS } = result.setResults.at(-1)!;
-  if (last1PS > last2PS) firstPlayerScore--;
-  if (last1PS < last2PS) secondPlayerScore--;
+  let firstPlayerScore = result.setsScored[0];
+  let secondPlayerScore = result.setsScored[1];
+
+  const lastSetResult = result.setResults.at(-1)!.gamesScored;
+  if (lastSetResult[0] > lastSetResult[1]) firstPlayerScore--;
+  if (lastSetResult[0] < lastSetResult[1]) secondPlayerScore--;
 
   return firstPlayerScore === secondPlayerScore ? sets - 1 : -1;
 }
 
 function isWalkoverCorrect(result: MatchResult) {
-  if (result.firstPlayerScore > 0 && result.secondPlayerScore > 0) return false;
   if (result.setResults.length <= 1) return false;
 
-  const { firstPlayerScore, secondPlayerScore } = result.setResults[0];
-  if (firstPlayerScore !== 6 && secondPlayerScore !== 6) return false;
-  if (firstPlayerScore !== 0 && secondPlayerScore !== 0) return false;
+  if (result.setResults.every((sr) => sr.gamesScored[0] === 6 && sr.gamesScored[1] === 0)) return true;
+  if (result.setResults.every((sr) => sr.gamesScored[0] === 0 && sr.gamesScored[1] === 6)) return true;
 
-  for (let i = 1; i < result.setResults.length; i++) {
-    if (result.setResults[i - 1].firstPlayerScore !== result.setResults[i].firstPlayerScore) return false;
-    if (result.setResults[i - 1].secondPlayerScore !== result.setResults[i].secondPlayerScore) return false;
-  }
-
-  return true;
+  return false;
 }
 
 export function isResultCorrect(match: Match, setsToWin: number) {
@@ -57,14 +52,14 @@ export function isResultCorrect(match: Match, setsToWin: number) {
 
   const tieBreakerSetIndex = calculateTieBreakerSetIndex(result);
   if (!result.setResults.every((sr, index) => isSetResultCorrect(result, index, tieBreakerSetIndex))) return false;
-
+  
   if (result.scratch) return true;
 
-  const { firstPlayerScore, secondPlayerScore, winnerId } = result;
+  const { setsScored, winnerId } = result;
   const lastSet = result.setResults.at(-1)!;
-  if (firstPlayerScore > secondPlayerScore && winnerId === match.firstPlayerId)
-    return lastSet.firstPlayerScore > lastSet.secondPlayerScore && firstPlayerScore === setsToWin;
-  if (firstPlayerScore < secondPlayerScore && winnerId === match.secondPlayerId)
-    return lastSet.firstPlayerScore < lastSet.secondPlayerScore && secondPlayerScore === setsToWin;
+  if (setsScored[0] > setsScored[1] && winnerId === match.firstPlayerId)
+    return lastSet.gamesScored[0] > lastSet.gamesScored[1] && setsScored[0] === setsToWin;
+  if (setsScored[0] < setsScored[1] && winnerId === match.secondPlayerId)
+    return lastSet.gamesScored[0] < lastSet.gamesScored[1] && setsScored[1] === setsToWin;
   return false;
 }

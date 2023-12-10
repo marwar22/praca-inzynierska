@@ -19,15 +19,6 @@ const match = computed(() => {
 });
 const leftPlayerIndex = computed(() => match.value.playerOnLeftId);
 const rightPlayerIndex = computed(() => 1 - match.value.playerOnLeftId);
-const matchScore = computed(() => {
-  return (match.value?.result?.setResults ?? []).reduce(
-    (matchResult, setResult) => [
-      matchResult[0] + (setResult.firstPlayerScore > setResult.secondPlayerScore ? 1 : 0),
-      matchResult[1] + (setResult.secondPlayerScore > setResult.firstPlayerScore ? 1 : 0)
-    ],
-    [0, 0]
-  );
-});
 
 const hov1 = computed(() => props.hoveredPlayerId === props.playerIds[0]);
 const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && false);
@@ -43,11 +34,11 @@ const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && fals
               :icon="['far', 'flag']"
               :class="{ invisible: !(match.result.walkover && match.result.winnerId === playerIds[1]) }"
             />
-            {{ matchScore[leftPlayerIndex] }}
+            {{ match.result?.setsScored[leftPlayerIndex] }}
           </span>
           :
           <span :class="[{ [`text-olive-700`]: hov2 }]">
-            {{ matchScore[rightPlayerIndex] }}
+            {{ match.result?.setsScored[rightPlayerIndex] }}
             <font-awesome-icon
               :icon="['far', 'flag']"
               :class="{ invisible: !(match.result.walkover && match.result.winnerId === playerIds[0]) }"
