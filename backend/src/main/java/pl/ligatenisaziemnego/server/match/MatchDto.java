@@ -39,12 +39,11 @@ public class MatchDto implements Serializable {
         @NotNull(message = "scratch can't be null")
         Boolean scratch;
 
+        @NotNull(message = "playedSetResults can't be null")
+        List<@NotNull(message = "playedSetResult can't be null") SetResultDto> playedSetResults;
+
         @NotNull(message = "setResults can't be null")
         List<@NotNull(message = "setResult can't be null") SetResultDto> setResults;
-
-        Long firstPlayerScore;
-
-        Long secondPlayerScore;
 
         List<Long> setsScored;
 
@@ -53,14 +52,7 @@ public class MatchDto implements Serializable {
          */
         @Value
         public static class SetResultDto implements Serializable {
-            @NotNull(message = "firstPlayerScore can't be null")
-            @PositiveOrZero(message = "firstPlayerScore be positive or zero")
-            Long firstPlayerScore;
-            @NotNull(message = "secondPlayerScore can't be null")
-            @PositiveOrZero(message = "secondPlayerScore must be positive or zero")
-            Long secondPlayerScore;
-
-            List<Long> gamesScored;
+            List<Short> gamesScored;
         }
     }
 }

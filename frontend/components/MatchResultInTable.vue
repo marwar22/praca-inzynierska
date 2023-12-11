@@ -46,7 +46,7 @@ const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && fals
           </span>
         </span>
         <span class="text-center text-sm">
-          <span v-for="(setResult, setNumber) in match.result.setResults" class="[&:last-child>*:nth-child(2)]:hidden">
+          <span v-for="(setResult, setNumber) in match.result.playedSetResults" class="[&:last-child>*:nth-child(2)]:hidden">
             <span
               >(<span :class="[{ [`text-olive-700`]: hov1 }]"
                 ><font-awesome-icon
@@ -54,7 +54,7 @@ const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && fals
                   v-if="
                     match.result.scratch &&
                     match.result.winnerId === playerIds[1] &&
-                    setNumber === match.result.setResults.length - 1
+                    setNumber === match.result.playedSetResults.length - 1
                   "
                   :icon="['fas', 'house-medical-flag']"
                 />{{ setResult.gamesScored[leftPlayerIndex] }}</span
@@ -65,7 +65,7 @@ const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && fals
                   v-if="
                     match.result.scratch &&
                     match.result.winnerId === playerIds[0] &&
-                    setNumber === match.result.setResults.length - 1
+                    setNumber === match.result.playedSetResults.length - 1
                   "
                   :icon="['fas', 'house-medical-flag']" /></span
               >)</span

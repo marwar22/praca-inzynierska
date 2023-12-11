@@ -14,16 +14,20 @@ const apiError = computed(() => {
   <div class="page__margin">
     <h1 class="mb-4 mt-2 text-3xl font-bold">Ranking</h1>
     <table>
-      <tr>
-        <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Ranking</th>
-        <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Zawodnik</th>
-        <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Punkty</th>
-      </tr>
-      <tr v-for="(player, index) in players">
-        <td class="border border-champagne-900 px-2 py-1">{{ index + 1 }}</td>
-        <td class="border border-champagne-900 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
-        <td class="border border-champagne-900 px-2 py-1">0</td>
-      </tr>
+      <thead>
+        <tr>
+          <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Ranking</th>
+          <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Zawodnik</th>
+          <th class="border border-champagne-900 bg-champagne-300 px-2 py-1">Punkty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(player, index) in players">
+          <td class="border border-champagne-900 px-2 py-1">{{ index + 1 }}</td>
+          <td class="border border-champagne-900 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
+          <td class="border border-champagne-900 px-2 py-1">0</td>
+        </tr>
+      </tbody>
     </table>
     <ApiError :api-error="apiError" />
   </div>

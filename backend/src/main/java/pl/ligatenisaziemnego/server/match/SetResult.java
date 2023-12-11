@@ -16,17 +16,17 @@ import java.util.List;
 public class SetResult {
     @NotNull(message = "firstPlayerScore can't be null")
     @PositiveOrZero(message = "firstPlayerScore be positive or zero")
-    private Long firstPlayerScore;
+    private Short firstPlayerScore;
 
     @NotNull(message = "secondPlayerScore can't be null")
     @PositiveOrZero(message = "secondPlayerScore must be positive or zero")
-    private Long secondPlayerScore;
+    private Short secondPlayerScore;
 
     @Getter(AccessLevel.NONE)
     @Transient
-    private List<Long> gamesScored;
+    private List<Short> gamesScored;
 
-    public List<Long> getGamesScored() {
+    public List<Short> getGamesScored() {
         return List.of(firstPlayerScore, secondPlayerScore);
     }
 

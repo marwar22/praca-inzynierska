@@ -27,12 +27,21 @@ public class TournamentCreateDto implements Serializable {
     // TODO "magic" numbers
     @Range(min = 1, max = 128, message = "numberOfPlayers must be in range <1, 128>")
     @NotNull(message = "numberOfPlayers can't be null")
-    Long numberOfPlayers;
+    Short numberOfPlayers;
 
     // TODO "magic" numbers
     @Range(min = 1, max = 24, message = "numberOfGroups must be in range <1, 24>")
     @NotNull(message = "numberOfGroups can't be null")
-    Long numberOfGroups;
+    Short numberOfGroups;
+
+    // TODO "magic" numbers
+    @Range(min = 1, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <1, 128>")
+    @NotNull(message = "numberOfPlayersInKnockoutBracket can't be null")
+    Short numberOfPlayersInKnockoutBracket;
+
+    @NotNull(message = "setsToWin can't be null")
+    @Range(message = "setsToWin must be in range <2, 3>", min = 2, max = 3)
+    Long setsToWin;
 
     @NotEmpty(message = "playerIds can't be empty")
     List<@NotNull(message = "playerId can't be null") Long> playerIds;
@@ -41,10 +50,11 @@ public class TournamentCreateDto implements Serializable {
     List<@NotNull(message = "group can't be null") TournamentGroupDto> groups;
 
     @NotNull(message = "start_date can't be null")
-    private LocalDateTime startDate;
+    LocalDateTime startDate;
 
     @NotNull(message = "end_date can't be null")
-    private LocalDateTime endDate;
+    LocalDateTime endDate;
+
 
     /**
      * DTO for {@link pl.ligatenisaziemnego.server.tournament.group.TournamentGroup}

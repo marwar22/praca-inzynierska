@@ -17,7 +17,6 @@ const MAX_NUMBER_OF_GROUPS = 24;
 const apiError = ref(null as ApiError | null);
 const name = ref('');
 const date = ref([new Date(), new Date()]);
-const setsToWin = ref(2);
 
 const numberOfPlayers = ref(16);
 const isNumberOfPlayersInRange = computed(
@@ -29,8 +28,11 @@ const isNumberOfGroupsInRange = computed(
   () => MIN_NUMBER_OF_GROUPS <= numberOfGroups.value && numberOfGroups.value <= MAX_NUMBER_OF_GROUPS
 );
 
-const numberOfPlayersKnockoutBracket = ref(4);
-const numberOfPlayersKnockoutBracketOptions = computed(() => {
+const setsToWin = ref(2);
+const setsToWinOptions = Array.from({ length: MAX_SETS_TO_WIN - MIN_SETS_TO_WIN + 1 }, (_, i) => MIN_SETS_TO_WIN + i);
+
+const numberOfPlayersInKnockoutBracket = ref(4);
+const numberOfPlayersInKnockoutBracketOptions = computed(() => {
   let max = 1 << (31 - Math.clz32(numberOfPlayers.value));
   const res = [];
   for (let i = max; i > 1; i /= 2) res.push(i);
@@ -63,7 +65,7 @@ async function create() {
         numberOfPlayers: numberOfPlayers.value,
         numberOfGroups: numberOfGroups.value,
         setsToWin: setsToWin.value,
-        numberOfPlayersKnockoutBracket: numberOfPlayersKnockoutBracket.value,
+        numberOfPlayersInKnockoutBracket: numberOfPlayersInKnockoutBracket.value,
         playerIds: selectedApplicationUsers.value.map((sau) => sau.id),
         groups: groups.value
           .map((group, index) => {
@@ -101,6 +103,8 @@ async function create() {
           placeholder="Liczba grup"
           type="number"
           v-model.number="numberOfPlayers"
+          :min="MIN_NUMBER_OF_PLAYERS"
+          :max="MAX_NUMBER_OF_PLAYERS * 10"
           :error="
             !isNumberOfPlayersInRange
               ? `Liczba graczy musi być w przedziale od ${MIN_NUMBER_OF_PLAYERS} do ${MAX_NUMBER_OF_PLAYERS}`
@@ -115,6 +119,8 @@ async function create() {
           placeholder="Liczba grup"
           type="number"
           v-model.number="numberOfGroups"
+          :min="MIN_NUMBER_OF_GROUPS"
+          :max="MAX_NUMBER_OF_GROUPS * 10"
           :error="
             !isNumberOfGroupsInRange
               ? `Liczba grup musi być w przedziale od ${MIN_NUMBER_OF_GROUPS} do ${MAX_NUMBER_OF_GROUPS}`
@@ -140,11 +146,11 @@ async function create() {
     <div class="flex">
       <div class="mb-2 flex flex-col">
         Ilość finalistów
-        <RadioGroup v-model="numberOfPlayersKnockoutBracket" :values="numberOfPlayersKnockoutBracketOptions" />
+        <RadioGroup v-model="numberOfPlayersInKnockoutBracket" :values="numberOfPlayersInKnockoutBracketOptions" />
       </div>
       <div class="mb-2 flex flex-col">
         Ilość setów do wygranej
-        <RadioGroup v-model="setsToWin" :values="[2, 3]" />
+        <RadioGroup v-model="setsToWin" :values="setsToWinOptions" />
       </div>
     </div>
     <PlayerAdder :numberOfPlayers="numberOfPlayers" v-model:selectedApplicationUsers="selectedApplicationUsers" />

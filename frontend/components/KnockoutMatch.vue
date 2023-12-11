@@ -55,14 +55,14 @@ const lineTranslateY = computed(() => {
           {{ nameFromApplicationUser(firstPlayer) }}&nbsp;
         </td>
         <td
-          v-for="setResult in match?.result?.setResults ?? []"
+          v-for="setResult in match?.result?.playedSetResults ?? []"
           class="w-[25px] border px-1.5 py-1"
           :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] > setResult.gamesScored[1] }"
         >
           <span>{{ setResult.gamesScored[0] }}</span>
         </td>
         <td
-          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"
+          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.playedSetResults?.length ?? 0)"
           class="w-[25px] border px-1.5 py-1"
         ></td>
         <td rowspan="2" class="w-8 border" v-if="match && nextKBMatch?.match.result == null">
@@ -79,14 +79,14 @@ const lineTranslateY = computed(() => {
           {{ nameFromApplicationUser(secondPlayer) }}&nbsp;
         </td>
         <td
-          v-for="setResult in match?.result?.setResults ?? []"
+          v-for="setResult in match?.result?.playedSetResults ?? []"
           class="w-[25px] border px-1.5 py-1"
           :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] < setResult.gamesScored[1] }"
         >
           <span>{{ setResult.gamesScored[1] }}</span>
         </td>
         <td
-          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.setResults?.length ?? 0)"
+          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.playedSetResults?.length ?? 0)"
           class="w-[25px] border px-1.5 py-1"
         ></td>
       </tr>

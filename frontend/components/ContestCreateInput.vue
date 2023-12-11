@@ -5,27 +5,44 @@ const props = defineProps<{
   type?: string;
   placeholder?: string;
   error?: string;
+  min?: number;
+  max?: number;
 }>();
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: string | number): void;
 }>();
 function emitValue(event: Event) {
-  let value: string | number = (event.target as HTMLInputElement).value;
+  const eventTarget = event.target as HTMLInputElement;
+  let value: string | number = eventTarget.value;
   if (props.modelModifiers.number) {
-    const newValue = Number.parseFloat(value);
-    if (!isNaN(newValue)) value = newValue;
+    let newValue = Number.parseFloat(value);
+    if (!isNaN(newValue)) {
+      if (props.max && newValue > props.max) newValue = props.max;
+      if (props.min && newValue < props.min) newValue = props.min;
+      value = newValue;
+      if (props.modelValue === newValue) {
+        eventTarget.value = newValue.toString();
+        console.log(newValue);
+      } else {
+      }
+    }
   }
   emit('update:modelValue', value);
 }
+const input = ref<HTMLInputElement>();
 </script>
+
 <template>
   <input
+    ref="input"
     class="my-1 h-12 rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
     :class="error ? 'border-red-500 ring-red-600' : ''"
     :value="modelValue"
     @input="emitValue"
     :placeholder="placeholder"
     :type="type"
+    :min="min"
+    :max="max"
   />
   <span v-if="error" class="font-semibold text-red-500">{{ error }}</span>
 </template>

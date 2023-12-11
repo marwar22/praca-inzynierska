@@ -45,15 +45,15 @@ function generateGroups() {
     </button>
   </div>
   <div class="flex flex-wrap">
-    <div v-for="(_, group) in numberOfGroups" class="m-1 flex flex-col">
+    <div v-for="(_, groupIndex) in numberOfGroups" class="m-1 flex flex-col" :key="groupIndex">
       <table>
         <tr class="border-2">
-          <th class="bg-champagne-300 px-2 py-1 text-left">{{ `Grupa ${String.fromCharCode(65 + group)}` }}</th>
+          <th class="bg-champagne-300 px-2 py-1 text-left">{{ `Grupa ${String.fromCharCode(65 + groupIndex)}` }}</th>
         </tr>
-        <tr v-for="(_, player) in playersInGroups[group]" class="border-2">
+        <tr v-for="(_, playerIndex) in playersInGroups[groupIndex]" class="border-2" :key="playerIndex">
           <td class="min-w-[12rem] px-2 py-1 hover:bg-olive-50">
-            <span v-if="groups[group] && groups[group][player]">
-              {{ groups[group][player].firstName }} {{ groups[group][player].lastName }}</span
+            <span v-if="groups[groupIndex] && groups[groupIndex][playerIndex]">
+              {{ groups[groupIndex][playerIndex].firstName }} {{ groups[groupIndex][playerIndex].lastName }}</span
             >
             <span v-else>---</span>
           </td>

@@ -40,6 +40,7 @@ watchEffect(() => {
       winnerId: -1,
       scratch: false,
       walkover: false,
+      playedSetResults: Array.from({ length: 3 }, () => ({ gamesScored: [0, 0] })),
       setResults: Array.from({ length: 3 }, () => ({ gamesScored: [0, 0] })),
       setsScored: [0, 0]
     };
@@ -104,6 +105,7 @@ async function save() {
           :match="match"
           :first-player="data?.firstPlayer ?? null"
           :second-player="data?.secondPlayer ?? null"
+          :sets-to-win="data?.tournament?.setsToWin ?? MAX_SETS_TO_WIN"
           :editMode="editMode"
           class="md:mr-1"
         />
@@ -142,6 +144,6 @@ async function save() {
     <div v-if="!authStatus.loggedIn">
       <font-awesome-icon icon="fa-solid fa-circle-info" /> Mecze mogą edytować tylko zalogowani użytkownicy
     </div>
-    <ApiError :api-error="apiError" /> 
+    <ApiError :api-error="apiError" />
   </div>
 </template>

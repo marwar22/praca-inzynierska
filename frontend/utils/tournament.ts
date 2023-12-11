@@ -1,8 +1,8 @@
 import type { Match, MatchResult, SetResult } from '~/types/tournament';
 
 export function isSetResultCorrect(matchResult: MatchResult, setIndex: number, tieBreakerSetIndex: number) {
-  const setResult = matchResult.setResults[setIndex];
-  const isLastSet = matchResult.setResults.length - 1 === setIndex;
+  const setResult = matchResult.playedSetResults[setIndex];
+  const isLastSet = matchResult.playedSetResults.length - 1 === setIndex;
   const isTieBreaker = setIndex === tieBreakerSetIndex;
   if (setResult.gamesScored[0] < 0 || setResult.gamesScored[1] < 0) return false;
 
@@ -23,12 +23,12 @@ export function isSetResultCorrect(matchResult: MatchResult, setIndex: number, t
 
 export function calculateTieBreakerSetIndex(result: MatchResult | null) {
   if (result == null) return -1;
-  const sets = result.setResults.length;
+  const sets = result.playedSetResults.length;
   if (sets === 0) return -1;
   let firstPlayerScore = result.setsScored[0];
   let secondPlayerScore = result.setsScored[1];
 
-  const lastSetResult = result.setResults.at(-1)!.gamesScored;
+  const lastSetResult = result.playedSetResults.at(-1)!.gamesScored;
   if (lastSetResult[0] > lastSetResult[1]) firstPlayerScore--;
   if (lastSetResult[0] < lastSetResult[1]) secondPlayerScore--;
 
@@ -36,27 +36,30 @@ export function calculateTieBreakerSetIndex(result: MatchResult | null) {
 }
 
 function isWalkoverCorrect(result: MatchResult) {
-  if (result.setResults.length <= 1) return false;
+  return result.playedSetResults.length == 0;
+  // if (result.playedSetResults.length <= 1) return false;
 
-  if (result.setResults.every((sr) => sr.gamesScored[0] === 6 && sr.gamesScored[1] === 0)) return true;
-  if (result.setResults.every((sr) => sr.gamesScored[0] === 0 && sr.gamesScored[1] === 6)) return true;
+  // if (result.playedSetResults.every((sr) => sr.gamesScored[0] === 6 && sr.gamesScored[1] === 0)) return true;
+  // if (result.playedSetResults.every((sr) => sr.gamesScored[0] === 0 && sr.gamesScored[1] === 6)) return true;
 
-  return false;
+  // return false;
 }
 
 export function isResultCorrect(match: Match, setsToWin: number) {
   if (!match.result) return false;
   const result = match.result;
+
   if (result.walkover) return isWalkoverCorrect(result);
-  if (!between(MIN_SETS_IN_MATCH, result.setResults.length, MAX_SETS_IN_MATCH)) return false;
+  if (!between(setsToWin, result.playedSetResults.length, 2 * setsToWin - 1)) return false;
 
   const tieBreakerSetIndex = calculateTieBreakerSetIndex(result);
-  if (!result.setResults.every((sr, index) => isSetResultCorrect(result, index, tieBreakerSetIndex))) return false;
-  
+  if (!result.playedSetResults.every((sr, index) => isSetResultCorrect(result, index, tieBreakerSetIndex)))
+    return false;
+
   if (result.scratch) return true;
 
   const { setsScored, winnerId } = result;
-  const lastSet = result.setResults.at(-1)!;
+  const lastSet = result.playedSetResults.at(-1)!;
   if (setsScored[0] > setsScored[1] && winnerId === match.firstPlayerId)
     return lastSet.gamesScored[0] > lastSet.gamesScored[1] && setsScored[0] === setsToWin;
   if (setsScored[0] < setsScored[1] && winnerId === match.secondPlayerId)

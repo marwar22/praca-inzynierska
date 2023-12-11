@@ -32,6 +32,9 @@ public class MatchUpdateDto implements Serializable {
         @NotNull(message = "winnerId can't be null")
         Long winnerId;
 
+        @NotNull(message = "playedSetResults can't be null")
+        List<@NotNull(message = "playedSetResult can't be null") SetResultDto> playedSetResults;
+
         @NotNull(message = "setResults can't be null")
         List<@NotNull(message = "setResult can't be null") SetResultDto> setResults;
 
@@ -53,7 +56,7 @@ public class MatchUpdateDto implements Serializable {
         @AllArgsConstructor
         public static class SetResultDto implements Serializable {
             @NotEmpty(message = "gamesScored can't be null")
-            List<@NotNull(message = "gameScore can't be null") @PositiveOrZero(message = "gameScore must be positve or zero") Long> gamesScored;
+            List<@NotNull(message = "gameScore can't be null") @PositiveOrZero(message = "gameScore must be positve or zero") Short> gamesScored;
         }
     }
 }

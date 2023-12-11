@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LoginInput } from '#build/components';
+import type LoginInputVue from '~/components/LoginInput.vue';
 import type { ApiError } from '~/types/apierrror';
 import type { AuthStatus } from '~/types/auth';
 
@@ -24,7 +24,7 @@ async function onLogin() {
       },
       credentials: 'include'
     });
-    authStatus.value = res
+    authStatus.value = res;
     apiError.value = null;
     incorrectUsernameOrPassword.value = false;
     await navigateTo('/konto');
@@ -38,7 +38,7 @@ async function onLogin() {
   pending.value = false;
 }
 
-const loginInput = ref<InstanceType<typeof LoginInput>>();
+const loginInput = ref<InstanceType<typeof LoginInputVue>>();
 onMounted(() => loginInput.value?.input?.focus());
 </script>
 
@@ -54,8 +54,8 @@ onMounted(() => loginInput.value?.input?.focus());
         placeholder="Nazwa użytkownika, lub email"
         label="Nazwa użytkownika, lub email"
         ref="loginInput"
-      ></LoginInput>
-      <LoginInput v-model="password" placeholder="Hasło" type="password" @enter="onLogin" label="Hasło"></LoginInput>
+      />
+      <LoginInput v-model="password" placeholder="Hasło" type="password" @enter="onLogin" label="Hasło" />
 
       <button
         @click="onLogin"

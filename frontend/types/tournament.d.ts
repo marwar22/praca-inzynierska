@@ -10,6 +10,7 @@ type MatchResult = {
   scratch: boolean;
   walkover: boolean;
   setsScored: [number, number];
+  playedSetResults: SetResult[];
   setResults: SetResult[];
 };
 

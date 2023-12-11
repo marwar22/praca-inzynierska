@@ -74,7 +74,6 @@ const numberOfPlayersKnockoutBracket = ref(4);
 
 const numberOfPlayersKnockoutBracketOptions = computed(() => {
   let max = 1 << (31 - Math.clz32(tournament.value?.numberOfPlayers ?? 4));
-  console.log(tournament.value?.numberOfPlayers);
   const res = [];
   for (let i = max; i > 1; i /= 2) res.push(i);
   res.reverse();
@@ -112,24 +111,26 @@ async function deleteKnockoutBracket() {
       <div class="flex flex-wrap">
         <div v-for="(group, groupNumber) in tournament.groups" class="m-1 flex flex-col">
           <table>
-            <tr class="border-2">
-              <th class="bg-champagne-300 px-2 py-1 text-left">
-                <NuxtLink :to="`/rozgrywki/${route.params.id}/grupa/${groupNumber}`">
+            <thead>
+              <tr class="border-2">
+                <th class="bg-champagne-300 px-2 py-1 text-left">
                   {{ `Grupa ${String.fromCharCode(65 + groupNumber)}` }}
-                </NuxtLink>
-              </th>
-            </tr>
-            <tr v-for="playerId in group.playerIds" class="border-2">
-              <td class="min-w-[12rem] px-2 py-1 hover:bg-olive-50">
-                <span v-if="playerId" class="flex justify-between">
-                  <span>{{ nameFromApplicationUser(players.get(playerId)) }}</span>
-                  <span v-if="showContacts && contacts.get(playerId)" class="pl-3">{{
-                    contacts.get(playerId)?.email
-                  }}</span>
-                </span>
-                <span v-else> --- </span>
-              </td>
-            </tr>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="playerId in group.playerIds" class="border-2">
+                <td class="min-w-[12rem] px-2 py-1 hover:bg-olive-50">
+                  <span v-if="playerId" class="flex justify-between">
+                    <span>{{ nameFromApplicationUser(players.get(playerId)) }}</span>
+                    <span v-if="showContacts && contacts.get(playerId)" class="pl-3">{{
+                      contacts.get(playerId)?.email
+                    }}</span>
+                  </span>
+                  <span v-else> --- </span>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -180,9 +181,7 @@ async function deleteKnockoutBracket() {
               >
               <span v-else class="pl-1">Drabinkę można utworzyć, gdy każdy mecz fazy grupowej ma wynik</span>
             </button>
-            <button v-else @click="deleteKnockoutBracket">
-              Usuń drabinkę
-            </button>
+            <button v-else @click="deleteKnockoutBracket">Usuń drabinkę</button>
 
             <label class="ml-2 flex items-center justify-center">
               ilość finalistów

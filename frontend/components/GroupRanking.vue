@@ -8,9 +8,11 @@ const props = defineProps<{
   groupNumber: number;
   matches: Map<string, Match>;
 }>();
+
 const group = computed(() => {
   return props.tournament.groups[props.groupNumber];
 });
+
 const results = computed(() => {
   const points = new Map<number, number>();
   const matchesPlayed = new Map<number, number>();
@@ -25,9 +27,7 @@ const results = computed(() => {
     for (const [index, playerId] of [firstPlayerId, secondPlayerId].entries()) {
       setsWon.set(playerId, (setsWon.get(playerId) ?? 0) + match.result.setsScored[index]);
       setsLost.set(playerId, (setsLost.get(playerId) ?? 0) + match.result.setsScored[1 - index]);
-
       matchesPlayed.set(playerId, (matchesPlayed.get(playerId) ?? 0) + 1);
-
       let playerGamesWon = 0;
       let playerGamesLost = 0;
       for (const setResult of match.result.setResults) {
@@ -37,7 +37,11 @@ const results = computed(() => {
       gamesWon.set(playerId, (gamesWon.get(playerId) ?? 0) + playerGamesWon);
       gamesLost.set(playerId, (gamesLost.get(playerId) ?? 0) + playerGamesLost);
     }
-    points.set(match.result.winnerId, (points.get(match.result.winnerId) ?? 0) + 1);
+    points.set(match.result.winnerId, (points.get(match.result.winnerId) ?? 0) + 2);
+    if (!match.result.walkover) {
+      const loserId = match.result.winnerId === firstPlayerId ? firstPlayerId : secondPlayerId;
+      points.set(loserId, (points.get(loserId) ?? 0) + 1);
+    }
   }
   return { matchesPlayed, points, setsWon, setsLost, gamesWon, gamesLost };
 });
@@ -69,26 +73,30 @@ const sortedPlayers = computed(() => {
 <template>
   <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
     <table>
-      <tr>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">#</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Zawodnik</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Punkty</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety wygrane</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety przegrane</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy wygrane</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy przegrane</th>
-        <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Mecze</th>
-      </tr>
-      <tr v-for="(player, place) in sortedPlayers">
-        <td class="border-2 px-2 py-1">{{ place + 1 }}</td>
-        <td class="border-2 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
-        <td class="border-2 px-2 py-1">{{ player.points }}</td>
-        <td class="border-2 px-2 py-1">{{ player.setsWon }}</td>
-        <td class="border-2 px-2 py-1">{{ player.setsLost }}</td>
-        <td class="border-2 px-2 py-1">{{ player.gamesWon }}</td>
-        <td class="border-2 px-2 py-1">{{ player.gamesLost }}</td>
-        <td class="border-2 px-2 py-1">{{ player.matchesPlayed }}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">#</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Zawodnik</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Punkty</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety wygrane</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety przegrane</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy wygrane</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy przegrane</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Mecze</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(player, place) in sortedPlayers">
+          <td class="border-2 px-2 py-1">{{ place + 1 }}</td>
+          <td class="border-2 px-2 py-1">{{ nameFromApplicationUser(player) }}</td>
+          <td class="border-2 px-2 py-1">{{ player.points }}</td>
+          <td class="border-2 px-2 py-1">{{ player.setsWon }}</td>
+          <td class="border-2 px-2 py-1">{{ player.setsLost }}</td>
+          <td class="border-2 px-2 py-1">{{ player.gamesWon }}</td>
+          <td class="border-2 px-2 py-1">{{ player.gamesLost }}</td>
+          <td class="border-2 px-2 py-1">{{ player.matchesPlayed }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>

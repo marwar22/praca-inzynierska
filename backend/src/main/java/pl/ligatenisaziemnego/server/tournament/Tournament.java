@@ -39,19 +39,24 @@ public class Tournament {
     @Range(min = 1, max = 128, message = "numberOfPlayers must be in range <1, 128>")
     @NotNull(message = "numberOfPlayers can't be null")
     @Column(name = "number_of_players", nullable = false)
-    private Long numberOfPlayers;
+    private Short numberOfPlayers;
 
     // TODO "magic" numbers
     @Range(min = 1, max = 24, message = "numberOfGroups must be in range <1, 24>")
     @NotNull(message = "numberOfGroups can't be null")
     @Column(name = "number_of_groups", nullable = false)
-    private Long numberOfGroups;
+    private Short numberOfGroups;
+
+    // TODO "magic" numbers
+    @Range(min = 1, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <1, 128>")
+    @NotNull(message = "numberOfPlayersInKnockoutBracket can't be null")
+    @Column(name = "number_of_players_in_knockout_bracket", nullable = false)
+    private Short numberOfPlayersInKnockoutBracket;
 
     @Range(min = 2, max = 3, message = "setsToWin must be in range <2, 3>")
     @NotNull(message = "setsToWin can't be null")
     @Column(name = "sets_to_win", nullable = false)
     private Long setsToWin;
-
 
     @NotEmpty(message = "players can't be empty")
     @ManyToMany

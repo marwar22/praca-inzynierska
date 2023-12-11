@@ -43,6 +43,12 @@ public class MatchResult {
     @Column(name = "scratch")
     private Boolean scratch;
 
+    @NotNull(message = "playedSetResults can't be null")
+    @ElementCollection
+    @OrderColumn(name = "set_number")
+    @CollectionTable(name = "match_result_played_set_result", joinColumns = @JoinColumn(name = "match_result_id"))
+    private List<@NotNull(message = "setResult can't be null") SetResult> playedSetResults;
+
     @NotNull(message = "setResults can't be null")
     @ElementCollection
     @OrderColumn(name = "set_number")
@@ -53,6 +59,11 @@ public class MatchResult {
     @Transient
     private List<Long> setsScored;
 
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToOne(mappedBy = "result")
+    private Match match;
+
     public Long getFirstPlayerScore() {
         return setResults.stream().mapToLong((sr) -> sr.getFirstPlayerScore() > sr.getSecondPlayerScore() ? 1 : 0).sum();
     }
@@ -62,6 +73,18 @@ public class MatchResult {
     }
 
     public List<Long> getSetsScored() {
-        return List.of(getFirstPlayerScore(), getSecondPlayerScore());
+        if (!this.scratch) return List.of(getFirstPlayerScore(), getSecondPlayerScore());
+        var winnerIndex = winnerId.equals(match.getFirstPlayerId()) ? 0 : 1;
+//        TODO count as played till end
+        var setsScored = new ArrayList<>(List.of(0L, 0L));
+        Long setsToWin = match.getTournament().getSetsToWin();
+
+        for (int i = 0; i < setResults.size() - 1; i++) {
+            var gamesScored = setResults.get(i).getGamesScored();
+            if (gamesScored.get(0) > gamesScored.get(1)) setsScored.set(0, setsScored.get(0) + 1);
+            if (gamesScored.get(0) < gamesScored.get(1)) setsScored.set(1, setsScored.get(1) + 1);
+        }
+        setsScored.set(winnerIndex, setsToWin);
+        return setsScored;
     }
 }

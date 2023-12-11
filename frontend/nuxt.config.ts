@@ -7,6 +7,14 @@ export default defineNuxtConfig({
     typeCheck: true
   },
   css: ['@fortawesome/fontawesome-svg-core/styles.css', '~/assets/css/main.css'],
+  build: {
+    transpile: [
+      '@fortawesome/fontawesome-svg-core',
+      '@fortawesome/free-regular-svg-icons',
+      '@fortawesome/free-solid-svg-icons',
+      '@fortawesome/vue-fontawesome'
+    ]
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
