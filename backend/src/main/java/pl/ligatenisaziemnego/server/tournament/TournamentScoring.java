@@ -9,7 +9,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
 
@@ -39,30 +38,30 @@ public class TournamentScoring {
     @PositiveOrZero(message = "groupPointsForWalkover must be positive or zero")
     private Short groupPointsForWalkover;
 
-    @NotNull(message = "rankingForTournamentParticipation can't be null")
-    @PositiveOrZero(message = "rankingForTournamentParticipation must be positive or zero")
-    private Short rankingForTournamentParticipation;
+    @NotNull(message = "ratingForTournamentParticipation can't be null")
+    @PositiveOrZero(message = "ratingForTournamentParticipation must be positive or zero")
+    private Short ratingForTournamentParticipation;
 
-    @NotNull(message = "rankingForMatchWin can't be null")
-    @PositiveOrZero(message = "rankingForMatchWin must be positive or zero")
-    private Short rankingForMatchWin;
+    @NotNull(message = "ratingForMatchWin can't be null")
+    @PositiveOrZero(message = "ratingForMatchWin must be positive or zero")
+    private Short ratingForMatchWin;
 
-    @NotNull(message = "rankingForMatchLoss can't be null")
-    @PositiveOrZero(message = "rankingForMatchLoss must be positive or zero")
-    private Short rankingForMatchLoss;
+    @NotNull(message = "ratingForMatchLoss can't be null")
+    @PositiveOrZero(message = "ratingForMatchLoss must be positive or zero")
+    private Short ratingForMatchLoss;
 
-    @NotNull(message = "rankingForMatchWalkover can't be null")
-    @PositiveOrZero(message = "rankingForMatchWalkover must be positive or zero")
-    private Short rankingForMatchWalkover;
+    @NotNull(message = "ratingForMatchWalkover can't be null")
+    @PositiveOrZero(message = "ratingForMatchWalkover must be positive or zero")
+    private Short ratingForMatchWalkover;
 
     @NotNull(message = "groupPointsForWin can't be null")
-    @PositiveOrZero(message = "rankingForTournamentWin must be positive or zero")
-    private Short rankingForTournamentWin;
+    @PositiveOrZero(message = "ratingForTournamentWin must be positive or zero")
+    private Short ratingForTournamentWin;
 
-    @NotEmpty(message = "rankingForKnockoutStageParticipation can't be empty")
+    @NotEmpty(message = "ratingForKnockoutStageParticipation can't be empty")
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "ranking_for_knockout_stage_participation", joinColumns = @JoinColumn(name = "tournament_id"))
-    @Column(name = "ranking")
+    @CollectionTable(name = "rating_for_knockout_stage_participation", joinColumns = @JoinColumn(name = "tournament_scoring_id"))
+    @Column(name = "rating")
     @OrderColumn(name = "stage")
-    private List<@NotNull(message = "ranking can't be null") Short> rankingForKnockoutStageParticipation;
+    private List<@NotNull(message = "rating can't be null") Short> ratingForKnockoutStageParticipation;
 }

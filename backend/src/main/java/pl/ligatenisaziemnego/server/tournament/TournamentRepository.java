@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
 
-    @EntityGraph(attributePaths = {"knockoutBracket", "scoring.rankingForKnockoutStageParticipation", "groups.playerIds"})
+    @EntityGraph(attributePaths = {"knockoutBracket", "scoring.ratingForKnockoutStageParticipation", "groups.playerIds"})
     @Override
     @Nonnull
     Optional<Tournament> findById(@Nonnull Long id);

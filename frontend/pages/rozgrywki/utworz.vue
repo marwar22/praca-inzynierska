@@ -35,12 +35,12 @@ const scoring = ref<TournamentScoring>({
   groupPointsForWin: 2,
   groupPointsForLoss: 1,
   groupPointsForWalkover: 0,
-  rankingForTournamentParticipation: 75,
-  rankingForMatchWin: 25,
-  rankingForMatchLoss: 13,
-  rankingForMatchWalkover: 0,
-  rankingForTournamentWin: 125,
-  rankingForKnockoutStageParticipation: [0]
+  ratingForTournamentParticipation: 75,
+  ratingForMatchWin: 25,
+  ratingForMatchLoss: 13,
+  ratingForMatchWalkover: 0,
+  ratingForTournamentWin: 125,
+  ratingForKnockoutStageParticipation: [2]
 });
 
 const numberOfPlayersInKnockoutBracket = ref(4);
@@ -65,6 +65,12 @@ const playersInGroups = computed(() => {
     res.push(playersInGroup);
   }
   return res;
+});
+
+watch(numberOfPlayers, () => {
+  if (numberOfPlayersInKnockoutBracket.value > numberOfPlayers.value) {
+    numberOfPlayersInKnockoutBracket.value = numberOfPlayersInKnockoutBracketOptions.value.at(-1) ?? 2;
+  }
 });
 
 async function create() {
@@ -172,7 +178,10 @@ async function create() {
 
     <div>
       <h2 class="mt-2 text-2xl font-bold">Punktacja</h2>
-      <TournamentScoringCreator v-model:scoring="scoring" />
+      <TournamentScoringCreator
+        v-model:scoring="scoring"
+        :numberOfPlayersInKnockoutBracket="numberOfPlayersInKnockoutBracket"
+      />
     </div>
 
     <PlayerAdder :numberOfPlayers="numberOfPlayers" v-model:selectedApplicationUsers="selectedApplicationUsers" />

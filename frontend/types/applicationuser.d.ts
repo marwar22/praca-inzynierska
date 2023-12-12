@@ -9,6 +9,7 @@ export type ApplicationUser = {
   firstName: string;
   lastName: string;
   email: string;
+  rating: number | number;
   lastLogin: null;
   createdDateTime: string;
   updatedDateTime: string;
@@ -21,6 +22,7 @@ export type ApplicationUserBasic = {
   username: string;
   firstName: string;
   lastName: string;
+  rating: number | null;
 };
 
 export type ApplicationUserContact = {
@@ -29,4 +31,5 @@ export type ApplicationUserContact = {
   firstName: string;
   lastName: string;
   email: string;
+  rating: number | number;
 };

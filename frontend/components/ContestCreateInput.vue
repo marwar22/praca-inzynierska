@@ -8,6 +8,7 @@ const props = defineProps<{
   min?: number;
   max?: number;
 }>();
+
 const emit = defineEmits<{
   (e: 'update:modelValue', modelValue: string | number): void;
 }>();
@@ -36,6 +37,7 @@ const input = ref<HTMLInputElement>();
     ref="input"
     class="my-1 h-12 rounded-lg border-4 border-olive-500 px-2 py-1 outline-none ring-olive-600 focus:ring-2"
     :class="error ? 'border-red-500 ring-red-600' : ''"
+    v-bind="$attrs"
     :value="modelValue"
     @input="emitValue"
     :placeholder="placeholder"

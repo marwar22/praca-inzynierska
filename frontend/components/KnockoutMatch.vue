@@ -50,49 +50,51 @@ const maxSetsInMatch = computed(() => props.setsToWin * 2 - 1);
       :class="{ ['border-t-2']: bottom, ['border-b-2']: !bottom }"
     ></div>
     <table class="h-[4.5rem] w-full">
-      <tr>
-        <td
-          class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
-          :class="{ 'font-bold': match?.result?.winnerId === match?.firstPlayerId }"
-        >
-          {{ nameFromApplicationUser(firstPlayer) }}&nbsp;
-        </td>
-        <td
-          v-for="setResult in match?.result?.playedSetResults ?? []"
-          class="w-[25px] border px-1.5 py-1"
-          :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] > setResult.gamesScored[1] }"
-        >
-          <span>{{ setResult.gamesScored[0] }}</span>
-        </td>
-        <td
-          v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
-          class="w-[25px] border px-1.5 py-1"
-        ></td>
-        <td rowspan="2" class="w-8 border" v-if="match && nextKBMatch?.match.result == null">
-          <NuxtLink :to="`/mecz/${match?.id}`" class="h-full pl-1">
-            <font-awesome-icon :icon="['fas', 'file-pen']" size="xl" />
-          </NuxtLink>
-        </td>
-      </tr>
-      <tr>
-        <td
-          class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
-          :class="{ 'font-bold': match?.result?.winnerId === match?.secondPlayerId }"
-        >
-          {{ nameFromApplicationUser(secondPlayer) }}&nbsp;
-        </td>
-        <td
-          v-for="setResult in match?.result?.playedSetResults ?? []"
-          class="w-[25px] border px-1.5 py-1"
-          :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] < setResult.gamesScored[1] }"
-        >
-          <span>{{ setResult.gamesScored[1] }}</span>
-        </td>
-        <td
-          v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
-          class="w-[25px] border px-1.5 py-1"
-        ></td>
-      </tr>
+      <tbody>
+        <tr>
+          <td
+            class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
+            :class="{ 'font-bold': match?.result?.winnerId === match?.firstPlayerId }"
+          >
+            {{ nameFromApplicationUser(firstPlayer) }}&nbsp;
+          </td>
+          <td
+            v-for="setResult in match?.result?.playedSetResults ?? []"
+            class="w-[25px] border px-1.5 py-1"
+            :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] > setResult.gamesScored[1] }"
+          >
+            <span>{{ setResult.gamesScored[0] }}</span>
+          </td>
+          <td
+            v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
+            class="w-[25px] border px-1.5 py-1"
+          ></td>
+          <td rowspan="2" class="w-8 border" v-if="match && nextKBMatch?.match.result == null">
+            <NuxtLink :to="`/mecz/${match?.id}`" class="h-full pl-1">
+              <font-awesome-icon :icon="['fas', 'file-pen']" size="xl" />
+            </NuxtLink>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
+            :class="{ 'font-bold': match?.result?.winnerId === match?.secondPlayerId }"
+          >
+            {{ nameFromApplicationUser(secondPlayer) }}&nbsp;
+          </td>
+          <td
+            v-for="setResult in match?.result?.playedSetResults ?? []"
+            class="w-[25px] border px-1.5 py-1"
+            :class="{ 'bg-olive-50 font-bold': setResult.gamesScored[0] < setResult.gamesScored[1] }"
+          >
+            <span>{{ setResult.gamesScored[1] }}</span>
+          </td>
+          <td
+            v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
+            class="w-[25px] border px-1.5 py-1"
+          ></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>

@@ -17,10 +17,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ApplicationUserBasicDto implements Serializable {
     Long id;
+
     @NotEmpty(message = "username can't be empty")
     String username;
+
     @NotEmpty(message = "firstName can't be empty")
     String firstName;
+
     @NotEmpty(message = "lastName can't be empty")
     String lastName;
+
+    Long rating;
 }

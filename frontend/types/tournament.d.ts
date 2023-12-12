@@ -49,12 +49,12 @@ export type TournamentScoring = {
   groupPointsForWin: number;
   groupPointsForLoss: number;
   groupPointsForWalkover: number;
-  rankingForTournamentParticipation: number;
-  rankingForMatchWin: number;
-  rankingForMatchLoss: number;
-  rankingForMatchWalkover: number;
-  rankingForTournamentWin: number;
-  rankingForKnockoutStageParticipation: number[];
+  ratingForTournamentParticipation: number;
+  ratingForMatchWin: number;
+  ratingForMatchLoss: number;
+  ratingForMatchWalkover: number;
+  ratingForTournamentWin: number;
+  ratingForKnockoutStageParticipation: number[];
 }
 
 export type Tournament = {

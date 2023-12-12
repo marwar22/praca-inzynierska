@@ -32,26 +32,26 @@ public class TournamentScoringDto implements Serializable {
     @PositiveOrZero(message = "groupPointsForWalkover must be positive or zero")
     private Short groupPointsForWalkover;
 
-    @NotNull(message = "rankingForTournamentParticipation can't be null")
-    @PositiveOrZero(message = "rankingForTournamentParticipation must be positive or zero")
-    private Short rankingForTournamentParticipation;
+    @NotNull(message = "ratingForTournamentParticipation can't be null")
+    @PositiveOrZero(message = "ratingForTournamentParticipation must be positive or zero")
+    private Short ratingForTournamentParticipation;
 
-    @NotNull(message = "rankingForMatchWin can't be null")
-    @PositiveOrZero(message = "rankingForMatchWin must be positive or zero")
-    private Short rankingForMatchWin;
+    @NotNull(message = "ratingForMatchWin can't be null")
+    @PositiveOrZero(message = "ratingForMatchWin must be positive or zero")
+    private Short ratingForMatchWin;
 
-    @NotNull(message = "rankingForMatchLoss can't be null")
-    @PositiveOrZero(message = "rankingForMatchLoss must be positive or zero")
-    private Short rankingForMatchLoss;
+    @NotNull(message = "ratingForMatchLoss can't be null")
+    @PositiveOrZero(message = "ratingForMatchLoss must be positive or zero")
+    private Short ratingForMatchLoss;
 
-    @NotNull(message = "rankingForMatchWalkover can't be null")
-    @PositiveOrZero(message = "rankingForMatchWalkover must be positive or zero")
-    private Short rankingForMatchWalkover;
+    @NotNull(message = "ratingForMatchWalkover can't be null")
+    @PositiveOrZero(message = "ratingForMatchWalkover must be positive or zero")
+    private Short ratingForMatchWalkover;
 
     @NotNull(message = "groupPointsForWin can't be null")
-    @PositiveOrZero(message = "rankingForTournamentWin must be positive or zero")
-    private Short rankingForTournamentWin;
+    @PositiveOrZero(message = "ratingForTournamentWin must be positive or zero")
+    private Short ratingForTournamentWin;
 
-    @NotEmpty(message = "rankingForKnockoutStageParticipation can't be empty")
-    private List<@NotNull(message = "ranking can't be null") Short> rankingForKnockoutStageParticipation;
+    @NotEmpty(message = "ratingForKnockoutStageParticipation can't be empty")
+    private List<@NotNull(message = "rating can't be null") Short> ratingForKnockoutStageParticipation;
 }

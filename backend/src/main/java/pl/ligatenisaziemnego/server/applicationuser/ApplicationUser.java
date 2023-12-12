@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,6 +55,10 @@ public class ApplicationUser {
 
     @Column(name = "last_login")
     private Date lastLogin;
+
+    @PositiveOrZero(message = "rating must be positive or zero")
+    @Column(name = "rating")
+    private Long rating;
 
     @CreationTimestamp
     @Column(name = "created_date_time", nullable = false, updatable = false)
