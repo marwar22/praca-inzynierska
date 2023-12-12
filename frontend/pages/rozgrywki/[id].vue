@@ -70,19 +70,8 @@ const groupStageFinished = computed(() => {
   return completedMatches.value.completed === completedMatches.value.all;
 });
 
-const numberOfPlayersKnockoutBracket = ref(4);
-
-const numberOfPlayersKnockoutBracketOptions = computed(() => {
-  let max = 1 << (31 - Math.clz32(tournament.value?.numberOfPlayers ?? 4));
-  const res = [];
-  for (let i = max; i > 1; i /= 2) res.push(i);
-  res.reverse();
-  return res;
-});
-
 async function createKnockoutBracket() {
   await $fetch(`${config.public.BACKEND_API}/tournament/${route.params.id}/knockout-bracket`, {
-    body: { numberOfPlayers: numberOfPlayersKnockoutBracket.value },
     method: 'POST',
     credentials: 'include'
   });
@@ -182,13 +171,6 @@ async function deleteKnockoutBracket() {
               <span v-else class="pl-1">Drabinkę można utworzyć, gdy każdy mecz fazy grupowej ma wynik</span>
             </button>
             <button v-else @click="deleteKnockoutBracket">Usuń drabinkę</button>
-
-            <label class="ml-2 flex items-center justify-center">
-              ilość finalistów
-              <select v-model="numberOfPlayersKnockoutBracket" class="px-1.5 py-1">
-                <option v-for="option in numberOfPlayersKnockoutBracketOptions" :value="option">{{ option }}</option>
-              </select>
-            </label>
           </div>
         </div>
       </div>

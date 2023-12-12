@@ -17,13 +17,12 @@ function emitValue(event: Event) {
   if (props.modelModifiers.number) {
     let newValue = Number.parseFloat(value);
     if (!isNaN(newValue)) {
-      if (props.max && newValue > props.max) newValue = props.max;
-      if (props.min && newValue < props.min) newValue = props.min;
+      if (props.max != null && newValue > props.max) newValue = props.max;
+      if (props.min != null && newValue < props.min) newValue = props.min;
+
       value = newValue;
       if (props.modelValue === newValue) {
         eventTarget.value = newValue.toString();
-        console.log(newValue);
-      } else {
       }
     }
   }

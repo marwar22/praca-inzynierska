@@ -37,11 +37,19 @@ const results = computed(() => {
       gamesWon.set(playerId, (gamesWon.get(playerId) ?? 0) + playerGamesWon);
       gamesLost.set(playerId, (gamesLost.get(playerId) ?? 0) + playerGamesLost);
     }
-    points.set(match.result.winnerId, (points.get(match.result.winnerId) ?? 0) + 2);
-    if (!match.result.walkover) {
-      const loserId = match.result.winnerId === firstPlayerId ? firstPlayerId : secondPlayerId;
-      points.set(loserId, (points.get(loserId) ?? 0) + 1);
-    }
+    points.set(
+      match.result.winnerId,
+      (points.get(match.result.winnerId) ?? 0) + props.tournament.scoring.groupPointsForWin
+    );
+
+    const loserId = match.result.winnerId === firstPlayerId ? firstPlayerId : secondPlayerId;
+    points.set(
+      loserId,
+      (points.get(loserId) ?? 0) +
+        (match.result.walkover
+          ? props.tournament.scoring.groupPointsForWalkover
+          : props.tournament.scoring.groupPointsForLoss)
+    );
   }
   return { matchesPlayed, points, setsWon, setsLost, gamesWon, gamesLost };
 });

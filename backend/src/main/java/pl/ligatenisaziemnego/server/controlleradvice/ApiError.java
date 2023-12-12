@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.transaction.TransactionSystemException;
 
 import java.util.Map;
@@ -75,7 +77,13 @@ public class ApiError {
                             "message", e.getMessage()));
 
         }
-        return ApiError.INTERNAL_SERVER_ERROR(ObjectUtils.firstNonNull(e.getMessage(), e.getClass().getSimpleName()));
+        if (e instanceof NestedRuntimeException nestedRuntimeException) {
+            var cause = nestedRuntimeException.getMostSpecificCause();
+            return ApiError.INTERNAL_SERVER_ERROR(
+                    Map.of("error", cause.getLocalizedMessage(), "errorClassName", cause.getClass().getSimpleName()));
+        }
+        return ApiError.INTERNAL_SERVER_ERROR(
+                ObjectUtils.firstNonNull(e.getLocalizedMessage(), e.getMessage(), e.getClass().getSimpleName()));
     }
 
     public static ExceptionWithResponseEntity FORBIDDEN(String message) {

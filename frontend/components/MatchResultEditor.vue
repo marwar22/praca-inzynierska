@@ -157,7 +157,6 @@ const playerFields = computed(() => [
 </script>
 <template>
   <div class="flex max-w-full flex-col">
-    {{ JSON.stringify(match.result?.setResults) }}
     <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto max-md:text-sm">
       <table class="h-[4.5rem]" v-if="match.result">
         <tbody>
@@ -277,7 +276,6 @@ const playerFields = computed(() => [
 </template>
 <style scoped>
 /* TODO this style affects everything in this project (shouldn't be)*/
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -289,4 +287,5 @@ input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
 </style>

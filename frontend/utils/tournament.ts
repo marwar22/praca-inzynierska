@@ -48,9 +48,8 @@ function isWalkoverCorrect(result: MatchResult) {
 export function isResultCorrect(match: Match, setsToWin: number) {
   if (!match.result) return false;
   const result = match.result;
-
   if (result.walkover) return isWalkoverCorrect(result);
-  if (!between(setsToWin, result.playedSetResults.length, 2 * setsToWin - 1)) return false;
+  if (!between(result.scratch ? 0 : setsToWin, result.playedSetResults.length, 2 * setsToWin - 1)) return false;
 
   const tieBreakerSetIndex = calculateTieBreakerSetIndex(result);
   if (!result.playedSetResults.every((sr, index) => isSetResultCorrect(result, index, tieBreakerSetIndex)))

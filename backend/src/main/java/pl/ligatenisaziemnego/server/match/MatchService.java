@@ -31,7 +31,7 @@ public class MatchService {
         return matchRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(Match.class, id));
     }
 
-    public Object update(Long id, MatchUpdateDto matchUpdateDto) throws ExceptionWithResponseEntity {
+    public MatchDto update(Long id, MatchUpdateDto matchUpdateDto) throws ExceptionWithResponseEntity {
         var match = matchMapper.update(matchUpdateDto, get(id));
         validate(id, match);
 

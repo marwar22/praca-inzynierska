@@ -9,6 +9,7 @@ const props = defineProps<{
   knockoutBracketMatches: Map<number, KnockoutBracketMatch>;
   players: Map<number, ApplicationUser>;
   stage: number;
+  setsToWin: number;
   bottom?: boolean;
   last?: boolean;
 }>();
@@ -30,6 +31,8 @@ const heightWithPadding = computed(() => {
 const lineTranslateY = computed(() => {
   return heightWithPadding.value * Math.pow(2, props.stage - 1) * (props.bottom ? 1 : -1);
 });
+
+const maxSetsInMatch = computed(() => props.setsToWin * 2 - 1);
 </script>
 
 <template>
@@ -62,7 +65,7 @@ const lineTranslateY = computed(() => {
           <span>{{ setResult.gamesScored[0] }}</span>
         </td>
         <td
-          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.playedSetResults?.length ?? 0)"
+          v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
           class="w-[25px] border px-1.5 py-1"
         ></td>
         <td rowspan="2" class="w-8 border" v-if="match && nextKBMatch?.match.result == null">
@@ -86,7 +89,7 @@ const lineTranslateY = computed(() => {
           <span>{{ setResult.gamesScored[1] }}</span>
         </td>
         <td
-          v-for="_ in MAX_SETS_IN_MATCH - (match?.result?.playedSetResults?.length ?? 0)"
+          v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
           class="w-[25px] border px-1.5 py-1"
         ></td>
       </tr>

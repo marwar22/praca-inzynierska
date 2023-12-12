@@ -73,18 +73,19 @@ public class MatchResult {
     }
 
     public List<Long> getSetsScored() {
-        if (!this.scratch) return List.of(getFirstPlayerScore(), getSecondPlayerScore());
-        var winnerIndex = winnerId.equals(match.getFirstPlayerId()) ? 0 : 1;
-//        TODO count as played till end
-        var setsScored = new ArrayList<>(List.of(0L, 0L));
-        Long setsToWin = match.getTournament().getSetsToWin();
-
-        for (int i = 0; i < setResults.size() - 1; i++) {
-            var gamesScored = setResults.get(i).getGamesScored();
-            if (gamesScored.get(0) > gamesScored.get(1)) setsScored.set(0, setsScored.get(0) + 1);
-            if (gamesScored.get(0) < gamesScored.get(1)) setsScored.set(1, setsScored.get(1) + 1);
-        }
-        setsScored.set(winnerIndex, setsToWin);
-        return setsScored;
+        return List.of(getFirstPlayerScore(), getSecondPlayerScore());
+//        if (!this.scratch) return List.of(getFirstPlayerScore(), getSecondPlayerScore());
+//        var winnerIndex = winnerId.equals(match.getFirstPlayerId()) ? 0 : 1;
+////        TODO count as played till end
+//        var setsScored = new ArrayList<>(List.of(0L, 0L));
+//        Long setsToWin = match.getTournament().getSetsToWin();
+//
+//        for (int i = 0; i < setResults.size() - 1; i++) {
+//            var gamesScored = setResults.get(i).getGamesScored();
+//            if (gamesScored.get(0) > gamesScored.get(1)) setsScored.set(0, setsScored.get(0) + 1);
+//            if (gamesScored.get(0) < gamesScored.get(1)) setsScored.set(1, setsScored.get(1) + 1);
+//        }
+//        setsScored.set(winnerIndex, setsToWin);
+//        return setsScored;
     }
 }

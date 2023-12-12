@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserMapper;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
-import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracketCreateDto;
 
 
 @RestController
@@ -48,9 +47,8 @@ public class TournamentController {
     }
 
     @PostMapping("{id}/knockout-bracket")
-    public ResponseEntity<?> createKnockoutBracket(@PathVariable Long id,
-            @RequestBody @Valid KnockoutBracketCreateDto knockoutBracketCreateDto) throws ExceptionWithResponseEntity {
-        tournamentService.createKnockoutBracket(id, knockoutBracketCreateDto);
+    public ResponseEntity<?> createKnockoutBracket(@PathVariable Long id) throws ExceptionWithResponseEntity {
+        tournamentService.createKnockoutBracket(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }

@@ -31,8 +31,9 @@ const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && fals
         <span class="inline-flex text-xl font-bold">
           <span :class="[{ [`text-olive-700`]: hov1 }]">
             <font-awesome-icon
+              v-if="match.result.walkover"
               :icon="['far', 'flag']"
-              :class="{ invisible: !(match.result.walkover && match.result.winnerId === playerIds[1]) }"
+              :class="{ invisible:  match.result.winnerId !== playerIds[1] }"
             />
             {{ match.result?.setsScored[leftPlayerIndex] }}
           </span>
@@ -40,13 +41,17 @@ const hov2 = computed(() => props.hoveredPlayerId === props.playerIds[1] && fals
           <span :class="[{ [`text-olive-700`]: hov2 }]">
             {{ match.result?.setsScored[rightPlayerIndex] }}
             <font-awesome-icon
+              v-if="match.result.walkover"
               :icon="['far', 'flag']"
-              :class="{ invisible: !(match.result.walkover && match.result.winnerId === playerIds[0]) }"
+              :class="{ invisible: match.result.winnerId !== playerIds[0] }"
             />
           </span>
         </span>
         <span class="text-center text-sm">
-          <span v-for="(setResult, setNumber) in match.result.playedSetResults" class="[&:last-child>*:nth-child(2)]:hidden">
+          <span
+            v-for="(setResult, setNumber) in match.result.playedSetResults"
+            class="[&:last-child>*:nth-child(2)]:hidden"
+          >
             <span
               >(<span :class="[{ [`text-olive-700`]: hov1 }]"
                 ><font-awesome-icon

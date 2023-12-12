@@ -31,11 +31,12 @@ const knockoutBracketMatches = computed(() => {
   <div class="flex overflow-x-auto overflow-y-hidden table__scrollbar table__scrollbar--champagne">
     <div class="flex shrink-0 flex-col" v-for="stage in stages">
       <KnockoutMatch
+      v-for="(kbMatch, n) in stage"
         :kbMatch="kbMatch"
         :knockoutBracketMatches="knockoutBracketMatches"
         :players="players"
-        :stage="kbMatch.stage"
-        v-for="(kbMatch, n) in stage"
+        :stage="kbMatch.stage"     
+        :setsToWin="tournament.setsToWin"   
         :bottom="n % 2 == 0"
         :last="kbMatch.id == knockoutBracket?.matches?.at(-1)?.id"
       />

@@ -1,0 +1,2 @@
+ALTER TABLE match_in_knockout_bracket
+    DROP CONSTRAINT uc_match_in_knockout_bracket_next_match_in_knockout_bracket;

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
 
 import type { ApiError } from '~/types/apierrror';
 import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import type { Tournament, TournamentScoring } from '~/types/tournament';
 
 const config = useRuntimeConfig();
 
@@ -30,6 +30,18 @@ const isNumberOfGroupsInRange = computed(
 
 const setsToWin = ref(2);
 const setsToWinOptions = Array.from({ length: MAX_SETS_TO_WIN - MIN_SETS_TO_WIN + 1 }, (_, i) => MIN_SETS_TO_WIN + i);
+
+const scoring = ref<TournamentScoring>({
+  groupPointsForWin: 2,
+  groupPointsForLoss: 1,
+  groupPointsForWalkover: 0,
+  rankingForTournamentParticipation: 75,
+  rankingForMatchWin: 25,
+  rankingForMatchLoss: 13,
+  rankingForMatchWalkover: 0,
+  rankingForTournamentWin: 125,
+  rankingForKnockoutStageParticipation: [0]
+});
 
 const numberOfPlayersInKnockoutBracket = ref(4);
 const numberOfPlayersInKnockoutBracketOptions = computed(() => {
@@ -58,13 +70,14 @@ const playersInGroups = computed(() => {
 async function create() {
   try {
     const [startDate, endDate] = date.value;
-    const res = await axios.post(
-      `${config.public.BACKEND_API}/tournament`,
-      {
+    const res = await $fetch<Tournament>(`${config.public.BACKEND_API}/tournament`, {
+      method: 'POST',
+      body: {
         name: name.value,
         numberOfPlayers: numberOfPlayers.value,
         numberOfGroups: numberOfGroups.value,
         setsToWin: setsToWin.value,
+        scoring: scoring.value,
         numberOfPlayersInKnockoutBracket: numberOfPlayersInKnockoutBracket.value,
         playerIds: selectedApplicationUsers.value.map((sau) => sau.id),
         groups: groups.value
@@ -75,11 +88,11 @@ async function create() {
         startDate,
         endDate
       },
-      { withCredentials: true }
-    );
+      credentials: 'include'
+    });
     apiError.value = null;
   } catch (error) {
-    apiError.value = await errorToApiError(error);
+    apiError.value = fetchErrorToApiError(error);
   }
 }
 </script>
@@ -96,7 +109,22 @@ async function create() {
           :error="name && name.trim().length < 5 ? 'Nazwa musi mieć co najmniej 5 znaków' : ''"
         />
       </label>
-
+      <label class="flex flex-col md:min-w-[24rem]">
+        Czas trwania
+        <div class="datepicker my-1 h-12 rounded-lg border-4 border-olive-500">
+          <VueDatePicker
+            v-model="date"
+            range
+            :enableTimePicker="false"
+            format="dd.MM.yyyy"
+            locale="pl-PL"
+            select-text="Wybierz"
+            cancel-text="Anuluj"
+          />
+        </div>
+      </label>
+    </div>
+    <div class="mt-2 flex flex-wrap">
       <label class="mr-5 flex w-64 flex-col">
         Liczba zawodników
         <ContestCreateInput
@@ -113,7 +141,7 @@ async function create() {
         />
       </label>
 
-      <label class="flex w-64 flex-col">
+      <label class="mr-5 flex w-64 flex-col">
         Liczba grup
         <ContestCreateInput
           placeholder="Liczba grup"
@@ -128,31 +156,25 @@ async function create() {
           "
         />
       </label>
-    </div>
-    <label>
-      Czas trwania
-      <div class="datepicker rounded-lg border-4 border-olive-500">
-        <VueDatePicker
-          v-model="date"
-          range
-          :enableTimePicker="false"
-          format="dd.MM.yyyy"
-          locale="pl-PL"
-          select-text="Wybierz"
-          cancel-text="Anuluj"
-        />
-      </div>
-    </label>
-    <div class="flex">
-      <div class="mb-2 flex flex-col">
+      <div class="mb-2 mr-5 flex flex-col">
         Ilość finalistów
-        <RadioGroup v-model="numberOfPlayersInKnockoutBracket" :values="numberOfPlayersInKnockoutBracketOptions" />
+        <div class="my-1 flex h-12 items-center">
+          <RadioGroup v-model="numberOfPlayersInKnockoutBracket" :values="numberOfPlayersInKnockoutBracketOptions" />
+        </div>
       </div>
       <div class="mb-2 flex flex-col">
         Ilość setów do wygranej
-        <RadioGroup v-model="setsToWin" :values="setsToWinOptions" />
+        <div class="my-1 flex h-12 items-center">
+          <RadioGroup v-model="setsToWin" :values="setsToWinOptions" />
+        </div>
       </div>
     </div>
+
+    <div>
+      <h2 class="mt-2 text-2xl font-bold">Punktacja</h2>
+      <TournamentScoringCreator v-model:scoring="scoring" />
+    </div>
+
     <PlayerAdder :numberOfPlayers="numberOfPlayers" v-model:selectedApplicationUsers="selectedApplicationUsers" />
     <GroupsCreator
       v-model:groups="groups"

@@ -10,7 +10,6 @@ import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracket;
-import pl.ligatenisaziemnego.server.knockoutbracket.KnockoutBracketCreateDto;
 import pl.ligatenisaziemnego.server.knockoutbracket.MatchInKnockoutBracket;
 import pl.ligatenisaziemnego.server.match.Match;
 import pl.ligatenisaziemnego.server.security.SecurityService;
@@ -92,7 +91,7 @@ public class TournamentService {
         return group.getPlayers();
     }
 
-    public void createKnockoutBracket(Long id, KnockoutBracketCreateDto knockoutBracketCreateDto) throws ExceptionWithResponseEntity {
+    public void createKnockoutBracket(Long id) throws ExceptionWithResponseEntity {
         @AllArgsConstructor
         final class PlayerResult implements Comparable<PlayerResult> {
             private Long id;
@@ -128,9 +127,6 @@ public class TournamentService {
         if (tournament.getKnockoutBracket() != null) {
             throw ApiError.BAD_REQUEST(Map.of("knockoutBracket", "numberOfPlayers knockoutBracket has already been created"));
         }
-
-        if (knockoutBracketCreateDto.getNumberOfPlayers() > tournament.getNumberOfPlayers())
-            throw ApiError.BAD_REQUEST(Map.of("numberOfPlayers", "numberOfPlayers must be lower than numberOfPlayers in tournament"));
 
 
         var groupsResults = new ArrayList<GroupResult>();
@@ -168,7 +164,7 @@ public class TournamentService {
             groupsResults.add(new GroupResult(new ArrayList<>(playersResults.values())));
             Collections.sort(groupsResults.getLast().playersResults);
         }
-        var numberOfPlayersLeft = knockoutBracketCreateDto.getNumberOfPlayers();
+        int numberOfPlayersLeft = tournament.getNumberOfPlayersInKnockoutBracket();
 
         var playerSeeds = new ArrayList<PlayerResult>();
 
@@ -181,14 +177,14 @@ public class TournamentService {
             playerSeeds.addAll(l);
         }
         var seedPositions = Arrays.asList(0, 1);
-        while (seedPositions.size() < knockoutBracketCreateDto.getNumberOfPlayers()) seedPositions = doubleSeedPositions(seedPositions);
-        var result = new ArrayList<PlayerResult>(knockoutBracketCreateDto.getNumberOfPlayers().intValue());
+        while (seedPositions.size() < tournament.getNumberOfPlayersInKnockoutBracket()) seedPositions = doubleSeedPositions(seedPositions);
+        var result = new ArrayList<PlayerResult>(tournament.getNumberOfPlayersInKnockoutBracket().intValue());
         for (var sp : seedPositions) {
             result.add(playerSeeds.get(sp));
         }
         var knockoutBracket = new KnockoutBracket();
         knockoutBracket.setMatches(new ArrayList<>());
-        knockoutBracket.setNumberOfPlayers(knockoutBracketCreateDto.getNumberOfPlayers());
+        knockoutBracket.setNumberOfPlayers(tournament.getNumberOfPlayersInKnockoutBracket().longValue());
         for (int i = 0; i < result.size(); i += 2) {
             var match = new Match();
             match.setTournamentId(tournament.getId());

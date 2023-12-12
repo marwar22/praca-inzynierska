@@ -45,12 +45,25 @@ type KnockoutBracket = {
   matches: KnockoutBracketMatch[];
 };
 
+export type TournamentScoring = {
+  groupPointsForWin: number;
+  groupPointsForLoss: number;
+  groupPointsForWalkover: number;
+  rankingForTournamentParticipation: number;
+  rankingForMatchWin: number;
+  rankingForMatchLoss: number;
+  rankingForMatchWalkover: number;
+  rankingForTournamentWin: number;
+  rankingForKnockoutStageParticipation: number[];
+}
+
 export type Tournament = {
   id: number;
   name: string;
   numberOfPlayers: number;
   numberOfGroups: number;
   setsToWin: number;
+  scoring: TournamentScoring;
   players: ApplicationUser[];
   groups: TournamentGroup[];
   knockoutBracket: KnockoutBracket | null;

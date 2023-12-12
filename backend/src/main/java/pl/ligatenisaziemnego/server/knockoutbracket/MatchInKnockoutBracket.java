@@ -35,7 +35,7 @@ public class MatchInKnockoutBracket {
     @Column(name = "bracket_position", updatable = false, insertable = false)
     private Long bracketPosition;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonIgnore
     @ToString.Exclude
     @JoinColumn(name = "next_match_in_knockout_bracket_id")

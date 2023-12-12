@@ -25,7 +25,6 @@ import java.util.List;
 @Entity
 @Table(name = "tournament")
 public class Tournament {
-    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -74,6 +73,10 @@ public class Tournament {
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "knockout_bracket_id")
     private KnockoutBracket knockoutBracket;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
+    @JoinColumn(name = "tournament_scoring_id", nullable = false)
+    private TournamentScoring scoring;
 
     @NotNull(message = "start_date can't be null")
     @Column(name = "start_date", nullable = false)

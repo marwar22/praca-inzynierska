@@ -55,6 +55,8 @@ public class TournamentCreateDto implements Serializable {
     @NotNull(message = "end_date can't be null")
     LocalDateTime endDate;
 
+    @NotNull(message = "scoring can't be null")
+    TournamentScoringDto scoring;
 
     /**
      * DTO for {@link pl.ligatenisaziemnego.server.tournament.group.TournamentGroup}
