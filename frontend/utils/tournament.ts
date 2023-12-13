@@ -1,4 +1,12 @@
-import type { Match, MatchResult, SetResult } from '~/types/tournament';
+import type { Match, MatchResult, TournamentScoring } from '~/types/tournament';
+
+export function stageName(stage: number, scoring: TournamentScoring) {
+  const stages = scoring.ratingForKnockoutStageParticipation.length;
+  if (stage == stages - 1) return 'finał';
+  if (stage == stages - 2) return 'półfinał';
+  if (stage == stages - 3) return 'ćwierćfinał';
+  return `${stage + 1} etap`;
+}
 
 export function isSetResultCorrect(matchResult: MatchResult, setIndex: number, tieBreakerSetIndex: number) {
   const setResult = matchResult.playedSetResults[setIndex];

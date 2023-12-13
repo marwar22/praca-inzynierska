@@ -96,7 +96,64 @@ async function deleteKnockoutBracket() {
         {{ new Date(tournament.startDate).toLocaleDateString() }} -
         {{ new Date(tournament.endDate).toLocaleDateString() }}
       </div>
-
+      <div>
+        <h2 class="text-2xl font-bold">Punktacja</h2>
+        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                <th class="border bg-champagne-300 px-2 py-1"></th>
+                <th class="border bg-champagne-300 px-2 py-1">Wygrana</th>
+                <th class="border bg-champagne-300 px-2 py-1">Przegrana</th>
+                <th class="border bg-champagne-300 px-2 py-1">Walkover</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border px-2 py-1">Punkty w grupie</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.groupPointsForWin }}</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.groupPointsForLoss }}</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.groupPointsForWalkover }}</td>
+              </tr>
+              <tr>
+                <td class="border px-2 py-1">Punkty do rankingu</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.ratingForMatchWin }}</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.ratingForMatchLoss }}</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.ratingForMatchWalkover }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
+          {{ tournament.scoring.ratingForKnockoutStageParticipation }}
+          <table>
+            <thead>
+              <tr>
+                <th class="border bg-champagne-300 px-2 py-1">Udział w etapie</th>
+                <th class="border bg-champagne-300 px-2 py-1">Grupa</th>
+                <th
+                  v-for="[index, ratingForStage] in tournament.scoring.ratingForKnockoutStageParticipation.entries()"
+                  class="border bg-champagne-300 px-2 py-1"
+                >
+                  {{ stageName(index, tournament.scoring) }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border px-2 py-1">Punkty&nbsp;do rankingu</td>
+                <td class="border px-2 py-1">{{ tournament.scoring.ratingForTournamentParticipation }}</td>
+                <td
+                  v-for="ratingForStage in tournament.scoring.ratingForKnockoutStageParticipation"
+                  class="border px-2 py-1"
+                >
+                  {{ ratingForStage }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="flex flex-wrap">
         <div v-for="(group, groupNumber) in tournament.groups" class="m-1 flex flex-col">
           <table>

@@ -12,9 +12,8 @@ const props = defineProps<{
 }>();
 
 watch(
-  () => props.match.result?.playedSetResults,
+  [() => props.match.result?.playedSetResults, () => props.match.result?.walkover, () => props.match.result?.scratch],
   () => {
-    console.log('watch1');
     const { result, firstPlayerId, secondPlayerId } = props.match;
     if (!result || !firstPlayerId || !secondPlayerId) return;
 
@@ -40,7 +39,7 @@ watch(
         (acc, sr) => acc + (sr.gamesScored[winnerIndex] > sr.gamesScored[1 - winnerIndex] ? 1 : 0),
         0
       );
-      console.log(winnerSetsScored, JSON.stringify(result.setResults));
+
       while (winnerSetsScored < props.setsToWin) {
         result.setResults.push({ gamesScored: [6 * (1 - winnerIndex), 6 * winnerIndex] });
         winnerSetsScored += 1;
@@ -57,7 +56,6 @@ watch(
 watch(
   () => props.match.result?.setResults,
   () => {
-    console.log('watch2');
     if (!props.match.result) return;
     props.match.result.setsScored = (props.match.result.setResults ?? []).reduce<[number, number]>(
       (matchResult, setResult) =>
@@ -73,7 +71,6 @@ watch(
 watch(
   () => props.match.result?.setsScored,
   () => {
-    console.log('watch3');
     const { result, firstPlayerId, secondPlayerId } = props.match;
     if (!result || !firstPlayerId || !secondPlayerId) return;
     if (result.scratch || result.walkover) return;
@@ -123,11 +120,6 @@ function onWalkover(winnerId: number | null) {
   props.match.result.scratch = false;
   props.match.result.winnerId = winnerId;
 
-  // props.match.result.setResults = Array.from([1, 2], () => {
-  //   if (winnerId === props.match.firstPlayerId)
-  //     return { firstPlayerScore: 6, secondPlayerScore: 0, gamesScored: [6, 0] };
-  //   return { firstPlayerScore: 0, secondPlayerScore: 6, gamesScored: [0, 6] };
-  // });
   props.match.result.playedSetResults = [];
 }
 
@@ -239,7 +231,6 @@ const playerFields = computed(() => [
             </td>
           </tr>
 
-          
           <tr v-if="editMode">
             <td></td>
             <td class="border p-0" v-for="(_, index) in match.result.playedSetResults">
@@ -287,5 +278,4 @@ input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
-
 </style>
