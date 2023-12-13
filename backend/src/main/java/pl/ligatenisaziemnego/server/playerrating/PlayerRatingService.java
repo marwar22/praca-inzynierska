@@ -82,7 +82,7 @@ public class PlayerRatingService {
                 if (result == null) continue;
 
                 var loserId = Objects.equals(result.getWinnerId(),
-                        match.getFirstPlayerId()) ? match.getFirstPlayerId() : match.getSecondPlayerId();
+                        match.getFirstPlayerId()) ? match.getSecondPlayerId() : match.getFirstPlayerId();
 
                 updateRating.accept(result.getWinnerId(), scoring.getRatingForMatchWin().longValue());
 

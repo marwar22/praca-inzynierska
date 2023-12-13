@@ -3,6 +3,7 @@ package pl.ligatenisaziemnego.server.match;
 import org.springframework.stereotype.Service;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
+import pl.ligatenisaziemnego.server.playerrating.PlayerRatingService;
 import pl.ligatenisaziemnego.server.security.SecurityService;
 import pl.ligatenisaziemnego.server.tournament.TournamentRepository;
 import pl.ligatenisaziemnego.server.tournament.TournamentService;
@@ -18,13 +19,15 @@ public class MatchService {
     private final MatchMapper matchMapper;
     private final SecurityService securityService;
     private final TournamentService tournamentService;
+    private final PlayerRatingService playerRatingService;
 
     public MatchService(MatchRepository matchRepository, MatchMapper matchMapper, SecurityService securityService,
-            TournamentService tournamentService) {
+            TournamentService tournamentService, PlayerRatingService playerRatingService) {
         this.matchRepository = matchRepository;
         this.matchMapper = matchMapper;
         this.securityService = securityService;
         this.tournamentService = tournamentService;
+        this.playerRatingService = playerRatingService;
     }
 
     public Match get(Long id) throws ExceptionWithResponseEntity {
@@ -66,6 +69,7 @@ public class MatchService {
         match.setLastModifiedById(applicationUser.getId());
         match.setUpdatedDateTime(Instant.now());
         match = matchRepository.save(match);
+        playerRatingService.updatePlayersRatings();
         return matchMapper.toDto(match);
     }
 
