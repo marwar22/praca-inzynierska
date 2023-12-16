@@ -68,6 +68,12 @@ onMounted(() => loginInput.value?.input?.focus());
       <span v-if="incorrectUsernameOrPassword" class="text-left text-red-500">
         Niepoprawna nazwa użytkownika, lub hasło
       </span>
+      <NuxtLink
+        to="/reset-hasla"
+        class="cursor-pointer text-right hover:text-olive-700 hover:underline underline-offset-2 active:text-olive-600 pt-1"
+      >
+        Zresetuj hasło
+      </NuxtLink>
       <ApiError :api-error="apiError" />
     </div>
     <div class="flex-[5]"></div>

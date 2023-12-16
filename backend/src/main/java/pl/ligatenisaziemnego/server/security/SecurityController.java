@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
+import pl.ligatenisaziemnego.server.security.passwordreset.ChangePasswordWithTokenDto;
+import pl.ligatenisaziemnego.server.security.passwordreset.PasswordResetDto;
 
 
 @RestController
@@ -27,5 +29,19 @@ public class SecurityController {
     public ResponseEntity<?> checkStatus() {
         var statusDTO = new AuthStatusDto(SecurityContextHolder.getContext().getAuthentication());
         return new ResponseEntity<>(statusDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/reset-password")
+    ResponseEntity<?> resetPassword(@RequestBody @Valid PasswordResetDto passwordResetDto) {
+        securityService.resetPassword(passwordResetDto);
+        // Always return OK because we don't want attacker to know if there is user with given email.
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/reset-password/{token}")
+    ResponseEntity<?> changePasswordWithToken(@PathVariable String token,
+            @RequestBody @Valid ChangePasswordWithTokenDto changePasswordWithTokenDto) throws ExceptionWithResponseEntity {
+        securityService.changePasswordWithToken(token, changePasswordWithTokenDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

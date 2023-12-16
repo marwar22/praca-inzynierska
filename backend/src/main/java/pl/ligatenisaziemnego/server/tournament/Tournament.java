@@ -70,7 +70,7 @@ public class Tournament {
     @JoinColumn(name = "tournament_id")
     private List<@NotNull(message = "tournamentGroup can't be null") TournamentGroup> groups;
 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "knockout_bracket_id")
     private KnockoutBracket knockoutBracket;
 

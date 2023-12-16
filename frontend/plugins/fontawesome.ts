@@ -1,6 +1,8 @@
 import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
+  faArrowDown,
+  faArrowUp,
   faArrowUp19,
   faArrowsRotate,
   faBars,
@@ -10,6 +12,7 @@ import {
   faCircleUser,
   faClock,
   faDice,
+  faEquals,
   faFilePen,
   faFlag,
   faFloppyDisk,
@@ -29,8 +32,10 @@ import {
 
 
 library.add(
-  faArrowsRotate,
+  faArrowDown,
+  faArrowUp,
   faArrowUp19,
+  faArrowsRotate,
   faBars,
   faCalendarDays,
   faCircleInfo,
@@ -38,10 +43,11 @@ library.add(
   faCircleUser,
   faClock,
   faDice,
+  faEquals,
   faFilePen,
   faFlag,
   faFlagWhite,
-  faFloppyDisk,
+  faFloppyDisk,  
   faHouse,
   faHouseMedicalFlag,
   faListOl,

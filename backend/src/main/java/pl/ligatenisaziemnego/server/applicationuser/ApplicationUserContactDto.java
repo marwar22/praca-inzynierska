@@ -1,6 +1,7 @@
 package pl.ligatenisaziemnego.server.applicationuser;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.io.Serializable;
@@ -26,6 +27,4 @@ public class ApplicationUserContactDto implements Serializable {
 
     @NotEmpty(message = "email can't be empty")
     String email;
-
-    Long rating;
 }

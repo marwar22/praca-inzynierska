@@ -3,10 +3,14 @@ import type { ApplicationUserContact } from '~/types/applicationuser';
 import type { Match, Tournament } from '~/types/tournament';
 
 const route = useRoute();
+const router = useRouter();
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
 
-const selectedGroupNumber = ref(0);
+const selectedGroupNumber = ref<number>(parseInt(route.query['grupa']?.toString() ?? '0') ?? 0);
+watch(selectedGroupNumber, (value) => {
+  router.push({ path: route.fullPath, query: { grupa: value }, replace: true });
+});
 
 const { data: tournament, error } = await useFetch<Tournament>(
   `${config.public.BACKEND_API}/tournament/${route.params.id}`,
@@ -124,8 +128,7 @@ async function deleteKnockoutBracket() {
             </tbody>
           </table>
         </div>
-        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
-          {{ tournament.scoring.ratingForKnockoutStageParticipation }}
+        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto mt-5">
           <table>
             <thead>
               <tr>

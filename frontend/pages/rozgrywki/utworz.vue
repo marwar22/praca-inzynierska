@@ -97,6 +97,7 @@ async function create() {
       credentials: 'include'
     });
     apiError.value = null;
+    await navigateTo(`/rozgrywki/${res.id}`)
   } catch (error) {
     apiError.value = fetchErrorToApiError(error);
   }
@@ -163,13 +164,13 @@ async function create() {
         />
       </label>
       <div class="mb-2 mr-5 flex flex-col">
-        Ilość finalistów
+        Liczba finalistów
         <div class="my-1 flex h-12 items-center">
           <RadioGroup v-model="numberOfPlayersInKnockoutBracket" :values="numberOfPlayersInKnockoutBracketOptions" />
         </div>
       </div>
       <div class="mb-2 flex flex-col">
-        Ilość setów do wygranej
+        Liczba setów do wygranej
         <div class="my-1 flex h-12 items-center">
           <RadioGroup v-model="setsToWin" :values="setsToWinOptions" />
         </div>

@@ -4,8 +4,6 @@
 
 ### Zmienne środowiskowe, certyfikat
 
-TODO domena powinna znajdować się w liście w getCorsConfiguration() w SecurityConfig.java; 
-
 Należy utworzyć pliki zawierające zmienne środowiskowe (.env)
 
 W `/`

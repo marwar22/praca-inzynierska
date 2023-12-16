@@ -42,8 +42,7 @@ public class ApplicationUserService {
             return;
         }
         log.warn("There are no users, creating first user");
-        // TODO important generateRandomSecurePassword
-        var password = "admin123";
+        var password = securityService.generateSecureRandomPassword(32);
         var applicationUser = new ApplicationUser("admin", firstSuperAdminEmail, "Admin", "Admin", passwordEncoder.encode(password),
                 List.of(ApplicationUserRole.SUPER_ADMIN));
         applicationUserRepository.save(applicationUser);

@@ -23,7 +23,7 @@ public class MatchInKnockoutBracket {
     private Long id;
 
     @NotNull(message = "match can't be null")
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "match_id")
     private Match match;
 

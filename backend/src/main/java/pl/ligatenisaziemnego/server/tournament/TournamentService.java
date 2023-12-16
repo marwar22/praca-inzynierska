@@ -38,6 +38,10 @@ public class TournamentService {
         return tournamentRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(Tournament.class, id));
     }
 
+    public List<Tournament> getAllByEndDate() {
+        return tournamentRepository.findByOrderByEndDateAsc();
+    }
+
     public List<Tournament> getAllByName(String name) {
         return tournamentRepository.findAllByNameContainsIgnoreCase(name);
     }

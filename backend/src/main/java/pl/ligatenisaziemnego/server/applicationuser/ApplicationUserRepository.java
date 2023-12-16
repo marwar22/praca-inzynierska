@@ -36,4 +36,5 @@ public interface ApplicationUserRepository extends JpaRepository<ApplicationUser
     @Query("select a from ApplicationUser a where a.username = ?1 or a.email = ?1")
     ApplicationUser findByUsernameOrEmail(String usernameOrEmail);
 
+    Optional<ApplicationUser> findByEmail(String email);
 }

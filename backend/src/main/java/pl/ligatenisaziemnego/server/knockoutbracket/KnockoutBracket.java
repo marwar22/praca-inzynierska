@@ -19,7 +19,7 @@ public class KnockoutBracket {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @NotNull(message = "matches can't be null")
     @JoinColumn(name = "knockout_bracket_id")
     @OrderColumn(name = "bracket_position")

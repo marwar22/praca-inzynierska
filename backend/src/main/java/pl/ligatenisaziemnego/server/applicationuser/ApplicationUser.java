@@ -60,6 +60,18 @@ public class ApplicationUser {
     @Column(name = "rating")
     private Long rating;
 
+    @PositiveOrZero(message = "prvRating must be positive or zero")
+    @Column(name = "prv_rating")
+    private Long prvRating;
+
+    @PositiveOrZero(message = "ranking must be positive or zero")
+    @Column(name = "ranking")
+    private Integer ranking;
+
+    @PositiveOrZero(message = "prvRanking must be positive or zero")
+    @Column(name = "prv_ranking")
+    private Integer prvRanking;
+
     @CreationTimestamp
     @Column(name = "created_date_time", nullable = false, updatable = false)
     private LocalDateTime createdDateTime;
