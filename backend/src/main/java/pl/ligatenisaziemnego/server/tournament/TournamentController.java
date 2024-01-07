@@ -48,7 +48,7 @@ public class TournamentController {
 
     @PostMapping("{id}/knockout-bracket")
     public ResponseEntity<?> createKnockoutBracket(@PathVariable Long id) throws ExceptionWithResponseEntity {
-        tournamentService.createKnockoutBracket(id);
+        tournamentService.createKnockoutBracketFromGroups(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
     }

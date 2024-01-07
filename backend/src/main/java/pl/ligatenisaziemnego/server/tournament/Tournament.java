@@ -41,7 +41,7 @@ public class Tournament {
     private Short numberOfPlayers;
 
     // TODO "magic" numbers
-    @Range(min = 1, max = 24, message = "numberOfGroups must be in range <1, 24>")
+    @Range(min = 0, max = 24, message = "numberOfGroups must be in range <0, 24>")
     @NotNull(message = "numberOfGroups can't be null")
     @Column(name = "number_of_groups", nullable = false)
     private Short numberOfGroups;
@@ -64,6 +64,10 @@ public class Tournament {
             joinColumns = @JoinColumn(name = "tournament_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
     private List<@NotNull(message = "applicationUser can't be null") ApplicationUser> players;
+
+    @Column(name = "has_group_stage")
+    @NotNull(message = "hasGroupStage can't be null")
+    private Boolean hasGroupStage;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "group_number")

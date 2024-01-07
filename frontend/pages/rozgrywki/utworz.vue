@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import type { ApiError } from '~/types/apierrror';
 import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import type { Tournament, TournamentScoring } from '~/types/tournament';
+import type { KnockoutBracket, Tournament, TournamentScoring } from '~/types/tournament';
 
 const config = useRuntimeConfig();
 
@@ -23,10 +23,12 @@ const isNumberOfPlayersInRange = computed(
   () => MIN_NUMBER_OF_PLAYERS <= numberOfPlayers.value && numberOfPlayers.value <= MAX_NUMBER_OF_PLAYERS
 );
 
+const hasGroupStage = ref(true);
 const numberOfGroups = ref(4);
 const isNumberOfGroupsInRange = computed(
   () => MIN_NUMBER_OF_GROUPS <= numberOfGroups.value && numberOfGroups.value <= MAX_NUMBER_OF_GROUPS
 );
+const knockoutBracket = ref<KnockoutBracket>({ id: -1, matches: [] });
 
 const setsToWin = ref(2);
 const setsToWinOptions = Array.from({ length: MAX_SETS_TO_WIN - MIN_SETS_TO_WIN + 1 }, (_, i) => MIN_SETS_TO_WIN + i);
@@ -45,7 +47,7 @@ const scoring = ref<TournamentScoring>({
 
 const numberOfPlayersInKnockoutBracket = ref(4);
 const numberOfPlayersInKnockoutBracketOptions = computed(() => {
-  let max = 1 << (31 - Math.clz32(numberOfPlayers.value));
+  let max = 1 << (31 - Math.clz32(hasGroupStage.value ? numberOfPlayers.value : MAX_NUMBER_OF_PLAYERS));
   const res = [];
   for (let i = max; i > 1; i /= 2) res.push(i);
   res.reverse();
@@ -73,6 +75,13 @@ watch(numberOfPlayers, () => {
   }
 });
 
+watch(hasGroupStage, () => {
+  if (!hasGroupStage.value) groups.value = [];
+});
+watch([numberOfPlayersInKnockoutBracket, hasGroupStage], ([newValue, _]) => {
+  if (!hasGroupStage.value) numberOfPlayers.value = newValue;
+});
+
 async function create() {
   try {
     const [startDate, endDate] = date.value;
@@ -81,7 +90,8 @@ async function create() {
       body: {
         name: name.value,
         numberOfPlayers: numberOfPlayers.value,
-        numberOfGroups: numberOfGroups.value,
+        hasGroupStage: hasGroupStage.value,
+        numberOfGroups: hasGroupStage.value ? numberOfGroups.value : 0,
         setsToWin: setsToWin.value,
         scoring: scoring.value,
         numberOfPlayersInKnockoutBracket: numberOfPlayersInKnockoutBracket.value,
@@ -97,7 +107,7 @@ async function create() {
       credentials: 'include'
     });
     apiError.value = null;
-    await navigateTo(`/rozgrywki/${res.id}`)
+    await navigateTo(`/rozgrywki/${res.id}`, { replace: true });
   } catch (error) {
     apiError.value = fetchErrorToApiError(error);
   }
@@ -105,7 +115,7 @@ async function create() {
 </script>
 
 <template>
-  <div class="page__margin flex flex-col">
+  <div class="page__margin flex flex-col pb-20">
     <h1 class="mt-5 text-3xl font-bold">Tworzenie nowej rozgrywki</h1>
     <div class="flex max-md:flex-col">
       <label class="mr-5 flex flex-1 flex-col">
@@ -132,7 +142,7 @@ async function create() {
       </label>
     </div>
     <div class="mt-2 flex flex-wrap">
-      <label class="mr-5 flex w-64 flex-col">
+      <label v-if="hasGroupStage" class="mr-5 flex w-64 flex-col">
         Liczba zawodników
         <ContestCreateInput
           placeholder="Liczba grup"
@@ -148,7 +158,7 @@ async function create() {
         />
       </label>
 
-      <label class="mr-5 flex w-64 flex-col">
+      <label v-if="hasGroupStage" class="mr-5 flex w-64 flex-col">
         Liczba grup
         <ContestCreateInput
           placeholder="Liczba grup"
@@ -186,13 +196,26 @@ async function create() {
     </div>
 
     <PlayerAdder :numberOfPlayers="numberOfPlayers" v-model:selectedApplicationUsers="selectedApplicationUsers" />
+    <label class="flex">
+      <input type="checkbox" class="w-4" v-model="hasGroupStage" />
+      <span class="pl-2">Faza grupowa</span>
+    </label>
     <GroupsCreator
+      v-if="hasGroupStage"
       v-model:groups="groups"
       :numberOfGroups="numberOfGroups"
       :playersInGroups="playersInGroups"
       :selectedApplicationUsers="selectedApplicationUsers"
-    >
-    </GroupsCreator>
+    />
+    <KnockoutBracketCreator
+      v-else
+      v-model:knockout-bracket="knockoutBracket"
+      @update:knockout-bracket="console.log('xd')"
+      :numberOfPlayersInKnockoutBracket="numberOfPlayersInKnockoutBracket"
+      :sets-to-win="setsToWin"
+      :selectedApplicationUsers="selectedApplicationUsers"
+    />
+
     <button
       class="my-2 rounded-lg bg-olive-600 py-1 text-lg font-bold text-white hover:bg-olive-700 active:bg-olive-800"
       @click="create"

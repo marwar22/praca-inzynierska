@@ -102,7 +102,7 @@ async function deleteKnockoutBracket() {
       </div>
       <div>
         <h2 class="text-2xl font-bold">Punktacja</h2>
-        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
+        <div v-if="tournament.hasGroupStage" class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
           <table>
             <thead>
               <tr>
@@ -128,12 +128,12 @@ async function deleteKnockoutBracket() {
             </tbody>
           </table>
         </div>
-        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto mt-5">
+        <div class="table__scrollbar table__scrollbar--champagne mt-5 overflow-x-auto">
           <table>
             <thead>
               <tr>
                 <th class="border bg-champagne-300 px-2 py-1">Udział w etapie</th>
-                <th class="border bg-champagne-300 px-2 py-1">Grupa</th>
+                <th class="border bg-champagne-300 px-2 py-1">{{ tournament.hasGroupStage ? 'Grupa' : 'Turniej' }}</th>
                 <th
                   v-for="[index, ratingForStage] in tournament.scoring.ratingForKnockoutStageParticipation.entries()"
                   class="border bg-champagne-300 px-2 py-1"
@@ -188,54 +188,70 @@ async function deleteKnockoutBracket() {
         Pokaż dane kontaktowe osób w twojej grupie
       </label>
 
-      <h2 class="mt-4 text-xl font-bold">Faza Grupowa</h2>
-      <div class="mx-[1px] my-2 flex">
-        <button
-          v-for="(group, groupNumber) in tournament.groups"
-          class="w-24 border border-white px-2 py-4"
-          :class="
-            groupNumber === selectedGroupNumber
-              ? 'bg-champagne-400 font-bold text-white hover:bg-champagne-500 active:bg-champagne-600'
-              : 'bg-champagne-300  hover:bg-champagne-400 active:bg-champagne-500'
-          "
-          @click="selectedGroupNumber = groupNumber"
-        >
-          {{ `Grupa ${String.fromCharCode(65 + groupNumber)}` }}
-        </button>
-      </div>
-      <GroupRanking :tournament="tournament" :players="players" :groupNumber="selectedGroupNumber" :matches="matches" />
-      <div class="h-8"></div>
-      <GroupResults :tournament="tournament" :players="players" :groupNumber="selectedGroupNumber" :matches="matches" />
-
-      <div class="mt-16">
-        Ukończone mecze fazy grupowej
-        <div class="flex flex-col">
-          <ProgressBar class="w-48" :completed="completedMatches.completed" :all="completedMatches.all" />
-          <div class="flex">
-            <button
-              v-if="tournament.knockoutBracket == null"
-              class="my-2 flex items-center"
-              :class="{
-                ['cursor-not-allowed text-neutral-400']:
-                  !groupStageFinished || tournament.organizerId !== authStatus.applicationUserId
-              }"
-              @click="createKnockoutBracket"
-            >
-              <font-awesome-icon icon="fa-solid fa-network-wired" rotation="90" />
-              <div v-if="groupStageFinished && tournament.organizerId === authStatus.applicationUserId" class="pl-1">
-                Utwórz drabinkę fazy pucharowej
-              </div>
-              <span v-else-if="tournament.organizerId !== authStatus.applicationUserId" class="pl-1"
-                >Drabinkę może utworzyć tylko organizator</span
+      <div v-if="tournament.hasGroupStage">
+        <h2 class="mt-4 text-xl font-bold">Faza Grupowa</h2>
+        <div class="mx-[1px] my-2 flex">
+          <button
+            v-for="(group, groupNumber) in tournament.groups"
+            class="w-24 border border-white px-2 py-4"
+            :class="
+              groupNumber === selectedGroupNumber
+                ? 'bg-champagne-400 font-bold text-white hover:bg-champagne-500 active:bg-champagne-600'
+                : 'bg-champagne-300  hover:bg-champagne-400 active:bg-champagne-500'
+            "
+            @click="selectedGroupNumber = groupNumber"
+          >
+            {{ `Grupa ${String.fromCharCode(65 + groupNumber)}` }}
+          </button>
+        </div>
+        <GroupRanking
+          :tournament="tournament"
+          :players="players"
+          :groupNumber="selectedGroupNumber"
+          :matches="matches"
+        />
+        <div class="h-8"></div>
+        <GroupResults
+          :tournament="tournament"
+          :players="players"
+          :groupNumber="selectedGroupNumber"
+          :matches="matches"
+        />
+        <div class="mt-16">
+          Ukończone mecze fazy grupowej
+          <div class="flex flex-col">
+            <ProgressBar class="w-48" :completed="completedMatches.completed" :all="completedMatches.all" />
+            <div class="flex">
+              <button
+                v-if="tournament.knockoutBracket == null"
+                class="my-2 flex items-center"
+                :class="{
+                  ['cursor-not-allowed text-neutral-400']:
+                    !groupStageFinished || tournament.organizerId !== authStatus.applicationUserId
+                }"
+                @click="createKnockoutBracket"
               >
-              <span v-else class="pl-1">Drabinkę można utworzyć, gdy każdy mecz fazy grupowej ma wynik</span>
-            </button>
-            <button v-else @click="deleteKnockoutBracket">Usuń drabinkę</button>
+                <font-awesome-icon icon="fa-solid fa-network-wired" rotation="90" />
+                <div v-if="groupStageFinished && tournament.organizerId === authStatus.applicationUserId" class="pl-1">
+                  Utwórz drabinkę fazy pucharowej
+                </div>
+                <span v-else-if="tournament.organizerId !== authStatus.applicationUserId" class="pl-1"
+                  >Drabinkę może utworzyć tylko organizator</span
+                >
+                <span v-else class="pl-1">Drabinkę można utworzyć, gdy każdy mecz fazy grupowej ma wynik</span>
+              </button>
+              <button v-else @click="deleteKnockoutBracket">Usuń drabinkę</button>
+            </div>
           </div>
         </div>
       </div>
       <h2 class="mt-4 text-xl font-bold">Faza Pucharowa</h2>
-      <KnockoutBracket :tournament="tournament" :players="players" />
+      <KnockoutBracket
+        :knockout-bracket="tournament.knockoutBracket"
+        :sets-to-win="tournament.setsToWin"
+        :players="players"
+        :show-edit="true"
+      />
     </div>
     <ApiError :api-error="apiError" />
   </div>

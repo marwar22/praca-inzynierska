@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import type { ApplicationUser } from '~/types/applicationuser';
-import type { KnockoutBracketMatch, Match } from '~/types/tournament';
-
-const config = useRuntimeConfig();
+import type { ApplicationUserBasic } from '~/types/applicationuser';
+import type { KnockoutBracketMatch } from '~/types/tournament';
 
 const props = defineProps<{
   kbMatch: KnockoutBracketMatch;
   knockoutBracketMatches: Map<number, KnockoutBracketMatch>;
-  players: Map<number, ApplicationUser>;
+  players: Map<number, ApplicationUserBasic>;
   stage: number;
   setsToWin: number;
   bottom?: boolean;
   last?: boolean;
+  showEdit: boolean;
 }>();
 
 const match = computed(() => props.kbMatch.match);
 const nextKBMatch = computed(() => props.knockoutBracketMatches.get(props.kbMatch.nextMatchInKnockoutBracketId));
-const firstPlayer = computed(() => props.players.get(match.value?.firstPlayerId ?? -1));
-const secondPlayer = computed(() => props.players.get(match.value?.secondPlayerId ?? -1));
+const firstPlayer = computed(() => props.players.get(match.value?.playerIds[0] ?? -1));
+const secondPlayer = computed(() => props.players.get(match.value?.playerIds[1] ?? -1));
 
 const MATCH_PADDING = 0.5;
 const padding = computed(() => {
@@ -54,9 +53,13 @@ const maxSetsInMatch = computed(() => props.setsToWin * 2 - 1);
         <tr>
           <td
             class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
-            :class="{ 'font-bold': match?.result?.winnerId === match?.firstPlayerId }"
+            :class="{ 'font-bold': match?.result?.winnerId === match?.playerIds[0] }"
           >
-            {{ nameFromApplicationUser(firstPlayer) }}&nbsp;
+            {{
+              firstPlayer || match.playerIds[0] === null
+                ? nameFromApplicationUser(firstPlayer)
+                : 'Błąd - nieznany zawodnik'
+            }}&nbsp;
           </td>
           <td
             v-for="setResult in match?.result?.playedSetResults ?? []"
@@ -69,7 +72,7 @@ const maxSetsInMatch = computed(() => props.setsToWin * 2 - 1);
             v-for="_ in maxSetsInMatch - (match?.result?.playedSetResults?.length ?? 0)"
             class="w-[25px] border px-1.5 py-1"
           ></td>
-          <td rowspan="2" class="w-8 border" v-if="match && nextKBMatch?.match.result == null">
+          <td rowspan="2" class="w-8 border" v-if="showEdit && match && nextKBMatch?.match.result == null">
             <NuxtLink :to="`/mecz/${match?.id}`" class="h-full pl-1">
               <font-awesome-icon :icon="['fas', 'file-pen']" size="xl" />
             </NuxtLink>
@@ -78,9 +81,13 @@ const maxSetsInMatch = computed(() => props.setsToWin * 2 - 1);
         <tr>
           <td
             class="min-w-[8rem] border bg-champagne-300 px-2 py-1"
-            :class="{ 'font-bold': match?.result?.winnerId === match?.secondPlayerId }"
+            :class="{ 'font-bold': match?.result?.winnerId === match?.playerIds[1] }"
           >
-            {{ nameFromApplicationUser(secondPlayer) }}&nbsp;
+            {{
+              secondPlayer || match.playerIds[1] === null
+                ? nameFromApplicationUser(secondPlayer)
+                : 'Błąd - nieznany zawodnik'
+            }}&nbsp;
           </td>
           <td
             v-for="setResult in match?.result?.playedSetResults ?? []"

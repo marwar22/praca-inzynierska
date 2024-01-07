@@ -23,8 +23,11 @@ public class TournamentBasicDto implements Serializable {
     @Range(min = 1, max = 128, message = "numberOfPlayers must be in range <1, 128>")
     Short numberOfPlayers;
 
+    @NotNull(message = "hasGroupStage can't be null")
+    Boolean hasGroupStage;
+
     @NotNull(message = "numberOfGroups can't be null")
-    @Range(min = 1, max = 24, message = "numberOfGroups must be in range <1, 24>")
+    @Range(min = 0, max = 24, message = "numberOfGroups must be in range <0, 24>")
     Short numberOfGroups;
 
     @Range(min = 1, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <1, 128>")

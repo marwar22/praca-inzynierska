@@ -27,7 +27,7 @@ async function onLogin() {
     authStatus.value = res;
     apiError.value = null;
     incorrectUsernameOrPassword.value = false;
-    await navigateTo('/konto');
+    await navigateTo('/konto', { replace: true });
   } catch (error) {
     apiError.value = fetchErrorToApiError(error);
     if (apiError.value.errors['auth'] === 'Username or password is incorrect') {
@@ -70,7 +70,7 @@ onMounted(() => loginInput.value?.input?.focus());
       </span>
       <NuxtLink
         to="/reset-hasla"
-        class="cursor-pointer text-right hover:text-olive-700 hover:underline underline-offset-2 active:text-olive-600 pt-1"
+        class="cursor-pointer pt-1 text-right underline-offset-2 hover:text-olive-700 hover:underline active:text-olive-600"
       >
         Zresetuj hasło
       </NuxtLink>

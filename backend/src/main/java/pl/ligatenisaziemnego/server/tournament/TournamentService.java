@@ -50,19 +50,21 @@ public class TournamentService {
     public Tournament create(TournamentCreateDto tournamentCreateDto) throws ExceptionWithResponseEntity {
         var tournament = tournamentMapper.toEntity(tournamentCreateDto);
         tournament.setPlayers(applicationUserRepository.findAllById(tournamentCreateDto.getPlayerIds()));
-        tournament.getGroups().forEach(tournamentGroup -> {
-            var matches = new ArrayList<Match>();
-            var playerIds = tournamentGroup.getPlayerIds();
-            for (int i = 0; i < playerIds.size(); i++) {
-                for (int j = i + 1; j < playerIds.size(); j++) {
-                    var match = new Match();
-                    match.setFirstPlayerId(playerIds.get(i));
-                    match.setSecondPlayerId(playerIds.get(j));
-                    matches.add(match);
+        if (tournament.getHasGroupStage()) {
+            tournament.getGroups().forEach(tournamentGroup -> {
+                var matches = new ArrayList<Match>();
+                var playerIds = tournamentGroup.getPlayerIds();
+                for (int i = 0; i < playerIds.size(); i++) {
+                    for (int j = i + 1; j < playerIds.size(); j++) {
+                        var match = new Match();
+                        match.setFirstPlayerId(playerIds.get(i));
+                        match.setSecondPlayerId(playerIds.get(j));
+                        matches.add(match);
+                    }
                 }
-            }
-            tournamentGroup.setMatches(matches);
-        });
+                tournamentGroup.setMatches(matches);
+            });
+        }
         if (tournament.getPlayers().size() != tournamentCreateDto.getPlayerIds().size()) throw ApiError.BAD_REQUEST(
                 Map.of("playerIds", "playerIds contains at least one entry that doesn't correspond to applicationUserId"));
 
@@ -72,11 +74,15 @@ public class TournamentService {
         var tournamentGroups = tournament.getGroups();
         tournament.setGroups(null);
         tournamentRepository.save(tournament);
-        var tournamentId = tournament.getId();
-        tournamentGroups.forEach(tournamentGroup -> tournamentGroup.getMatches().forEach(match -> match.setTournamentId(tournamentId)));
-        tournament.setGroups(new ArrayList<>(tournamentGroups));
+        if (tournament.getHasGroupStage()) {
+            var tournamentId = tournament.getId();
+            tournamentGroups.forEach(tournamentGroup -> tournamentGroup.getMatches().forEach(match -> match.setTournamentId(tournamentId)));
+            tournament.setGroups(new ArrayList<>(tournamentGroups));
+        } else {
+            tournament.getPlayers().sort(Comparator.comparing(ApplicationUser::getRanking));
+            createKnockoutBracket(tournament, tournament.getPlayers().stream().map(ApplicationUser::getId).collect(Collectors.toList()));
+        }
         tournamentRepository.save(tournament);
-
         return tournament;
     }
 
@@ -95,7 +101,7 @@ public class TournamentService {
         return group.getPlayers();
     }
 
-    public void createKnockoutBracket(Long id) throws ExceptionWithResponseEntity {
+    public void createKnockoutBracketFromGroups(Long id) throws ExceptionWithResponseEntity {
         @AllArgsConstructor
         final class PlayerResult implements Comparable<PlayerResult> {
             private Long id;
@@ -106,6 +112,7 @@ public class TournamentService {
             private Long gamesWon;
             private Long gamesLost;
 
+//            TODO compare to based on points
             @Override
             public int compareTo(@Nonnull PlayerResult other) {
                 return Comparator.<PlayerResult>comparingLong(pr -> (pr.matchesLost - pr.matchesWon))
@@ -166,11 +173,12 @@ public class TournamentService {
                 }
             }
             groupsResults.add(new GroupResult(new ArrayList<>(playersResults.values())));
+//            TODO sort based on points
             Collections.sort(groupsResults.getLast().playersResults);
         }
         int numberOfPlayersLeft = tournament.getNumberOfPlayersInKnockoutBracket();
 
-        var playerSeeds = new ArrayList<PlayerResult>();
+        var sortedPlayers = new ArrayList<PlayerResult>();
 
         for (int place = 0; numberOfPlayersLeft > 0; place++) {
             int finalPlace = place;
@@ -178,13 +186,18 @@ public class TournamentService {
             var l = groupsResults.stream().map(gr -> gr.playersResults.size() > finalPlace ? gr.playersResults.get(finalPlace) : null)
                                  .filter(Objects::nonNull).sorted().limit(Math.min(numberOfPlayersLeft, groupsResults.size())).toList();
             numberOfPlayersLeft -= l.size();
-            playerSeeds.addAll(l);
+            sortedPlayers.addAll(l);
         }
+        createKnockoutBracket(tournament, sortedPlayers.stream().map(sp -> sp.id).collect(Collectors.toList()));
+    }
+
+    private void createKnockoutBracket(Tournament tournament, List<Long> sortedPlayers) {
+        var result = new ArrayList<Long>(tournament.getNumberOfPlayersInKnockoutBracket().intValue());
         var seedPositions = Arrays.asList(0, 1);
         while (seedPositions.size() < tournament.getNumberOfPlayersInKnockoutBracket()) seedPositions = doubleSeedPositions(seedPositions);
-        var result = new ArrayList<PlayerResult>(tournament.getNumberOfPlayersInKnockoutBracket().intValue());
+
         for (var sp : seedPositions) {
-            result.add(playerSeeds.get(sp));
+            result.add(sortedPlayers.get(sp));
         }
         var knockoutBracket = new KnockoutBracket();
         knockoutBracket.setMatches(new ArrayList<>());
@@ -192,8 +205,8 @@ public class TournamentService {
         for (int i = 0; i < result.size(); i += 2) {
             var match = new Match();
             match.setTournamentId(tournament.getId());
-            match.setFirstPlayerId(result.get(i).id);
-            match.setSecondPlayerId(result.get(i + 1).id);
+            match.setFirstPlayerId(result.get(i));
+            match.setSecondPlayerId(result.get(i + 1));
 
             var knockoutBracketMatch = new MatchInKnockoutBracket();
             knockoutBracketMatch.setMatch(match);

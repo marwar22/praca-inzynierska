@@ -61,6 +61,7 @@ export type Tournament = {
   id: number;
   name: string;
   numberOfPlayers: number;
+  hasGroupStage: boolean;
   numberOfGroups: number;
   setsToWin: number;
   scoring: TournamentScoring;
