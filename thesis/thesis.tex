@@ -28,8 +28,8 @@
 %%%%% WŁASNE DODATKOWE PAKIETY
 %
 \usepackage{float,dirtree}
-%\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
-\usepackage{graphicx,listings}
+% \usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
+\usepackage{graphicx,listings,amsmath}
 %
 %%%%% WŁASNE DEFINICJE I POLECENIA
 %
@@ -58,44 +58,88 @@ Aplikacja udostępnia także bogatą parametryzację, pozwalającą dostosować 
 
 \par
 Co istotne, dzięki responsywnemu interfejsowi użytkownika, aplikacja jest przystosowana zarówno do urządzeń mobilnych, jak i stacjonarnych,
-Dzięki temu gracze mają możliwość korzystania z systemu nie tylko w domu, ale również w przerwach w pracy, czy na korcie tenisowym.
+Dzięki temu zawodnicy mają możliwość korzystania z systemu nie tylko w domu, ale również w przerwach w pracy, czy na korcie tenisowym.
 Aplikacja webowa została opublikowana i jest dostępna na stronie \texttt{www.rozgrywkitenisa.pl}.
 \par
 
-
-% Obsługa amatorskich lig tenisa ziemnego bardzo często polega na wykorzystaniu notesu i długopisu.
-% W ramach tych lig zawodnicy są zazwyczaj zobowiązani sami organizować swoje mecze i zdobywać dane kontaktowe innych uczestników, w celu ustalenia terminów spotkań.
-% Pojawiła się potrzeba istnienia nowoczesnego narzędzia do organizacji amatorskich rozgrywek ligowych.
-% \par
-% To narzędzie powinno umożliwiać łatwe wprowadzanie wyników meczów i weryfikować je.
-% Na podstawie wyników meczów sytuacja w grupie i drabince turniejowej powinna być obliczana automatycznie.
-% Dodatkowo zawodnicy powinni mieć możliwość wymienić się danych kontaktowymi i być powiadamiani o zakończonych meczach i zmianach w tabeli.
-% Powinno być także dostępne na urządzeniach przeciętnego zawodnika tak, aby miał on dostęp do systemu w domu, w przerwie w pracy, czy na korcie.
-% \par
-% W poniższej pracy przedstawiam aplikację webową, która nie tylko spełnia opisane wyżej potrzeby,
-% ale także udostępnia bogatą parametryzację, pozwalającą dostosować system do wymagań danej rozgrywki.
-% Interfejs użytkownika jest responsywny i umożliwia korzystanie z aplikacji zarówno na urządzeniach mobilnych, jak i stacjonarnych.
-% Aplikacja webowa została opublikowana i jest dostępna na stronie \texttt{www.rozgrywkitenisa.pl}.
-% \par
-
 \chapter{Opis zagadnienia}
-TODO \ldots
+Na początku projektu zaimplementowane zostały tylko podstawowe funkcjonalności. Z czasem zostały dokładane nowe pomysły
+i ostatecznie zrealizowano następujące funkcjonalności:
+\begin{itemize}
+    \item Tworzenie rozgrywek, faza grupowa jest opcjonalna
+    \item Liczba grup i zawodników w fazie pucharowej jest konfigurowalna.
+          W pojedynczej rozgrywce liczba zawodników została ograniczona do 128, a liczba grup została ograniczona do 24.
+          Limity zostały wybrane arbitralnie i mogą zostać zmienione.
+          Niestety limity są konieczne ponieważ nie można pozwolić użytkownikowi na stworzenie rozgrywki o bardzo dużej (np. 10000) liczbie grup, lub zawodników.
+          Przeglądarka nie potrafiłaby ich wyrenderować.
+    \item Podczas tworzenia rozgrywki skład grup jest losowany. Losowanie jest wspomagane rankingiem.
+          W przypadku rozgrywek bez fazy grupowej rozstawienie zawodników w fazie pucharowej ustalane jest na podstawie rankingu.
+    \item Zawodnicy mają dostęp do danych kontaktowych osób, z którymi będą rozgrywać mecz.
+    \item Wynik meczu może wpisywać organizator/sędzia, lub zawodnicy.
+    \item Wynik meczu obsługuje przypadki szczególne:
+          \begin{itemize}
+              \item walkower - w tabeli wynik liczony jest tak jakby zawodnik poddający się przegrał wszystkie gemy, aż do zwycięstwa w meczu drugiego zawodnika,
+              \item krecz - w tabeli wynik liczony jest tak jakby zawodnik poddający się przegrał wszystkie gemy od momentu wycofania się, aż do zwycięstwa w meczu drugiego zawodnika.
+          \end{itemize}
+    \item Rejestracja użytkowników. Hasło można zresetować za pomocą emaila podenego podczas rejestracji.
+    \item Obliczanie rankingu na podstawie wyników zakończonych rozgrywek.
+\end{itemize}
+\section{Generowanie grup}
+Podczas generowania grup zawodnicy są dzieleni na koszyki według rankingu.
+Dla rozgrywki o $N$ zawodnikach i $M$ grupach w pierwszym koszyku znajduje się $M$ zawodników o najlepszym rankingu, w drugim koszyku kolejne $M$ zawodników, itd.
+Wyjątkiem jest ostatni koszyk. Jeżeli $N \not\equiv 0 \pmod{M}$, wtedy liczba zawodników w ostatnim koszyku jest mniejsza, wynosi $N\bmod{M}$.
+\section{Generowanie drabinki fazy pucharowej}
+Na początku generowania drabinki fazy pucharowej zawodnicy są sortowani. Jeżeli rozgrywka posiada fazę grupową, to kolejność zależy od wyników w grupie.
+Największe znaczenie ma pozycja w grupie, potem bilans meczów, bilans setów, a na końcu bilans gemów.
+Jeżeli rozgrywka składa się tylko z fazy pucharowej to kolejność zawodników zależy od pozycji w rankingu ogólnym.
+
+Posortowanym zawodnikom przypisane zostają numery startowe od $0$ do $N-1$, gdzie $N$ to ilość zawodników.
+Numery startowe są następnie przypisywane do drabinki według poniższego algorytmu. Jego wizualizacja znajduje się na rysunku~\ref{fig:knockout_bracket_generation}.
+\begin{lstlisting}
+    numeryStartowe=[0,1]
+    dopoki (numeryStartowe.rozmiar() < N) {
+        poprzednieNumeryStartowe = numeryStartowe
+        numeryStartowe = []
+        najwiekszyNumer = poprzednieNumeryStartowe.rozmiar() * 2 - 1
+        dla kazdego (ns w poprzednieNumeryStartowe) {
+            numeryStartowe.dodaj(ns)
+            numeryStartowe.dodaj(najwiekszyNumer - ns)
+        }
+    }
+    zwroc numeryStartowe
+\end{lstlisting}
+Kolejne pary w zwróconej liście odpowiadają kolejnym parom w drabince fazy pucharowej.
+Przykładowo dla $N=8$ zostanie zwrócona lista $[0, 7, 3, 4, 1, 6, 2, 5]$. Odpowiada to parom
+$[0, 7]$, $[3, 4]$, $[1, 6]$, $[2, 5]$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/generowanie_drabinki.png}
+    \caption{Schemat generowania drabinki fazy pucharowej}
+    \label{fig:knockout_bracket_generation}
+\end{figure}
+
 \chapter{Opis aplikacji}
 TODO inne sekcje opisu \ldots
 \section{Instalacja}
-TODO \ldots wstęp do instalacji
+\noindent
+Aplikacja została przygotowana do uruchomienia w dwóch środowiskach:
+\begin{itemize}
+    \item lokalnym - do testowania na urządzeniu użytkownika,
+    \item produkcyjnym - gdy aplikacja jest publicznie dostępna
+\end{itemize}
+Instrukcje instalacji dla środowiska lokalnego i produkcyjnego różnią się, różnice są oznaczone.
 \subsection{Zmienne środowiskowe}
 \noindent
 Należy utworzyć pliki zawierające zmienne środowiskowe (\texttt{.env}).
 Pliki \texttt{.env.example} zawierają przykładowe wartości, które pozwalają na uruchomienie w środowisku lokalnym.
 \begin{itemize}
     \item
-    \begin{lstlisting}[language=bash]
+          \begin{lstlisting}[language=bash]
     cp .env.example .env
     \end{lstlisting}
-    
+
     \item
-    \begin{lstlisting}[language=bash]
+          \begin{lstlisting}[language=bash]
     cd frontend
     cp .env.example .env
     \end{lstlisting}
@@ -162,8 +206,6 @@ Konfiguracja całego środowiska znajduje się w pliku \texttt{docker-compose.ym
     \caption{Struktura kontenerów Dockera}
     \label{fig:docker_containers_environment}
 \end{figure}
-\subsection{Przepływ zapytań http}
-TODO \ldots
 \section{Kontenery Dockera}
 
 \subsection{Reverse Proxy - Nginx}
@@ -175,6 +217,20 @@ W folderze \texttt{nginx/config/} znajdują się 3 pliki konfiguracyjne. Podczas
     \item \texttt{nginx.conf} jest używany w środowisku produkcyjnym. Definiuje przekierowywanie zapytań do odpowiednich kontenerów. W tej konfiguracji nieszyfrowana komunikacja za pomocą http jest przekierowywana do szyfrowanej komunikacji za pomocą https.
     \item \texttt{nginx\_localhost.conf} jest używany w środowisku lokalnym.
 \end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/przepływ_zapytań_http.png}
+    \caption{Przepływ zapytań https zdefiniowanych w pliku \texttt{nginx.conf}}
+    \label{fig:https_requests_flow}
+\end{figure}
+Na rysunku \ref{fig:https_requests_flow} pokazano schemat przepływu zapytań https dla pliku \texttt{nginx.conf}.
+W przypadku zapytania http reverse proxy nie przekazuje zapytania do kolejnego kontenera, a odpowiada klientowi od razu przekierowaniem do https. Dla zapytań https zdefiniowane są następujące reguły:
+\begin{enumerate}
+    \item Jeżeli url zaczyna się od \texttt{/.well-known/acme-challenge/} przekaż zapytanie do kontenera Certbot.
+    \item Jeżeli url zaczyna się od \texttt{/api} przekaż zapytanie do kontenera backend.
+    \item W przeciwnym przypadku przekaż zapytanie do kontenera frontend.
+\end{enumerate}
+Wszystkie odpowiedzi na zapytania przekazywane są do reverse proxy, a reverse proxy przekazuje je dalej do nadawcy zapytania.
 
 \subsection{Frontend - Nuxt3, Vue.js}
 Frontend został napisany we frameworku Nuxt3~\cite{Nuxt3}, który oparty jest na Vue.js.
@@ -195,7 +251,7 @@ standardach zdefiniowanych w dokumentacji Nuxt3.
         .2 types.
         .2 utils.
     }
-    \caption{Zarys struktury plików}    
+    \caption{Zarys struktury plików}
 \end{figure}
 % W Nuxt3 struktura strony odpowiada plikom w folderze pages zgodnie z zasadami zdefiniowanymi w dokumentacji\cite{Nuxt3DocsPages}.
 \noindent
@@ -203,7 +259,7 @@ Zawartość tych folderów jest następująca:
 \begin{itemize}
     \item \texttt{components/} zawiera elementy interfejsu użytkownika (np. tabela wyników, element tablicy wyników, drabinka turniejowa)
     \item \texttt{composables/} zawiera elementy logiki, które posiadają swój stan i są używane w wielu miejscach. Moja aplikacja definiuje \texttt{AuthStatus}, który jest odpowiedzialny za przechowywanie informacji o tym, czy użytkownik jest zalogowany, czy nie.
-    \item \texttt{pages/} struktura adresów url odpowiada plikom w tym folderze\\(np. \texttt{rozgrywkitenisa.pl/rozgrywki/123} $\longrightarrow$ \texttt{pages/rozgrywki/[id].vue}) 
+    \item \texttt{pages/} struktura adresów url odpowiada plikom w tym folderze\\(np. \texttt{rozgrywkitenisa.pl/rozgrywki/123} $\longrightarrow$ \texttt{pages/rozgrywki/[id].vue})
     \item \texttt{plugins/} zawiera konfigurację dwóch pluginów (FontAwesome~\cite{FontAwesome} (dostarcza ikony aplikacji), VueDatePicker~\cite{VueDatePicker} (Dostarcza narzędzie do wybierania daty)
     \item \texttt{public/} zawiera statyczne pliki, które nie są zmieniane podczas kompilacji i~są przekazywane jako niezmienione klientowi
     \item \texttt{middleware/} zawiera middleware, które odpowiedzialne są za modyfikowanie zapytań przed przekazaniem ich dalej. Moja aplikacja używa tylko 1 middleware \texttt{logged.in.ts}, który przekierowuje niezalogowanych użytkowników do strony logowania
@@ -233,8 +289,8 @@ Dodatkowo każdy obiekt przechowywany w bazie danych posiada klasy odpowiedzialn
 Przykładowo dla obiektu odpowiedzialnego za rozgrywkę (\texttt{Tournament}) zdefiniowane są następujące klasy:
 \begin{itemize}
     \item \texttt{TournamentController} - kontroler
-    \item \texttt{TournamentMapper} - maper    
-    \item \texttt{TournamentRepository} - repozytorium    
+    \item \texttt{TournamentMapper} - maper
+    \item \texttt{TournamentRepository} - repozytorium
     \item \texttt{TournamentService} - serwis
     \item \texttt{Tournament} - encja
     \item \texttt{TournamentCreateDto} - obiekt transferu danych wysyłany przez frontend podczas żądania stworzenia rozgrywki
@@ -275,6 +331,7 @@ Odpowiada on za automatyczne odnawianie certyfikatów poprzez wysyłanie zapytan
     \bibitem{VueDatePicker} VueDatePicker \url{https://vue3datepicker.com/}
     \bibitem{TailwindCSS} TailwindCSS \url{https://tailwindcss.com/}
     \bibitem{SpringBoot} SpringBoot \url{https://spring.io/projects/spring-boot/}
+    \bibitem{Flyway} Flyway \url{https://flywaydb.org/}
     \bibitem{Certbot} Certbot \url{https://certbot.eff.org/}
     \bibitem{LetsEncrypt} LetsEncrypt \url{https://letsencrypt.org/pl/}
 \end{thebibliography}
