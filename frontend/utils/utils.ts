@@ -1,8 +1,12 @@
 import type { ApiError } from '~/types/apierrror';
 import type { ApplicationUser, ApplicationUserBasic, ApplicationUserContact } from '~/types/applicationuser';
 
-export function between(min: number, n: number, max: number) {
+export function isBetween(min: number, n: number, max: number) {
   return min <= n && n <= max;
+}
+
+export function clamp(min: number, n: number, max: number) {
+  return Math.max(min, n, Math.min(n, max));
 }
 
 export function fetchErrorToApiError(error: any): ApiError {
@@ -30,4 +34,8 @@ export function entityArrayToMap<T extends Entity>(arr: T[] | null | undefined) 
     map.set(obj.id, obj);
   }
   return map;
+}
+
+export function nextPowerOf10(num: number) {
+  return Math.pow(10, Math.ceil(Math.log10(num)));
 }

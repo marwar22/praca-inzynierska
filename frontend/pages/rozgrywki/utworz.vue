@@ -8,7 +8,7 @@ import type { KnockoutBracket, Tournament, TournamentScoring } from '~/types/tou
 
 const config = useRuntimeConfig();
 
-const MIN_NUMBER_OF_PLAYERS = 1;
+const MIN_NUMBER_OF_PLAYERS = 2;
 const MAX_NUMBER_OF_PLAYERS = 128;
 
 const MIN_NUMBER_OF_GROUPS = 1;
@@ -47,7 +47,10 @@ const scoring = ref<TournamentScoring>({
 
 const numberOfPlayersInKnockoutBracket = ref(4);
 const numberOfPlayersInKnockoutBracketOptions = computed(() => {
-  let max = 1 << (31 - Math.clz32(hasGroupStage.value ? numberOfPlayers.value : MAX_NUMBER_OF_PLAYERS));
+  const maxPlayers = hasGroupStage.value
+    ? clamp(MIN_NUMBER_OF_PLAYERS, numberOfPlayers.value, MAX_NUMBER_OF_PLAYERS)
+    : MAX_NUMBER_OF_PLAYERS;
+  let max = 1 << (31 - Math.clz32(maxPlayers));
   const res = [];
   for (let i = max; i > 1; i /= 2) res.push(i);
   res.reverse();
@@ -118,7 +121,7 @@ async function create() {
   <div class="page__margin flex flex-col pb-20">
     <h1 class="mt-5 text-3xl font-bold">Tworzenie nowej rozgrywki</h1>
     <div class="flex max-md:flex-col">
-      <label class="mr-5 flex flex-1 flex-col">
+      <label class="mr-5 flex flex-1 flex-col max-md:w-full">
         Nazwa
         <ContestCreateInput
           placeholder="Nazwa rozgrywki"
@@ -142,14 +145,14 @@ async function create() {
       </label>
     </div>
     <div class="mt-2 flex flex-wrap">
-      <label v-if="hasGroupStage" class="mr-5 flex w-64 flex-col">
+      <label v-if="hasGroupStage" class="flex w-64 flex-col max-md:w-full md:mr-5">
         Liczba zawodników
         <ContestCreateInput
           placeholder="Liczba grup"
           type="number"
           v-model.number="numberOfPlayers"
-          :min="MIN_NUMBER_OF_PLAYERS"
-          :max="MAX_NUMBER_OF_PLAYERS * 10"
+          :min="1"
+          :max="nextPowerOf10(MAX_NUMBER_OF_PLAYERS) - 1"
           :error="
             !isNumberOfPlayersInRange
               ? `Liczba graczy musi być w przedziale od ${MIN_NUMBER_OF_PLAYERS} do ${MAX_NUMBER_OF_PLAYERS}`
@@ -158,14 +161,14 @@ async function create() {
         />
       </label>
 
-      <label v-if="hasGroupStage" class="mr-5 flex w-64 flex-col">
+      <label v-if="hasGroupStage" class="flex w-64 flex-col max-md:w-full md:mr-5">
         Liczba grup
         <ContestCreateInput
           placeholder="Liczba grup"
           type="number"
           v-model.number="numberOfGroups"
           :min="MIN_NUMBER_OF_GROUPS"
-          :max="MAX_NUMBER_OF_GROUPS * 10"
+          :max="nextPowerOf10(MAX_NUMBER_OF_GROUPS) - 1"
           :error="
             !isNumberOfGroupsInRange
               ? `Liczba grup musi być w przedziale od ${MIN_NUMBER_OF_GROUPS} do ${MAX_NUMBER_OF_GROUPS}`

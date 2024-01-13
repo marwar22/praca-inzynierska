@@ -105,19 +105,29 @@ public class TournamentService {
         @AllArgsConstructor
         final class PlayerResult implements Comparable<PlayerResult> {
             private Long id;
+            private Long points;
             private Long matchesWon;
             private Long matchesLost;
+            private Long matchesLostByWalkover;
             private Long setsWon;
             private Long setsLost;
             private Long gamesWon;
             private Long gamesLost;
 
-//            TODO compare to based on points
+            //            TODO compare to based on points
             @Override
             public int compareTo(@Nonnull PlayerResult other) {
-                return Comparator.<PlayerResult>comparingLong(pr -> (pr.matchesLost - pr.matchesWon))
-                                 .thenComparing(pr -> pr.setsLost - pr.setsWon).thenComparing(pr -> pr.gamesLost - pr.gamesWon)
+                return Comparator.<PlayerResult>comparingLong(pr -> pr.points)
+                                 .thenComparing(pr -> (pr.matchesWon - pr.matchesLost))
+                                 .thenComparing(pr -> pr.setsWon - pr.setsLost)
+                                 .thenComparing(pr -> pr.gamesWon - pr.gamesLost).reversed()
                                  .compare(this, other);
+            }
+
+            public void updatePoints(TournamentScoring scoring) {
+                points = matchesWon * scoring.getGroupPointsForWin() +
+                         matchesLost * scoring.getGroupPointsForLoss() +
+                         matchesLostByWalkover * scoring.getGroupPointsForWalkover();
             }
         }
 
@@ -143,7 +153,7 @@ public class TournamentService {
         var groupsResults = new ArrayList<GroupResult>();
         for (var group : tournament.getGroups()) {
             var playersResults = group.getPlayerIds().stream()
-                                      .collect(Collectors.toMap(pId -> pId, pId -> new PlayerResult(pId, 0L, 0L, 0L, 0L, 0L, 0L)));
+                                      .collect(Collectors.toMap(pId -> pId, pId -> new PlayerResult(pId, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L)));
             for (var match : group.getMatches()) {
                 if (match.getResult() == null) {
                     throw ApiError.BAD_REQUEST(
@@ -161,9 +171,15 @@ public class TournamentService {
 
                 var winForFirst = match.getResult().getFirstPlayerScore() > match.getResult().getSecondPlayerScore() ? 1 : 0;
                 firstPlayerResults.matchesWon += winForFirst;
-                firstPlayerResults.matchesLost += 1 - winForFirst;
                 secondPlayerResults.matchesWon += 1 - winForFirst;
-                secondPlayerResults.matchesLost += winForFirst;
+                if (match.getResult().getWalkover()) {
+                    firstPlayerResults.matchesLostByWalkover += 1 - winForFirst;
+                    secondPlayerResults.matchesLostByWalkover += winForFirst;
+                } else {
+                    firstPlayerResults.matchesLost += 1 - winForFirst;
+                    secondPlayerResults.matchesLost += winForFirst;
+                }
+
                 for (var setResults : match.getResult().getSetResults()) {
                     firstPlayerResults.gamesWon += setResults.getFirstPlayerScore();
                     firstPlayerResults.gamesLost += setResults.getSecondPlayerScore();
@@ -172,6 +188,7 @@ public class TournamentService {
                     secondPlayerResults.gamesLost += setResults.getFirstPlayerScore();
                 }
             }
+            playersResults.forEach((pId, playerResult) -> playerResult.updatePoints(tournament.getScoring()));
             groupsResults.add(new GroupResult(new ArrayList<>(playersResults.values())));
 //            TODO sort based on points
             Collections.sort(groupsResults.getLast().playersResults);

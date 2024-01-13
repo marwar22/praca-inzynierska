@@ -33,7 +33,7 @@ watch(
       const gamesToWin = tieBreakerSetIndex === result.setResults.length - 1 ? 10 : 6;
 
       lastSet.gamesScored[winnerIndex] = Math.max(gamesToWin, lastSet.gamesScored[1 - winnerIndex] + 2);
-      if (between(8, lastSet.gamesScored[winnerIndex], 9)) lastSet.gamesScored[winnerIndex] = 10;
+      if (isBetween(8, lastSet.gamesScored[winnerIndex], 9)) lastSet.gamesScored[winnerIndex] = 10;
 
       let winnerSetsScored = result.setResults.reduce(
         (acc, sr) => acc + (sr.gamesScored[winnerIndex] > sr.gamesScored[1 - winnerIndex] ? 1 : 0),

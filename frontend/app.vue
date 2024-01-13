@@ -83,8 +83,10 @@ const currPage = computed(() => {
             <NuxtLink
               :to="page.href"
               :class="[
+                'line before:bg-primary relative before:absolute before:bottom-1 before:left-0 before:mx-2 before:h-[0.1875rem] before:w-0 before:content-[\'test\'] md:before:hover:w-[calc(100%_-_1rem)] md:before:hover:bg-white',
+                'md:before:transition-[width]  md:before:duration-[250ms] md:before:ease-in-out md:ease-[cubic-bezier(0.215,_0.61,_0.355,_1]',
+                currPage == index ? 'md:before:w-[calc(100%_-_1rem)]  md:before:bg-white' : '',
                 'block w-full px-2 py-1.5 ',
-                ' md:hover:text-champagne-800 md:active:text-champagne-900',
                 currPage == index
                   ? 'max-md:bg-olive-400 max-md:hover:bg-olive-500 max-md:active:bg-olive-600'
                   : 'max-md:hover:bg-olive-400 max-md:active:bg-olive-600'
@@ -129,5 +131,14 @@ const currPage = computed(() => {
 
 .v-leave-to {
   transform: rotate(180deg);
+}
+
+@media (min-width: 768px) {
+  /* .line::before {
+    -webkit-transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+    -moz-transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+    -o-transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+  } */
 }
 </style>

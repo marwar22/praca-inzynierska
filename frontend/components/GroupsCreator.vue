@@ -54,7 +54,7 @@ function generateGroups() {
   <div class="mt-4 flex items-center">
     <h2 class="text-2xl font-bold">Grupy</h2>
     <button
-      class="ml-2 rounded-lg bg-olive-600 px-2.5 py-1 text-white outline-none ring-olive-800 hover:bg-olive-700 focus-visible:ring-2 active:bg-olive-800"
+      class="ml-2 rounded-lg bg-olive-600 px-2.5 py-1.5 text-white outline-none ring-olive-800 hover:bg-olive-700 focus-visible:ring-2 active:bg-olive-800"
       @click="generateGroups()"
     >
       Wylosuj skład grup
@@ -80,7 +80,7 @@ function generateGroups() {
   </div>
 
   <div class="mt-4 flex flex-wrap">
-    <div v-for="(_, groupIndex) in numberOfGroups" class="m-1 flex flex-col" :key="groupIndex">
+    <div v-for="(_, groupIndex) in numberOfGroups" class="m-1 flex flex-col max-md:w-full" :key="groupIndex">
       <table>
         <thead>
           <tr class="border-2">

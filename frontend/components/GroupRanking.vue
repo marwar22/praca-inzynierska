@@ -88,8 +88,7 @@ const sortedPlayers = computed(() => {
           <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Punkty</th>
           <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety wygrane</th>
           <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Sety przegrane</th>
-          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy wygrane</th>
-          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy przegrane</th>
+          <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Gemy</th>
           <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Mecze</th>
         </tr>
       </thead>
@@ -100,8 +99,9 @@ const sortedPlayers = computed(() => {
           <td class="border-2 px-2 py-1">{{ player.points }}</td>
           <td class="border-2 px-2 py-1">{{ player.setsWon }}</td>
           <td class="border-2 px-2 py-1">{{ player.setsLost }}</td>
-          <td class="border-2 px-2 py-1">{{ player.gamesWon }}</td>
-          <td class="border-2 px-2 py-1">{{ player.gamesLost }}</td>
+          <td class="border-2 px-2 py-1">
+            {{ player.gamesWon > player.gamesLost ? '+' : '' }}{{ player.gamesWon - player.gamesLost }}
+          </td>
           <td class="border-2 px-2 py-1">{{ player.matchesPlayed }}</td>
         </tr>
       </tbody>

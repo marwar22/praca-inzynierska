@@ -11,9 +11,9 @@
 % złamaniu wierszy w temacie pracy, zwlaszcza tego w jezyku pracy. Uzyj do tego
 % polecenia \fmlinebreak.
 \polishtitle    {Aplikacja webowa do obsługi\fmlinebreak rozgrywek tenisowych}
-\englishtitle   {English title}
-\polishabstract {Celem pracy jest zaprojektowanie i stworzenie aplikacji webowej umożliwiającej organizację rozgrywek tenisa ziemnego. Projekt obejmuje opracowanie responsywnego interfejsu użytkownika wraz z zapleczem. Każdy element aplikacji został skonteneryzowany i skonfigurowany do współpracy z resztą projektu. }
-\englishabstract{TODO streszczenie po angielsku \ldots}
+\englishtitle   {Web application for managing tennis tournaments}
+\polishabstract {Celem pracy jest zaprojektowanie i stworzenie aplikacji webowej umożliwiającej organizację rozgrywek tenisa ziemnego. Projekt obejmuje opracowanie responsywnego interfejsu użytkownika wraz z zapleczem. Każdy element aplikacji został skonteneryzowany i skonfigurowany do współpracy z resztą projektu.}
+\englishabstract{The aim of the project is to design and create web application for organizing tennis tournaments. The project includes developing responsive user interface along with the backend. Each component of the application has been contenerized and configured to work with the rest of the project.}
 % w pracach wielu autorow nazwiska mozna oddzielic poleceniem \and
 \author         {Marcin Wróbel}
 % w przypadku kilku promotorow, lub koniecznosci podania ich afiliacji, linie
@@ -27,7 +27,8 @@
 
 %%%%% WŁASNE DODATKOWE PAKIETY
 %
-\usepackage{float,dirtree}
+\usepackage{float,dirtree,subfig,enumitem}
+\usepackage[export]{adjustbox}
 % \usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
 \usepackage{graphicx,listings,amsmath}
 %
@@ -55,18 +56,26 @@ Aplikacja umożliwia łatwe wprowadzanie wyników meczów, weryfikuje je oraz uw
 Na podstawie wyników meczów sytuacja w grupie i drabince turniejowej jest obliczana automatycznie.
 Zawodnicy mają dostęp do danych kontaktowych osób, z którymi mają rozegrać mecz i są powiadamiani o zakończonych meczach i zmianach w tabeli.
 Aplikacja udostępnia także bogatą parametryzację, pozwalającą dostosować system do wymagań danej rozgrywki.
-
 \par
+Aplikacja została stworzona z wykorzystaniem nowoczesnych i popularnych technologii.
+Warstwa frontendowa została napisana z użyciem frameworka Vue.js, który pozwala na tworzenie dynamicznego interfesju użytkownika z komponentami wielokrotnego użytku.
+Z kolei backend został napisany w frameworku Spring Boot, który zapewnia niezawodność i wydajność.
+Dane, niezbędne do sprawnego funkcjonowania aplikacji, są przechowywane w bazie danych PostgreSQL.
+Całość została skonteneryzowana za pomocą technologii Docker.
+\par 
 Co istotne, dzięki responsywnemu interfejsowi użytkownika, aplikacja jest przystosowana zarówno do urządzeń mobilnych, jak i stacjonarnych,
 Dzięki temu zawodnicy mają możliwość korzystania z systemu nie tylko w domu, ale również w przerwach w pracy, czy na korcie tenisowym.
 Aplikacja webowa została opublikowana i jest dostępna na stronie \texttt{www.rozgrywkitenisa.pl}.
 \par
 
-\chapter{Opis zagadnienia}
-Na początku projektu zaimplementowane zostały tylko podstawowe funkcjonalności. Z czasem zostały dokładane nowe pomysły
-i ostatecznie zrealizowano następujące funkcjonalności:
+\chapter{Specyfikacja zagadnienia}
+W tym rozdziale zostanie opisana specyfikacja projektu będącego przedmiotem tej pracy.
+Specyfikacja obejmuje opis wymaganych funkcjonalności, algorytmy odpowiadające za organizację rozgrywki, oraz przypadki użycia.
+\section{Funkcjonalności}
+Poniższa lista przedstawia listę wymaganych funkcjonalności, wszystkie zostały zrealizowane:
 \begin{itemize}
-    \item Tworzenie rozgrywek, faza grupowa jest opcjonalna
+    \item Aplikacja umożliwia tworzenie rozgrywek. Rozgrywka może być dwuczęściowa: na początku zawodnicy rywalizują w fazie grupowej, a następnie najlepsi awansują do fazy pucharowej.
+    Rozgrywka może być też jednoczęściowa: faza grupowa jest pominięta i wszyscy zawodnicy zaczynają od fazy pucharowej.
     \item Liczba grup i zawodników w fazie pucharowej jest konfigurowalna.
           W pojedynczej rozgrywce liczba zawodników została ograniczona do 128, a liczba grup została ograniczona do 24.
           Limity zostały wybrane arbitralnie i mogą zostać zmienione.
@@ -76,7 +85,7 @@ i ostatecznie zrealizowano następujące funkcjonalności:
           W przypadku rozgrywek bez fazy grupowej rozstawienie zawodników w fazie pucharowej ustalane jest na podstawie rankingu.
     \item Zawodnicy mają dostęp do danych kontaktowych osób, z którymi będą rozgrywać mecz.
     \item Wynik meczu może wpisywać organizator/sędzia, lub zawodnicy.
-    \item Wynik meczu obsługuje przypadki szczególne:
+    \item Wynik meczu powinien obsługiwać przypadki szczególne:
           \begin{itemize}
               \item walkower - w tabeli wynik liczony jest tak jakby zawodnik poddający się przegrał wszystkie gemy, aż do zwycięstwa w meczu drugiego zawodnika,
               \item krecz - w tabeli wynik liczony jest tak jakby zawodnik poddający się przegrał wszystkie gemy od momentu wycofania się, aż do zwycięstwa w meczu drugiego zawodnika.
@@ -117,9 +126,147 @@ $[0, 7]$, $[3, 4]$, $[1, 6]$, $[2, 5]$.
     \caption{Schemat generowania drabinki fazy pucharowej}
     \label{fig:knockout_bracket_generation}
 \end{figure}
+\section{Obliczanie rankingu}
+TODO \ldots
+
+\section{Przypadki użycia}
+W tej sekcji zostaną opisane przypadki użycia aplikacji webowej będącej przedmiotem tej pracy.
+Ich celem jest zademonstrowanie działania programu.
+\subsection{Utworzenie rozgrywki}
+
+
+\begin{tabular}{|l|p{12cm}|}
+    \hline
+    Nazwa      & Tworzenie nowej rozgrywki                                                                                                                                                              \\
+    \hline
+    Aktor      & Organizator rozgrywki                                                                                                                                                                  \\
+    \hline
+    Scenariusz &
+    \begin{enumerate}[nosep,leftmargin=*,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
+        \item Użytkownik znajduje się na stronie rozgrywek i klika utwórz rozgrywkę.
+        \item Użytkownik uzupełnia wszystkie pola konfiguracyjne: nazwę, czas trwania, liczbę zawodników, liczbę grup, liczbę finalistów, liczbę setów do wygranej, punkty do zdobycia za poszczególne etapy
+        \item Użytkownik wyszukuje zawodników używając pola wyszukiwania i dodaje ich
+        \item Użytkownik klika przycisk "Wylosuj skład grup" i aplikacja tworzy losuje grupy
+        \item Użytkownik klika przycisk "Utwórz", aplikacja tworzy rozgrywkę i przekierowuje użytkownika do strony z nowo utworzoną rozgrywką
+    \end{enumerate} \\
+    \hline
+\end{tabular}
+
+\subsection{Dodawanie wyniku meczu}
+\begin{tabular}{|l|p{12cm}|}
+    \hline
+    Nazwa      & Dodawanie wyniku meczu                                                                                              \\
+    \hline
+    Aktor      & Zawodnik meczu, który się zakończył                                                                                 \\
+    \hline
+    Scenariusz &
+    \begin{enumerate}[nosep,leftmargin=*,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
+        \item Użytkownik znajduje się na stronie rozgrywek i wpisuje w polu wyszukiwania nazwę rozgrywki w ramach, której odbył się mecz.
+        \item Użytkownik klika rozgrywkę, którą wyświetliła mu aplikacja.
+        \item Użytkownik klika grupę, w której się znajduje.
+        \item Użytkownik klika mecz, którego wynik chce dodać.
+        \item Użytkownik klika ikonę edycji i wprowadza wynik meczu.
+        \item Użytkownik zatwierdza wynik meczu klikając ikonę zapisu.
+        \item Aplikacja wysyła email do wszystkich zawodników w grupie informując o nowym wyniku.
+    \end{enumerate} \\
+    \hline
+\end{tabular}
 
 \chapter{Opis aplikacji}
-TODO inne sekcje opisu \ldots
+Ten rozdział opisuje interfejs aplikacji pozwalając użytkownikowi zapoznać się z nim. Następnie przedstawione zostały
+kroki pozwalające instalację aplikacji lokalnie.
+\section{Interfejs użytkownika}
+W tej sekcji zostaną omówione elementy interfejsu użytkownika.
+\subsection{Strona główna}
+\begin{figure}[H]
+    \centering
+    \subfloat[Wersja na komputery]{
+        \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/home_desktop.png}
+        \vphantom{\includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/home_mobile.png}}
+    }
+    \hfill
+    \subfloat[Wersja na telefony]{
+        \includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/home_mobile.png}
+    }
+    \caption{Strona główna}
+\end{figure}
+
+\subsection{Strona rozgrywek}
+Strona rozgrywek zawiera listę rozgrywek, oraz pozwala na wyszukiwanie konkretnej rozgrywki po nazwie.
+Każda rozgrywka jest opisana podstawowymi informacjami, a po kliknięciu użytkownik jest przenoszony na stronę ze szczegółami.
+Dodatkowo strona zawiera przycisk "Utwórz rozgrywkę" przenoszący do widoku tworzenia rozgrywki.
+
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Wersja na komputery]{
+        \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywki_desktop.png}
+        \vphantom{\includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/rozgrywki_mobile.png}}
+    }
+    \hfill
+    \subfloat[Wersja na telefony]{
+        \includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/rozgrywki_mobile.png}
+    }
+    \caption{Strona rozgrywek}
+\end{figure}
+
+\subsection{Strona tworzenia rozgrywki}
+Dostęp do tej strony mają tylko zalogowani użytkownicy z uprawnieniami do tworzenia rozgrywek.
+Użytkownik może dostosować wszystkie widoczne parametry. Dostępne opcje parametru liczba finalistów, są zależne od liczby zawodników.
+Liczba finalistów musi być potęgą dwójki i nie może być większa od liczby zawodników.
+Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk "Wylosuj skład grup" tworzy grupy zgodnie z podziałem na koszyki.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Wersja na komputery]{
+        \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_desktop.png}
+        \vphantom{\includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_mobile.png}}
+    }
+    \hfill
+    \subfloat[Wersja na telefony]{
+        \includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_mobile.png}
+    }
+    \caption{Strona rozgrywek}
+\end{figure}
+
+\subsection{Edycja meczu}
+Wynik meczu może wprowadzić/edytować organizator rozgrywki, lub jego uczestnicy.
+Aplikacja weryfikuje, czy wynik jest poprawny, i zaznacza na czerwono błędy. Z prawej stronie wyniku
+użytkownik może wygrać zakończenie meczu zgodnie z legendą, która znajduje się po niżej.
+Następnie użytkownik może zapisać zmiany klikając ikonę dyskietki.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/mecz_desktop.png}
+    \caption{Strona edycji wyniku meczu}
+\end{figure}
+
+\subsection{Logowanie i rejestracja}
+Strona rejestracji pozwala na stworzenie konta. Nowe konta nie mają uprawnień do organizowania turnieju.
+W celu uzyskania uprawnień administrator musi dodać odpowiednie uprawnienia użytkownikowi.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rejestracja_desktop.png}
+    \caption{Strona rejestracji}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/logowanie_desktop.png}
+    \caption{Strona logowania}
+\end{figure}
+
+\subsection{Weryfikacja wejścia}
+Opisane w tej sekcji strony zawierają wiele pól, które pozwalają na wpisywanie danych.
+Nie można zakładać, że użytkownik zawsze wpisze wszystkie dane poprawnie.
+W związku z tym wszystkie pola, które akceptują dane użytkownika są weryfikowane.
+W przypadku błędu aplikacja wyświetla odpowiedni komunikat.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/weryfikacja_wejscia.png}
+    \caption{Weryfikacja liczby zawodników i graczy w~widoku tworzenia rozgrywki}
+\end{figure}
+
 \section{Instalacja}
 \noindent
 Aplikacja została przygotowana do uruchomienia w dwóch środowiskach:
@@ -184,7 +331,24 @@ Flaga \texttt{-d} nie jest wymagana, uruchamia projekt w tle.
 docker compose down
 \end{lstlisting}
 
+\subsection{Uwagi do instalacji}
+Dane aplikacji są przechowywane w folderze \texttt{data/}.
+Aby oczyścić system z wszystkich kontenerów, obrazów, cache i innych plików stworzonych przez Dockera należy w wykonać poniższe polecenie~\cite{DockerPrune}.
+Należy wykonywać to polecenie z rozwagą, ponieważ usuwa ono także kontenery, obrazy i pliki z innych projektów dockera.
+\begin{lstlisting}[language=bash]
+docker system prune
+\end{lstlisting}
+Przed uruchomieniem należy upewnić się, że żaden inny proces nie używa portu 80, lub 443.
+Przykładowo domyślna instalacja KDE Neon i innych dystrybucji Linuxa opartych na Ubuntu uruchamia apache2, który używa port 80.
+Aby zatrzymać apache2 należy wykonać polecenie:
+\begin{lstlisting}[language=bash]
+sudo systemctl stop apache2
+\end{lstlisting}
+
+\section{Porównanie z innymi znanymi rozwiązaniami}
+
 \chapter{Architektura aplikacji}
+Opis architektury aplikacji składa się z ogólnego zarysu struktury, oraz bardziej szczegółowego opisu każdej części.
 \section{Struktura aplikacji}
 Aplikacja została podzielona na 5 głównych części:
 \begin{itemize}
@@ -195,7 +359,8 @@ Aplikacja została podzielona na 5 głównych części:
     \item \textbf{narzędzie do odnawiania certyfikatów SSL/TLS} - automatyzuje proces odnawiania certyfikatów SSL/TLS
 \end{itemize}
 Każda część aplikacji jest opisana w następnej sekcji.
-\subsection{Docker}
+
+\section{Kontenery Dockera}
 W celu utrzymania dobrej współpracy pomiędzy wszystkimi elementami aplikacji zdecydowałem się użyć Dockera\cite{Docker}.
 Każda z 5 części aplikacji jest opakowywana w osobny kontener, czyli lekką maszynę wirtualną, która zawiera tylko potrzebne do jej działania zależności.
 Konfiguracja całego środowiska znajduje się w pliku \texttt{docker-compose.yml}. Najważniejsze elementy zostały pokazane na rysunku \ref{fig:docker_containers_environment}.
@@ -206,7 +371,6 @@ Konfiguracja całego środowiska znajduje się w pliku \texttt{docker-compose.ym
     \caption{Struktura kontenerów Dockera}
     \label{fig:docker_containers_environment}
 \end{figure}
-\section{Kontenery Dockera}
 
 \subsection{Reverse Proxy - Nginx}
 Nginx\cite{Nginx} działa jako Reverse Proxy i jest odpowiedzialny za przekierowywanie zapytań http i https do odpowiednich części aplikacji.
@@ -253,7 +417,7 @@ standardach zdefiniowanych w dokumentacji Nuxt3.
     }
     \caption{Zarys struktury plików}
 \end{figure}
-% W Nuxt3 struktura strony odpowiada plikom w folderze pages zgodnie z zasadami zdefiniowanymi w dokumentacji\cite{Nuxt3DocsPages}.
+
 \noindent
 Zawartość tych folderów jest następująca:
 \begin{itemize}
@@ -322,9 +486,10 @@ Odpowiada on za automatyczne odnawianie certyfikatów poprzez wysyłanie zapytan
 %%%%% BIBLIOGRAFIA
 
 \begin{thebibliography}{1}
-    \bibitem{Docker} Dokumentacja Dockera, \url{https://docs.docker.com/}
-    \bibitem{Nginx} Dokumentacja Nginx, \url{https://docs.nginx.com/}
-    \bibitem{Nuxt3} Nuxt3, \url{https://nuxt.com/}
+    \bibitem{Docker} Dokumentacja Dockera \url{https://docs.docker.com/}
+    \bibitem{DockerPrune} Dokumentacja polecenia docker system prune \url{https://docs.docker.com/engine/reference/commandline/system_prune/}
+    \bibitem{Nginx} Dokumentacja Nginx \url{https://docs.nginx.com/}
+    \bibitem{Nuxt3} Nuxt3 \url{https://nuxt.com/}
     \bibitem{Prettier} Prettier \url{https://prettier.io/}
     \bibitem{Nuxt3DocsPages} Nuxt3 - dokumentacja struktury plików w folderze pages/, \url{https://nuxt.com/docs/guide/directory-structure/pages}
     \bibitem{FontAwesome} FontAwesome \url{https://fontawesome.com/docs}

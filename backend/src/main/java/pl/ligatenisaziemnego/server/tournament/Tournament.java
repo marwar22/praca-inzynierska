@@ -34,20 +34,17 @@ public class Tournament {
     @Column(name = "name", nullable = false)
     private String name;
 
-    // TODO "magic" numbers
-    @Range(min = 1, max = 128, message = "numberOfPlayers must be in range <1, 128>")
+    @Range(min = MIN_NUMBER_OF_PLAYERS, max = MAX_NUMBER_OF_PLAYERS, message = "numberOfPlayers must be in range <" + MIN_NUMBER_OF_PLAYERS + ", " + MAX_NUMBER_OF_PLAYERS + ">")
     @NotNull(message = "numberOfPlayers can't be null")
     @Column(name = "number_of_players", nullable = false)
     private Short numberOfPlayers;
 
-    // TODO "magic" numbers
-    @Range(min = 0, max = 24, message = "numberOfGroups must be in range <0, 24>")
+    @Range(min = 0, max = 24, message = "numberOfGroups must be in range <" + MIN_NUMBER_OF_GROUPS + ", " + MAX_NUMBER_OF_GROUPS + ">")
     @NotNull(message = "numberOfGroups can't be null")
     @Column(name = "number_of_groups", nullable = false)
     private Short numberOfGroups;
 
-    // TODO "magic" numbers
-    @Range(min = 1, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <1, 128>")
+    @Range(min = 2, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <" + MIN_NUMBER_OF_PLAYERS_IN_KNOCKOUT_BRACKET + ", " + MAX_NUMBER_OF_PLAYERS_IN_KNOCKOUT_BRACKET + ">")
     @NotNull(message = "numberOfPlayersInKnockoutBracket can't be null")
     @Column(name = "number_of_players_in_knockout_bracket", nullable = false)
     private Short numberOfPlayersInKnockoutBracket;
@@ -107,4 +104,13 @@ public class Tournament {
     @UpdateTimestamp
     @Column(name = "updated_date_time", nullable = false)
     private LocalDateTime updatedDateTime;
+
+    final static long MIN_NUMBER_OF_PLAYERS = 2;
+    final static long MAX_NUMBER_OF_PLAYERS = 128;
+
+    final static long MIN_NUMBER_OF_GROUPS = 2;
+    final static long MAX_NUMBER_OF_GROUPS = 24;
+
+    final static long MIN_NUMBER_OF_PLAYERS_IN_KNOCKOUT_BRACKET = 2;
+    final static long MAX_NUMBER_OF_PLAYERS_IN_KNOCKOUT_BRACKET = 24;
 }

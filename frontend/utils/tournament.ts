@@ -22,7 +22,7 @@ export function isSetResultCorrect(matchResult: MatchResult, setIndex: number, t
     return max < 6 || diff < 2;
   } else {
     if (max === 6 && diff >= 2) return true; // 6:4, 6:3, 6:2, 6:1, 6:0
-    if (max === 7 && between(1, diff, 2)) return true; // 7:6, 7:5
+    if (max === 7 && isBetween(1, diff, 2)) return true; // 7:6, 7:5
     if (isTieBreaker && max == 10 && diff >= 2) return true; // 10:8, 10:7, 10:6, 10:5, 10:4, 10:3, 10:2, 10:1, 10:0
     if (isTieBreaker && max > 10 && diff == 2) return true; // { (n):(n-2) | n > 10 }
     return false;
@@ -57,7 +57,7 @@ export function isResultCorrect(match: Match, setsToWin: number) {
   if (!match.result) return false;
   const result = match.result;
   if (result.walkover) return isWalkoverCorrect(result);
-  if (!between(result.scratch ? 0 : setsToWin, result.playedSetResults.length, 2 * setsToWin - 1)) return false;
+  if (!isBetween(result.scratch ? 0 : setsToWin, result.playedSetResults.length, 2 * setsToWin - 1)) return false;
 
   const tieBreakerSetIndex = calculateTieBreakerSetIndex(result);
   if (!result.playedSetResults.every((sr, index) => isSetResultCorrect(result, index, tieBreakerSetIndex)))

@@ -54,14 +54,14 @@ const groupInputs = inputsList.filter((input) => !input.field.startsWith('rating
 <template>
   <h3 class="mt-6 text-xl font-semibold">Punkty w grupie</h3>
   <div class="flex w-full flex-wrap max-md:flex-col">
-    <label v-for="{ field, label } in groupInputs" class="mr-2 flex w-max flex-col">
+    <label v-for="{ field, label } in groupInputs" class="mr-2 flex w-max flex-col max-md:w-full">
       {{ label }}
       <ContestCreateInput :placeholder="label" type="number" v-model.number="scoring[field]" :min="0" :max="99" />
     </label>
   </div>
   <h3 class="mt-6 text-xl font-semibold">Punkty do rankingu ogólnego</h3>
   <div class="flex w-full flex-wrap max-md:flex-col">
-    <label v-for="{ field, label } in ratingInputs" class="mr-2 flex w-60 flex-col">
+    <label v-for="{ field, label } in ratingInputs" class="mr-2 flex w-60 flex-col max-md:w-full">
       {{ label }}
       <ContestCreateInput :placeholder="label" type="number" v-model.number="scoring[field]" :min="0" :max="999" />
     </label>

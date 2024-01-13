@@ -14,7 +14,7 @@ const passwordRepeated = ref('');
 
 const showEmptyError = ref(false);
 
-const isUsernameCorrect = computed(() => between(4, username.value.length, 20));
+const isUsernameCorrect = computed(() => isBetween(4, username.value.length, 20));
 const isEmailCorrect = computed(() =>
   /^[_A-Za-z0-9-+]+([.][_A-Za-z0-9-]+)*@[A-Za-z0-9-]+([.][A-Za-z0-9]+)*([.][A-Za-z]{2,})$/.test(email.value)
 );
@@ -26,7 +26,7 @@ const isEveryFieldCorrect = computed(() => {
 
 const usernameError = computed(() => {
   if (username.value.trim().length == 0) return showEmptyError.value ? 'Nazwa użytkownika jest pusta' : '';
-  return between(4, username.value.length, 20) ? '' : 'Nazwa użytkownika musi mieć długość od 4 do 20 znaków';
+  return isBetween(4, username.value.length, 20) ? '' : 'Nazwa użytkownika musi mieć długość od 4 do 20 znaków';
 });
 
 const emailError = computed(() => {

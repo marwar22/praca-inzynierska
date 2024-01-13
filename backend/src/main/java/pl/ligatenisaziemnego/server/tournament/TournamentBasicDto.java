@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Range;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import static pl.ligatenisaziemnego.server.tournament.Tournament.*;
+
 /**
  * DTO for {@link Tournament}
  */
@@ -20,18 +22,18 @@ public class TournamentBasicDto implements Serializable {
     String name;
 
     @NotNull(message = "numberOfPlayers can't be null")
-    @Range(min = 1, max = 128, message = "numberOfPlayers must be in range <1, 128>")
+    @Range(min = MIN_NUMBER_OF_PLAYERS, max = MAX_NUMBER_OF_PLAYERS, message = "numberOfPlayers must be in range <" + MIN_NUMBER_OF_PLAYERS + ", " + MAX_NUMBER_OF_PLAYERS + ">")
     Short numberOfPlayers;
 
     @NotNull(message = "hasGroupStage can't be null")
     Boolean hasGroupStage;
 
     @NotNull(message = "numberOfGroups can't be null")
-    @Range(min = 0, max = 24, message = "numberOfGroups must be in range <0, 24>")
+    @Range(min = 0, max = 24, message = "numberOfGroups must be in range <" + MIN_NUMBER_OF_GROUPS + ", " + MAX_NUMBER_OF_GROUPS + ">")
     Short numberOfGroups;
 
-    @Range(min = 1, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <1, 128>")
     @NotNull(message = "numberOfPlayersInKnockoutBracket can't be null")
+    @Range(min = 2, max = 128, message = "numberOfPlayersInKnockoutBracket must be in range <" + MIN_NUMBER_OF_PLAYERS_IN_KNOCKOUT_BRACKET + ", " + MAX_NUMBER_OF_PLAYERS_IN_KNOCKOUT_BRACKET + ">")
     Short numberOfPlayersInKnockoutBracket;
 
     @NotNull(message = "setsToWin can't be null")

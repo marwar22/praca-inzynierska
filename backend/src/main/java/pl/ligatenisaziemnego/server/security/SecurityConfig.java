@@ -48,9 +48,10 @@ public class SecurityConfig {
             .exceptionHandling(configurer -> configurer.accessDeniedHandler(restAccessDeniedHandler)
                                                        .authenticationEntryPoint(restAuthenticationEntryPoint))
             .securityContext((securityContext) -> securityContext.requireExplicitSave(false))
+            .with(loginCustomDsl(restAuthenticationSuccessHandler, restAuthenticationFailureHandler), loginCustomDsl -> {})
 //            TODO update deprecated and(), when with() is in stable release of spring-boot-starter-security
 //            https://github.com/spring-projects/spring-security/pull/13432
-            .apply(loginCustomDsl(restAuthenticationSuccessHandler, restAuthenticationFailureHandler)).and()
+//            .apply(loginCustomDsl(restAuthenticationSuccessHandler, restAuthenticationFailureHandler)).and()
             .logout(configurer -> configurer.logoutUrl("/api/v1/auth/logout")
                                             .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)));
         return http.build();
