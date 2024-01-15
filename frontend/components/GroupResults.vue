@@ -20,8 +20,8 @@ function onMouseLeave(playerId: number) {
 </script>
 
 <template>
-  <div class="table__scrollbar table__scrollbar table__scrollbar--olive overflow-x-auto">
-    <table>
+  <div class="table__scrollbar table__scrollbar table__scrollbar--olive overflow-x-auto w-full">
+    <table class="w-full">
       <thead>
         <tr>
           <td class="border-2 bg-champagne-300 text-center font-bold">

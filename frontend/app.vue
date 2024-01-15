@@ -2,6 +2,10 @@
 import gsap from 'gsap';
 import type { AuthStatus } from './types/auth';
 
+useHead({
+  htmlAttrs: { lang: 'pl' }
+});
+
 const route = useRoute();
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
@@ -60,10 +64,14 @@ const currPage = computed(() => {
 <template>
   <div class="flex min-h-screen flex-col overflow-x-hidden font-montserrat">
     <div class="flex h-12 items-center border-b-2 bg-olive-600">
-      <NuxtLink to="/" class="pl-2 pr-1 max-md:hidden" @click="onTennisBallClick">
+      <NuxtLink to="/" class="pl-2 pr-1 max-md:hidden" @click="onTennisBallClick" aria-label="Home - ikona piłki">
         <TennisBall :size="36" :style="`transform: rotate(${tweened.number - 20}deg)`" />
       </NuxtLink>
-      <button @click="expanded = !expanded" class="flex h-full items-center justify-center px-4 text-white md:hidden">
+      <button
+        @click="expanded = !expanded"
+        class="flex h-full items-center justify-center px-4 text-white md:hidden"
+        aria-label="menu"
+      >
         <Transition mode="out-in">
           <font-awesome-icon v-if="expanded" :icon="['fas', 'xmark']" size="2xl" />
           <font-awesome-icon v-else :icon="['fas', 'bars']" size="2xl" />
@@ -83,10 +91,10 @@ const currPage = computed(() => {
             <NuxtLink
               :to="page.href"
               :class="[
-                'line before:bg-primary relative before:absolute before:bottom-1 before:left-0 before:mx-2 before:h-[0.1875rem] before:w-0 before:content-[\'test\'] md:before:hover:w-[calc(100%_-_1rem)] md:before:hover:bg-white',
-                'md:before:transition-[width]  md:before:duration-[250ms] md:before:ease-in-out md:ease-[cubic-bezier(0.215,_0.61,_0.355,_1]',
+                'before:bg-primary relative before:absolute before:bottom-1 before:left-0 before:mx-2 before:h-[0.1875rem] before:w-0 before:content-[\'test\'] md:before:hover:w-[calc(100%_-_1rem)] md:before:hover:bg-white',
+                'md:ease-[cubic-bezier(0.215,_0.61,_0.355,_1]  md:before:transition-[width] md:before:duration-[250ms] md:before:ease-in-out',
                 currPage == index ? 'md:before:w-[calc(100%_-_1rem)]  md:before:bg-white' : '',
-                'block w-full px-2 py-1.5 ',
+                'block w-full px-2 py-1.5 font-semibold ',
                 currPage == index
                   ? 'max-md:bg-olive-400 max-md:hover:bg-olive-500 max-md:active:bg-olive-600'
                   : 'max-md:hover:bg-olive-400 max-md:active:bg-olive-600'
@@ -106,7 +114,7 @@ const currPage = computed(() => {
           <span class="mr-2 font-bold"> {{ authStatus.username }}</span>
           <button class="rounded-md border-4 border-white px-2 py-1" @click="logOut">Wyloguj się</button>
         </div>
-        <NuxtLink to="/konto">
+        <NuxtLink to="/konto" aria-label="Konto">
           <font-awesome-icon icon="fa-solid fa-circle-user" size="2x" transform="" class="pl-2" />
         </NuxtLink>
       </nav>
@@ -131,14 +139,5 @@ const currPage = computed(() => {
 
 .v-leave-to {
   transform: rotate(180deg);
-}
-
-@media (min-width: 768px) {
-  /* .line::before {
-    -webkit-transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
-    -moz-transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
-    -o-transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition: width 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
-  } */
 }
 </style>

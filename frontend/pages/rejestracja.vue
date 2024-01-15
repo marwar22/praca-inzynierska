@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { ApiError } from '~/types/apierrror';
 
+useSeoMeta({
+  title: 'Rejestracja',
+  description: 'Zarejestruj się się do rozgrywkitenisa.pl'
+});
+
 const config = useRuntimeConfig();
 
 const pending = ref(false);

@@ -6,6 +6,12 @@ import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationu
 import VueDatePicker from '@vuepic/vue-datepicker';
 import type { KnockoutBracket, Tournament, TournamentScoring } from '~/types/tournament';
 
+
+useSeoMeta({
+  title: 'Tworzenie rozgrywki',
+  description: 'Tworzenie spersonalizowanej rozgrywki tenisa ziemnego na rozgrywkitenisa.pl'
+});
+
 const config = useRuntimeConfig();
 
 const MIN_NUMBER_OF_PLAYERS = 2;

@@ -79,8 +79,8 @@ const sortedPlayers = computed(() => {
 });
 </script>
 <template>
-  <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
-    <table>
+  <div class="table__scrollbar table__scrollbar--champagne w-full overflow-x-auto">
+    <table class="w-full">
       <thead>
         <tr>
           <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">#</th>

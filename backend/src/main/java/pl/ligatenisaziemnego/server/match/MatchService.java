@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -60,12 +61,13 @@ public class MatchService {
             var matchInKnockoutBracket = tournament.getKnockoutBracket().getMatches().stream()
                                                    .filter(mInKB -> mInKB.getMatch().getId().equals(id)).findAny().orElse(null);
             if (matchInKnockoutBracket == null)
-                throw ApiError.FORBIDDEN("You can't change match when knockout bracket is created");
+                throw ApiError.BAD_REQUEST(Map.of("knockoutBracket", "You can't change group match when knockout bracket is created"));
 
             var nextMatchInKnockoutBracket = matchInKnockoutBracket.getNextMatchInKnockoutBracket();
 
             if (nextMatchInKnockoutBracket != null && nextMatchInKnockoutBracket.getMatch().getResult() != null)
-                throw ApiError.FORBIDDEN("You can't change match when next match in knockout bracket has result");
+                throw ApiError.BAD_REQUEST(
+                        Map.of("nextMatchInKnockoutBracket", "You can't change match when next match in knockout bracket has result"));
 
             if (match.getResult() != null && nextMatchInKnockoutBracket != null) {
                 var nextMatch = nextMatchInKnockoutBracket.getMatch();

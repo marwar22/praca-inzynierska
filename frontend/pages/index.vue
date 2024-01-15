@@ -2,6 +2,11 @@
 import gsap from 'gsap';
 import TennisBall from '~/components/TennisBall.vue';
 
+useSeoMeta({
+  title: 'Rozgrywki Tenisa',
+  description: 'System zarządzania rozgrywkami tenisa ziemnego, planowania meczów, obliczania wyników i rankingu'
+});
+
 const tweened = reactive({
   number: 0
 });
@@ -95,6 +100,7 @@ function onTennisBallClick() {
           class="flex h-36 items-center justify-center outline-none md:absolute md:bottom-0 md:right-0 max-md:ml-auto"
           :style="`transform: rotate(${tweened.number - 20}deg)`"
           @click="onTennisBallClick"
+          aria-label="logo - piłka"
         >
           <TennisBall class="md:hidden" :size="128" />
           <TennisBall class="max-md:hidden" />

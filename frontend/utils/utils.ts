@@ -12,7 +12,7 @@ export function clamp(min: number, n: number, max: number) {
 export function fetchErrorToApiError(error: any): ApiError {
   if (error?.data) {
     const { status, errors, message } = error.data;
-    return { status: status ?? '', errors: errors ?? {}, message: message ?? '' };
+    return { status: `${error.status} ${status}` ?? '', errors: errors ?? {}, message: message ?? '' };
   } else {
     return { status: error?.status?.toString() ?? '', errors: {}, message: 'Unknown fetch error' };
   }

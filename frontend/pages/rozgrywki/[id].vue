@@ -17,6 +17,16 @@ const { data: tournament, error } = await useFetch<Tournament>(
   { key: 'tournament' }
 );
 
+function getTournamentTitle() {
+  if (tournament.value) return tournament.value.name;
+  return 'Rozgrywka';
+}
+
+useSeoMeta({
+  title: getTournamentTitle,
+  description: () => `Szczegóły ${getTournamentTitle()}`
+});
+
 const apiError = computed(() => {
   return error.value ? fetchErrorToApiError(error.value) : null;
 });
@@ -92,21 +102,21 @@ async function deleteKnockoutBracket() {
 <template>
   <div class="page__margin pb-10">
     <div v-if="tournament">
-      <h1 class="mt-8 text-3xl font-bold">
+      <h1 class="mt-8 text-3xl font-bold mb-2">
         {{ tournament.name }}
       </h1>
-      <div>
+      <div class="mb-2">
         <font-awesome-icon icon="fa-solid fa-calendar-days" />
         {{ new Date(tournament.startDate).toLocaleDateString() }} -
         {{ new Date(tournament.endDate).toLocaleDateString() }}
       </div>
-      <div>
-        <h2 class="text-2xl font-bold">Punktacja</h2>
-        <div v-if="tournament.hasGroupStage" class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
+      <h2 class="py-1 text-2xl font-bold">Punktacja</h2>
+      <div class="flex justify-between max-md:flex-col">
+        <div v-if="tournament.hasGroupStage" class="table__scrollbar table__scrollbar--champagne mb-5 overflow-x-auto">
           <table>
             <thead>
               <tr>
-                <th class="border bg-champagne-300 px-2 py-1"></th>
+                <th class="border bg-champagne-300 px-2 py-1">Wynik meczu</th>
                 <th class="border bg-champagne-300 px-2 py-1">Wygrana</th>
                 <th class="border bg-champagne-300 px-2 py-1">Przegrana</th>
                 <th class="border bg-champagne-300 px-2 py-1">Walkover</th>
@@ -128,7 +138,7 @@ async function deleteKnockoutBracket() {
             </tbody>
           </table>
         </div>
-        <div class="table__scrollbar table__scrollbar--champagne mt-5 overflow-x-auto">
+        <div class="table__scrollbar table__scrollbar--champagne overflow-x-auto">
           <table>
             <thead>
               <tr>
@@ -157,6 +167,7 @@ async function deleteKnockoutBracket() {
           </table>
         </div>
       </div>
+      <h2 class="mb-1 text-2xl font-bold">Grupy</h2>
       <div class="flex flex-wrap">
         <div v-for="(group, groupNumber) in tournament.groups" class="m-1 flex flex-col">
           <table>
@@ -189,7 +200,7 @@ async function deleteKnockoutBracket() {
       </label>
 
       <div v-if="tournament.hasGroupStage">
-        <h2 class="mt-4 text-xl font-bold">Faza Grupowa</h2>
+        <h2 class="mt-4 text-2xl font-bold">Faza Grupowa</h2>
         <div class="mx-[1px] my-2 flex">
           <button
             v-for="(group, groupNumber) in tournament.groups"
@@ -245,7 +256,7 @@ async function deleteKnockoutBracket() {
           </div>
         </div>
       </div>
-      <h2 class="mt-4 text-xl font-bold">Faza Pucharowa</h2>
+      <h2 class="mt-4 text-2xl font-bold">Faza Pucharowa</h2>
       <KnockoutBracket
         :knockout-bracket="tournament.knockoutBracket"
         :sets-to-win="tournament.setsToWin"

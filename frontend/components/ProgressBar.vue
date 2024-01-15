@@ -12,7 +12,7 @@ const progressBarColor = computed(() => {
   if (fraction.value <= 0.1) return 'lightcoral';
   if (fraction.value <= 0.3) return 'lightsalmon';
   if (fraction.value <= 0.7) return 'palegoldenrod';
-  return 'lightgreen';
+  return '#C9E08A';
 });
 </script>
 <template>

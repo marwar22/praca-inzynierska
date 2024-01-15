@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import type { Tournament, TournamentBasic } from '~/types/tournament';
+import type { TournamentBasic } from '~/types/tournament';
+useHead({
+  title: 'Lista Rozgrywek'
+});
 
+useSeoMeta({
+  description: 'Lista rozgrywek tenisa ziemnego na rozgrywkitenisa.pl'
+});
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
-// const { data: tournaments } = await useFetch<TournamentBasic[]>(`${config.public.BACKEND_API}/tournament`);
 
 const canCreateTournament = computed(() => {
   return authStatus.value.permissions.includes('TOURNAMENT:CREATE');

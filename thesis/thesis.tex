@@ -13,7 +13,7 @@
 \polishtitle    {Aplikacja webowa do obsługi\fmlinebreak rozgrywek tenisowych}
 \englishtitle   {Web application for managing tennis tournaments}
 \polishabstract {Celem pracy jest zaprojektowanie i stworzenie aplikacji webowej umożliwiającej organizację rozgrywek tenisa ziemnego. Projekt obejmuje opracowanie responsywnego interfejsu użytkownika wraz z zapleczem. Każdy element aplikacji został skonteneryzowany i skonfigurowany do współpracy z resztą projektu.}
-\englishabstract{The aim of the project is to design and create web application for organizing tennis tournaments. The project includes developing responsive user interface along with the backend. Each component of the application has been contenerized and configured to work with the rest of the project.}
+\englishabstract{The aim of this work is to design and create web application for organizing tennis tournaments. The project includes developing responsive user interface along with the backend. Each component of the application has been contenerized and configured to work with the rest of the project.}
 % w pracach wielu autorow nazwiska mozna oddzielic poleceniem \and
 \author         {Marcin Wróbel}
 % w przypadku kilku promotorow, lub koniecznosci podania ich afiliacji, linie
@@ -62,8 +62,8 @@ Warstwa frontendowa została napisana z użyciem frameworka Vue.js, który pozwa
 Z kolei backend został napisany w frameworku Spring Boot, który zapewnia niezawodność i wydajność.
 Dane, niezbędne do sprawnego funkcjonowania aplikacji, są przechowywane w bazie danych PostgreSQL.
 Całość została skonteneryzowana za pomocą technologii Docker.
-\par 
-Co istotne, dzięki responsywnemu interfejsowi użytkownika, aplikacja jest przystosowana zarówno do urządzeń mobilnych, jak i stacjonarnych,
+\par
+Co istotne, dzięki responsywnemu interfejsowi użytkownika, aplikacja jest przystosowana zarówno do urządzeń mobilnych, jak i stacjonarnych.
 Dzięki temu zawodnicy mają możliwość korzystania z systemu nie tylko w domu, ale również w przerwach w pracy, czy na korcie tenisowym.
 Aplikacja webowa została opublikowana i jest dostępna na stronie \texttt{www.rozgrywkitenisa.pl}.
 \par
@@ -75,7 +75,7 @@ Specyfikacja obejmuje opis wymaganych funkcjonalności, algorytmy odpowiadające
 Poniższa lista przedstawia listę wymaganych funkcjonalności, wszystkie zostały zrealizowane:
 \begin{itemize}
     \item Aplikacja umożliwia tworzenie rozgrywek. Rozgrywka może być dwuczęściowa: na początku zawodnicy rywalizują w fazie grupowej, a następnie najlepsi awansują do fazy pucharowej.
-    Rozgrywka może być też jednoczęściowa: faza grupowa jest pominięta i wszyscy zawodnicy zaczynają od fazy pucharowej.
+          Rozgrywka może być też jednoczęściowa: faza grupowa jest pominięta i wszyscy zawodnicy zaczynają od fazy pucharowej.
     \item Liczba grup i zawodników w fazie pucharowej jest konfigurowalna.
           W pojedynczej rozgrywce liczba zawodników została ograniczona do 128, a liczba grup została ograniczona do 24.
           Limity zostały wybrane arbitralnie i mogą zostać zmienione.
@@ -127,14 +127,18 @@ $[0, 7]$, $[3, 4]$, $[1, 6]$, $[2, 5]$.
     \label{fig:knockout_bracket_generation}
 \end{figure}
 \section{Obliczanie rankingu}
-TODO \ldots
+Do obliczania rankingu brane są pod uwagę tylko ukończone rozgrywki.
+Ukończona rozgrywka to taka rozgrywka, w której mecz finałowy ma wpisany wynik.
+Punkty do rankingu dodawane są według punktacji zdefiniowanej dla każdej rozgrywki.
+Wyświetlana w aplikacji lista rankingowa wyświetla także względną zmianę pozycji dla każdego zawodnika.
+Zmiana pozycji obliczana jest poprzez porównanie pozycji zawodnika z pozycją zawodnika, przed zakończeniem ostatniej rozgrywki.
+
+
 
 \section{Przypadki użycia}
 W tej sekcji zostaną opisane przypadki użycia aplikacji webowej będącej przedmiotem tej pracy.
 Ich celem jest zademonstrowanie działania programu.
-\subsection{Utworzenie rozgrywki}
-
-
+\subsection{Tworzenie nowej rozgrywki}
 \begin{tabular}{|l|p{12cm}|}
     \hline
     Nazwa      & Tworzenie nowej rozgrywki                                                                                                                                                              \\
@@ -146,8 +150,8 @@ Ich celem jest zademonstrowanie działania programu.
         \item Użytkownik znajduje się na stronie rozgrywek i klika utwórz rozgrywkę.
         \item Użytkownik uzupełnia wszystkie pola konfiguracyjne: nazwę, czas trwania, liczbę zawodników, liczbę grup, liczbę finalistów, liczbę setów do wygranej, punkty do zdobycia za poszczególne etapy
         \item Użytkownik wyszukuje zawodników używając pola wyszukiwania i dodaje ich
-        \item Użytkownik klika przycisk "Wylosuj skład grup" i aplikacja tworzy losuje grupy
-        \item Użytkownik klika przycisk "Utwórz", aplikacja tworzy rozgrywkę i przekierowuje użytkownika do strony z nowo utworzoną rozgrywką
+        \item Użytkownik klika przycisk ``Wylosuj skład grup`` i aplikacja tworzy losuje grupy
+        \item Użytkownik klika przycisk ``Utwórz``, aplikacja tworzy rozgrywkę i przekierowuje użytkownika do strony z nowo utworzoną rozgrywką
     \end{enumerate} \\
     \hline
 \end{tabular}
@@ -155,11 +159,11 @@ Ich celem jest zademonstrowanie działania programu.
 \subsection{Dodawanie wyniku meczu}
 \begin{tabular}{|l|p{12cm}|}
     \hline
-    Nazwa      & Dodawanie wyniku meczu                                                                                              \\
+    Nazwa                                                     & Dodawanie wyniku meczu                                               \\
     \hline
-    Aktor      & Zawodnik meczu, który się zakończył                                                                                 \\
+    Aktor                                                     & Zawodnik meczu, który się zakończył                                  \\
     \hline
-    Scenariusz &
+    Scenariusz                                                &
     \begin{enumerate}[nosep,leftmargin=*,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
         \item Użytkownik znajduje się na stronie rozgrywek i wpisuje w polu wyszukiwania nazwę rozgrywki w ramach, której odbył się mecz.
         \item Użytkownik klika rozgrywkę, którą wyświetliła mu aplikacja.
@@ -170,14 +174,52 @@ Ich celem jest zademonstrowanie działania programu.
         \item Aplikacja wysyła email do wszystkich zawodników w grupie informując o nowym wyniku.
     \end{enumerate} \\
     \hline
+    \vtop{\hbox{\strut Scenariusz}\hbox{\strut alternatywny}} &
+    \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
+        \item [6a.] Użytkownik klika na ikonę walkowera, aby ustawić wynik meczu jako walkower.
+        \item [7a.] Użytkownik zatwierdza wynik meczu klikając ikonę zapisu.
+        \item [8a.] Aplikacja wysyła email do wszystkich zawodników w grupie informując o nowym wyniku.
+    \end{enumerate}               \\
+    \hline
+\end{tabular}
+
+\subsection{Zobaczenie danych kontaktowych zawodników w grupie}
+\begin{tabular}{|l|p{12cm}|}
+    \hline
+    Nazwa                                                      & Zobaczenie danych kontaktowych zawodników w grupie              \\
+    \hline
+    Aktor                                                      & Zawodnik biorący udział w rozgrywce                             \\
+    \hline
+    Scenariusz                                                 &
+    \begin{enumerate}[nosep,leftmargin=*,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
+        \item Użytkownik wchodzi na stronę logowania.
+        \item Użytkownik loguje się podając nazwę użytkownika, lub email oraz hasło.
+        \item Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której bierze udział.
+        \item Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie``' i system je wyświetla.
+    \end{enumerate}              \\
+    \hline
+    \vtop{\hbox{\strut Scenariusze}\hbox{\strut alternatywne}} &
+    \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
+        \item [2a.] Użytkownik loguje się podając nazwę użytkownika, lub email oraz niepoprawne hasło.
+        \item [3a.] System wyświetla komunikat ``Niepoprawna nazwa użytkownika, lub hasło``.
+    \end{enumerate}         \\
+    \cline{2-2}
+                                                               &
+    \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
+        \item [3b.] Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której nie bierze udziału.
+        \item [4b.] Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie`` i system nie wyświetla danych kontaktowych nikogo.
+    \end{enumerate} \\
+    \hline
 \end{tabular}
 
 \chapter{Opis aplikacji}
-Ten rozdział opisuje interfejs aplikacji pozwalając użytkownikowi zapoznać się z nim. Następnie przedstawione zostały
-kroki pozwalające instalację aplikacji lokalnie.
+Ten rozdział opisuje interfejs aplikacji pozwalając użytkownikowi zapoznać się z nim.
+Następnie znajduje się porównanie aplikacji z innymi znanymi rozwiązaniami.
+Na końcu przedstawione zostały kroki pozwalające instalację aplikacji lokalnie, lub w środowisku produkcyjnym.
 \section{Interfejs użytkownika}
-W tej sekcji zostaną omówione elementy interfejsu użytkownika.
+W tej sekcji zostaną omówione elementy interfejsu użytkownika wraz z zrzutami ekranu pokazującymi wygląd aplikacji na urządzeniach stacjonarnych i mobilnych.
 \subsection{Strona główna}
+Strona główna dostarcza użytkownikowi ogólne informacje, co oferuje aplikacja webowa oraz umożliwia przejscie do różnych części projektu poprzez linki w pasku nawigacyjnym i wyeksponowane przyciski.
 \begin{figure}[H]
     \centering
     \subfloat[Wersja na komputery]{
@@ -260,25 +302,109 @@ W celu uzyskania uprawnień administrator musi dodać odpowiednie uprawnienia u�
 Opisane w tej sekcji strony zawierają wiele pól, które pozwalają na wpisywanie danych.
 Nie można zakładać, że użytkownik zawsze wpisze wszystkie dane poprawnie.
 W związku z tym wszystkie pola, które akceptują dane użytkownika są weryfikowane.
-W przypadku błędu aplikacja wyświetla odpowiedni komunikat.
+W przypadku wykrycia błędu aplikacja wyświetla odpowiedni komunikat.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/weryfikacja_wejscia.png}
     \caption{Weryfikacja liczby zawodników i graczy w~widoku tworzenia rozgrywki}
 \end{figure}
 
+\subsection{Wyświetlanie informacji o błędach}
+Gdy wystąpi wyjątek podczas komunikacji z backendem i zostanie on przechwycony wyświetlany zostanie odpowiedni komunikat.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,valign=t]{assets/interfejs/rozgrywki_error.png}
+    \caption{Komunikat wyświetlany, gdy błąd został przechwycony}
+\end{figure}
+
+\section{Porównanie z innymi znanymi rozwiązaniami}
+\subsection{Witryna playinga.com}
+Playinga.com~\cite{Playinga} pozwala na tworzenie turniejów różnych rozgrywek sportowych. Ta aplikacja jest darmowa i udostępnia część funkcjonalności po wykupieniu płatnej subskrypcji.
+Przykładowo darmowa wersja nie obejmuje wpisywania wyników przez zawodników.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/playinga_tworzenie.png}
+    \caption{Widok tworzenia rozgrywki playinga.com}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/playinga_tworzenie2.png}
+    \caption{Wpisywanie wyników przez zawodników nie jest dostępne w podstawowej wersji aplikacji}
+\end{figure}
+Playinga.com wygląda estetycznie, a interfejs użytkownika jest responsywny. Aplikacja jest bardzo rozbudowana i umożliwia organizację turniejów z innych dziedzin sportu.
+W płatnej wersji oferowane funkcjonalności pokrywają wszystkie funkcjonalności aplikacji, która jest tematem tej pracy.
+Jednakże playinga.com posiada też wady.
+\par
+Po pierwsze witryna działa bardzo powoli.
+Podczas testowania witryny i kliknięciu przycisku tworzącego rozgrywkę pojawiła się ikona ładowania i przez kilka minut nic się nie działo.
+Jedynym rozwiązaniem tego było odświeżenie strony i ponowne uzupełnienie wszystkich danych.
+Dodatkowo aplikacja zawiera niepotrzebne przekierowania.
+Przykładowo zalogowany użytkownik otwierając panel użytkownika przekierowywany jest na stronę główną, a następnie z powrotem do panelu użytkownika.
+Wpływa to negatywnie na wrażenia użytkownika korzystającego z aplikacji.
+Kolejne problemy zauważyłem po wpisaniu danych zawodnika i kliknięciu przycisku dodaj.
+Czas odpowiedzi wynosił od 5 do 10 sekund. Trzeba jednak wziąć pod uwagę, że playinga.com posiada nieporównywalnie więcej danych i turniejów dodanych przez wielu użytkowników.
+W celu miarodajnego porównania czasu ładowania należałoby zapełnić aplikację rozgrywkitenisa.pl podobną ilością danych.
+Ostatnim problemem jest brak obsługi języka polskiego. Ogranicza to dostępność aplikacji dla polskojęzycznych użytkowników.
+\subsection{Witryna paleta.wroclaw.pl}
+Paleta.wroclaw.pl~\cite{PaletaWroclaw} to aplikacja webowa Klubu Sportowego PALETA. 
+Użytkownicy internetu nienależący do klubu mogą tylko przeglądać aplikację.
+Podobnie jak w aplikacji będącej tematem pracy istnieje możliwość tworzenia rozgrywek i dodawania wyników meczów.
+Niestety nie ma możliwości sprawdzenia, czy zawodnicy są uprawnieni do samodzielnego raportowania wyników spotkań.
+Interfejs użytkownika jest przejrzysty, a czas reakcji strony jest wystarczająco mały, aby nie sprawiać problemu podczas przeglądania strony. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/paleta_wyniki.png}
+    \caption{Tabela wyników w grupie w witrynie paleta.wroclaw.pl}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/paleta_tabela.png}
+    \caption{Tabela wyników spotkań w witrynie paleta.wroclaw.pl}
+\end{figure}
+
+\subsection{Porównanie czasu ładowania strony}
+W celu porównania czasu ładowania czasu ładowania aplikacji webowej będącej tematem tej pracy, z innymi rozwiązaniami użyłem narzędzia Lighthouse.
+Lighthouse jest narzędziem developerskim wbudowanym w przeglądarki internetowe oparte na chromium.
+Testy zostały przeprowadzone w przeglądarce Brave w wersji 1.16.116, na laptopie z systemem operacyjnym Linux.
+Laptop był wyposażony w procesor Intel i7-10750H i kartę graficzną NVIDIA GeForce RTX 2060 Mobile.
+Test polegał na załadowaniu strony z rozgrywkami.
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{|p{3.9cm}|c|c|c|}
+        \hline
+                                        & rozgrywkitenisa.pl & playinga.com & paleta.wroclaw.pl \\\hline
+        First Contentful Paint          & 0.6 s              & 0.6 s        & 0.7 s             \\\hline
+        Largest Contentful \mbox{Paint} & 0.6 s              & 1.6 s        & 0.8 s             \\\hline
+        Total Blocking Time             & 0 ms               & 470 ms       & 0 ms              \\\hline
+        Cumulative Layout Shift         & 0.001              & 0.579        & 0                 \\\hline
+        Speed Index                     & 0.6 s              & 2.5 s        & 0.8 s             \\\hline
+    \end{tabular}
+    \caption{Porównanie metryk zmierzonych przez Lighthouse (im mniej tym lepiej). Aplikacja będąca tematem pracy znajduje się pod adresem \texttt{rozgrywkitenisa.pl}}
+\end{figure}
+Czas ładowania strony \texttt{rozgrywkitenisa.pl} jest porównywalny z czasem ładowania strony \texttt{paleta.wroclaw.pl}.
+Natomiast czas ładowania playinga.com jest znacznie dłuższy.
+Takie same wnioski wysunąłem przeglądając wyżej wymienione strony.
+Jednakże, moim zdaniem, trzeba wziąć pod uwagę także inne aspekty działania takie jak czas reakcji po kliknięciu.
+Wtedy różnica w szybkości pomiędzy \texttt{playinga.com}, a pozostałymi witrynami jest znacznie większa.
 \section{Instalacja}
+\noindent
+Repozytorium aplikacji i całej pracy znajduje się pod adresem:
+\begin{center}
+    \url{https://github.com/marwar22/praca-inzynierska}
+\end{center}
 \noindent
 Aplikacja została przygotowana do uruchomienia w dwóch środowiskach:
 \begin{itemize}
     \item lokalnym - do testowania na urządzeniu użytkownika,
-    \item produkcyjnym - gdy aplikacja jest publicznie dostępna
+    \item produkcyjnym - gdy aplikacja jest publicznie dostępna.
 \end{itemize}
-Instrukcje instalacji dla środowiska lokalnego i produkcyjnego różnią się, różnice są oznaczone.
+W dalszej części sekcji znajdują się instrukcje opisujące proces instalacji.
+Instrukcje dla środowiska lokalnego i produkcyjnego różnią się, różnice są oznaczone.
 \subsection{Zmienne środowiskowe}
 \noindent
-Należy utworzyć pliki zawierające zmienne środowiskowe (\texttt{.env}).
-Pliki \texttt{.env.example} zawierają przykładowe wartości, które pozwalają na uruchomienie w środowisku lokalnym.
+Na początku należy utworzyć pliki zawierające zmienne środowiskowe (\texttt{.env}).
+
 \begin{itemize}
     \item
           \begin{lstlisting}[language=bash]
@@ -291,11 +417,12 @@ Pliki \texttt{.env.example} zawierają przykładowe wartości, które pozwalają
     cp .env.example .env
     \end{lstlisting}
 \end{itemize}
-Następnie można dostosować wartości do własnej konfiguracji.
+Pliki \texttt{.env.example} zawierają przykładowe wartości, które pozwalają na uruchomienie w środowisku lokalnym.
+Można je dostosować do własnej konfiguracji.
 
 
 \subsection{Instalacja zależności}
-Aby zbudować i uruchomić projekt należy zainstalować \texttt{Docker} zgodnie z instrukcjami zawartymi w oficjalnej dokumentacji
+Zanim będzie można zbudować i uruchomić projekt należy zainstalować \texttt{Docker} zgodnie z instrukcjami zawartymi w oficjalnej dokumentacji.
 \\
 \url{https://docs.docker.com/}
 \\
@@ -308,6 +435,7 @@ sudo usermod -aG docker nazwa_uzytkownika
 \end{lstlisting}
 
 \subsection{Budowanie}
+\noindent
 Aby zbudować projekt należy wykonać poniższe polecenie:
 
 \begin{lstlisting}[language=bash]
@@ -332,9 +460,12 @@ docker compose down
 \end{lstlisting}
 
 \subsection{Uwagi do instalacji}
+Etap budowania i uruchamiania został rozdzielony, choć nie jest to konieczne.
+Można zbudować i uruchomić projekt jednym poleceniem dodając flagę \texttt{--build} do odpowiedniego polecenia uruchamiającego.
+
 Dane aplikacji są przechowywane w folderze \texttt{data/}.
 Aby oczyścić system z wszystkich kontenerów, obrazów, cache i innych plików stworzonych przez Dockera należy w wykonać poniższe polecenie~\cite{DockerPrune}.
-Należy wykonywać to polecenie z rozwagą, ponieważ usuwa ono także kontenery, obrazy i pliki z innych projektów dockera.
+Należy wykonywać to polecenie z rozwagą, ponieważ usuwa ono także kontenery, obrazy i pliki z innych projektów Dockera.
 \begin{lstlisting}[language=bash]
 docker system prune
 \end{lstlisting}
@@ -344,8 +475,6 @@ Aby zatrzymać apache2 należy wykonać polecenie:
 \begin{lstlisting}[language=bash]
 sudo systemctl stop apache2
 \end{lstlisting}
-
-\section{Porównanie z innymi znanymi rozwiązaniami}
 
 \chapter{Architektura aplikacji}
 Opis architektury aplikacji składa się z ogólnego zarysu struktury, oraz bardziej szczegółowego opisu każdej części.
@@ -499,6 +628,8 @@ Odpowiada on za automatyczne odnawianie certyfikatów poprzez wysyłanie zapytan
     \bibitem{Flyway} Flyway \url{https://flywaydb.org/}
     \bibitem{Certbot} Certbot \url{https://certbot.eff.org/}
     \bibitem{LetsEncrypt} LetsEncrypt \url{https://letsencrypt.org/pl/}
+    \bibitem{PaletaWroclaw} www.paleta.wroclaw.pl \url{https://www.paleta.wroclaw.pl/}
+    \bibitem{Playinga} www.playinga.com \url{https://playinga.com/}
 \end{thebibliography}
 
 \end{document}

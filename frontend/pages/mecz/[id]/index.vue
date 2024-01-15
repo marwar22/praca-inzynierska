@@ -13,6 +13,7 @@ const editMode = ref(false);
 const { data: match } = await useFetch<Match>(`${config.public.BACKEND_API}/match/${route.params.id}`, {
   key: 'match'
 });
+
 const { data, error } = useAsyncData('data', async () => {
   const [firstPlayer, secondPlayer, lastModifiedBy, tournament] = await Promise.all([
     match.value?.firstPlayerId
@@ -29,6 +30,20 @@ const { data, error } = useAsyncData('data', async () => {
       : null
   ]);
   return { firstPlayer, secondPlayer, lastModifiedBy, tournament };
+});
+
+function getMatchTitle() {
+  if (data.value?.firstPlayer && data.value.secondPlayer) {
+    return `${nameFromApplicationUser(data.value?.firstPlayer)} vs ${nameFromApplicationUser(
+      data.value?.secondPlayer
+    )}`;
+  }
+  return 'Mecz';
+}
+
+useSeoMeta({
+  title: getMatchTitle,
+  description: () => `Szczegóły meczu ${getMatchTitle}`
 });
 
 const setsToWin = computed(() => data.value?.tournament?.setsToWin ?? 2);

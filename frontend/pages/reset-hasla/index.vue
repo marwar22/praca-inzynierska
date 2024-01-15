@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type LoginInputVue from '~/components/LoginInput.vue';
 import type { ApiError } from '~/types/apierrror';
-import type { AuthStatus } from '~/types/auth';
+
+useSeoMeta({
+  title: 'Resetowanie hasła',
+  description: 'Zresetuj hasło używając adresu email podanego podczas rejestracji'
+});
 
 const config = useRuntimeConfig();
 

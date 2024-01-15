@@ -3,6 +3,11 @@ import type LoginInputVue from '~/components/LoginInput.vue';
 import type { ApiError } from '~/types/apierrror';
 import type { AuthStatus } from '~/types/auth';
 
+useSeoMeta({
+  title: 'Logowanie',
+  description: 'Zaloguj się do rozgrywkitenisa.pl'
+});
+
 const config = useRuntimeConfig();
 const authStatus = useAuthStatus();
 
