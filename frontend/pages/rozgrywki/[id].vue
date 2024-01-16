@@ -102,7 +102,7 @@ async function deleteKnockoutBracket() {
 <template>
   <div class="page__margin pb-10">
     <div v-if="tournament">
-      <h1 class="mt-8 text-3xl font-bold mb-2">
+      <h1 class="mb-2 mt-8 text-3xl font-bold">
         {{ tournament.name }}
       </h1>
       <div class="mb-2">
@@ -116,10 +116,10 @@ async function deleteKnockoutBracket() {
           <table>
             <thead>
               <tr>
-                <th class="border bg-champagne-300 px-2 py-1">Wynik meczu</th>
-                <th class="border bg-champagne-300 px-2 py-1">Wygrana</th>
-                <th class="border bg-champagne-300 px-2 py-1">Przegrana</th>
-                <th class="border bg-champagne-300 px-2 py-1">Walkover</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Wynik meczu</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Wygrana</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Przegrana</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Walkover</th>
               </tr>
             </thead>
             <tbody>
@@ -142,11 +142,11 @@ async function deleteKnockoutBracket() {
           <table>
             <thead>
               <tr>
-                <th class="border bg-champagne-300 px-2 py-1">Udział w etapie</th>
-                <th class="border bg-champagne-300 px-2 py-1">{{ tournament.hasGroupStage ? 'Grupa' : 'Turniej' }}</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Udział w etapie</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">{{ tournament.hasGroupStage ? 'Grupa' : 'Turniej' }}</th>
                 <th
                   v-for="[index, ratingForStage] in tournament.scoring.ratingForKnockoutStageParticipation.entries()"
-                  class="border bg-champagne-300 px-2 py-1"
+                  class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1"
                 >
                   {{ stageName(index, tournament.scoring) }}
                 </th>
@@ -172,8 +172,8 @@ async function deleteKnockoutBracket() {
         <div v-for="(group, groupNumber) in tournament.groups" class="m-1 flex flex-col">
           <table>
             <thead>
-              <tr class="border-2">
-                <th class="bg-champagne-300 px-2 py-1 text-left">
+              <tr>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1 text-left">
                   {{ `Grupa ${String.fromCharCode(65 + groupNumber)}` }}
                 </th>
               </tr>

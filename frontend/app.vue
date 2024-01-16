@@ -106,12 +106,12 @@ const currPage = computed(() => {
           </li>
         </ul>
         <div class="flex-1"></div>
-        <div v-if="!authStatus.loggedIn" class="flex h-full items-center max-md:hidden">
+        <div v-if="!authStatus.loggedIn" class="flex h-full items-center">
           <NuxtLink to="/logowanie" class="pr-2">Zaloguj się</NuxtLink>
           <NuxtLink to="/rejestracja" class="rounded-md border-4 border-white px-2 py-1"> Zarejestruj się </NuxtLink>
         </div>
-        <div v-else class="max-md:hidden">
-          <span class="mr-2 font-bold"> {{ authStatus.username }}</span>
+        <div v-else class="">
+          <span class="mr-2 font-bold overflow-ellipsis"> {{ authStatus.username }}</span>
           <button class="rounded-md border-4 border-white px-2 py-1" @click="logOut">Wyloguj się</button>
         </div>
         <NuxtLink to="/konto" aria-label="Konto">

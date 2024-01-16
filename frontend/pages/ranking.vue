@@ -31,7 +31,7 @@ const sortedPlayers = computed(() => {
 });
 </script>
 <template>
-  <div class="page__margin">
+  <div class="page__margin flex flex-col items-center">
     <h1 class="mb-4 mt-2 text-3xl font-bold">Ranking</h1>
     <table>
       <thead>

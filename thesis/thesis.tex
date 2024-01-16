@@ -70,7 +70,7 @@ Aplikacja webowa została opublikowana i jest dostępna na stronie \texttt{www.r
 
 \chapter{Specyfikacja zagadnienia}
 W tym rozdziale zostanie opisana specyfikacja projektu będącego przedmiotem tej pracy.
-Specyfikacja obejmuje opis wymaganych funkcjonalności, algorytmy odpowiadające za organizację rozgrywki, oraz przypadki użycia.
+Specyfikacja obejmuje opis funkcjonalności, algorytmy odpowiadające za organizację rozgrywki, oraz przypadki użycia.
 \section{Funkcjonalności}
 Poniższa lista przedstawia listę wymaganych funkcjonalności, wszystkie zostały zrealizowane:
 \begin{itemize}
@@ -90,15 +90,16 @@ Poniższa lista przedstawia listę wymaganych funkcjonalności, wszystkie zosta�
               \item walkower - w tabeli wynik liczony jest tak jakby zawodnik poddający się przegrał wszystkie gemy, aż do zwycięstwa w meczu drugiego zawodnika,
               \item krecz - w tabeli wynik liczony jest tak jakby zawodnik poddający się przegrał wszystkie gemy od momentu wycofania się, aż do zwycięstwa w meczu drugiego zawodnika.
           \end{itemize}
-    \item Rejestracja użytkowników. Hasło można zresetować za pomocą emaila podenego podczas rejestracji.
-    \item Obliczanie rankingu na podstawie wyników zakończonych rozgrywek.
+    \item Aplikacja obsługuje rejestrację i logowanie użytkowników. Każdy użytkownik może zresetować swoje hasło za pomocą emaila podenego podczas rejestracji.
+    \item Aplikacja oblicza ranking zawodników na podstawie zakończonych rozgrywek.
 \end{itemize}
 \section{Generowanie grup}
 Podczas generowania grup zawodnicy są dzieleni na koszyki według rankingu.
 Dla rozgrywki o $N$ zawodnikach i $M$ grupach w pierwszym koszyku znajduje się $M$ zawodników o najlepszym rankingu, w drugim koszyku kolejne $M$ zawodników, itd.
 Wyjątkiem jest ostatni koszyk. Jeżeli $N \not\equiv 0 \pmod{M}$, wtedy liczba zawodników w ostatnim koszyku jest mniejsza, wynosi $N\bmod{M}$.
 \section{Generowanie drabinki fazy pucharowej}
-Na początku generowania drabinki fazy pucharowej zawodnicy są sortowani. Jeżeli rozgrywka posiada fazę grupową, to kolejność zależy od wyników w grupie.
+Na początku generowania drabinki fazy pucharowej wszyscy zawodnicy biorący udział w rozgrywce są sortowani.
+Jeżeli rozgrywka posiada fazę grupową, to kolejność zależy od wyników w grupie.
 Największe znaczenie ma pozycja w grupie, potem bilans meczów, bilans setów, a na końcu bilans gemów.
 Jeżeli rozgrywka składa się tylko z fazy pucharowej to kolejność zawodników zależy od pozycji w rankingu ogólnym.
 
@@ -150,8 +151,8 @@ Ich celem jest zademonstrowanie działania programu.
         \item Użytkownik znajduje się na stronie rozgrywek i klika utwórz rozgrywkę.
         \item Użytkownik uzupełnia wszystkie pola konfiguracyjne: nazwę, czas trwania, liczbę zawodników, liczbę grup, liczbę finalistów, liczbę setów do wygranej, punkty do zdobycia za poszczególne etapy
         \item Użytkownik wyszukuje zawodników używając pola wyszukiwania i dodaje ich
-        \item Użytkownik klika przycisk ``Wylosuj skład grup`` i aplikacja tworzy losuje grupy
-        \item Użytkownik klika przycisk ``Utwórz``, aplikacja tworzy rozgrywkę i przekierowuje użytkownika do strony z nowo utworzoną rozgrywką
+        \item Użytkownik klika przycisk ``Wylosuj skład grup'' i aplikacja tworzy losuje grupy
+        \item Użytkownik klika przycisk ``Utwórz'', aplikacja tworzy rozgrywkę i przekierowuje użytkownika do strony z nowo utworzoną rozgrywką
     \end{enumerate} \\
     \hline
 \end{tabular}
@@ -195,31 +196,53 @@ Ich celem jest zademonstrowanie działania programu.
         \item Użytkownik wchodzi na stronę logowania.
         \item Użytkownik loguje się podając nazwę użytkownika, lub email oraz hasło.
         \item Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której bierze udział.
-        \item Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie``' i system je wyświetla.
+        \item Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie'' i system je wyświetla.
     \end{enumerate}              \\
     \hline
     \vtop{\hbox{\strut Scenariusze}\hbox{\strut alternatywne}} &
     \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
         \item [2a.] Użytkownik loguje się podając nazwę użytkownika, lub email oraz niepoprawne hasło.
-        \item [3a.] System wyświetla komunikat ``Niepoprawna nazwa użytkownika, lub hasło``.
+        \item [3a.] System wyświetla komunikat ``Niepoprawna nazwa użytkownika, lub hasło''.
     \end{enumerate}         \\
     \cline{2-2}
                                                                &
     \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
         \item [3b.] Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której nie bierze udziału.
-        \item [4b.] Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie`` i system nie wyświetla danych kontaktowych nikogo.
+        \item [4b.] Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie'' i system nie wyświetla danych kontaktowych nikogo.
     \end{enumerate} \\
     \hline
 \end{tabular}
 
 \chapter{Opis aplikacji}
-Ten rozdział opisuje interfejs aplikacji pozwalając użytkownikowi zapoznać się z nim.
+Ten rozdział zaczyna się od opisu interfejsu aplikacji pozwalając użytkownikowi zapoznać się z nim.
 Następnie znajduje się porównanie aplikacji z innymi znanymi rozwiązaniami.
 Na końcu przedstawione zostały kroki pozwalające instalację aplikacji lokalnie, lub w środowisku produkcyjnym.
 \section{Interfejs użytkownika}
 W tej sekcji zostaną omówione elementy interfejsu użytkownika wraz z zrzutami ekranu pokazującymi wygląd aplikacji na urządzeniach stacjonarnych i mobilnych.
-\subsection{Strona główna}
-Strona główna dostarcza użytkownikowi ogólne informacje, co oferuje aplikacja webowa oraz umożliwia przejscie do różnych części projektu poprzez linki w pasku nawigacyjnym i wyeksponowane przyciski.
+Jeżeli podany został tylko zrzut ekranu w wersji dla komputerów, oznacza to, że wersja dla telefonów niewiele się różni.
+\subsection{Pasek nawigacyjny}
+Pasek nawigacyjny ułatwia poruszanie się po stronie. Logo (piłka tenisowa) z lewej strony przekierowuje na stronę główną.
+Następne trzy elementy: ``Home'', ``Rozgrywki'', ``Ranking'' przenoszą odpowiednio na stronę główną, do widoku z listą rozgrywek, do widoku z listą rankingową.
+Z prawej strony znajduje się nazwa użytkownika, jeżeli użytkownik jest zalogowany i przycisk do wylogowywania się.
+Dla niezalogowanych użytkowników widoczne są przyciski przenoszące na stronę logowania oraz rejestracji.
+Na końcu znajduje się ikona konta pozwalająca zobaczyć status konta. Wersja mobilna wygląda podobnie. 
+Dodane zostały ikony, a linki rozwijają się i chowają po naciśnięciu przycisku menu w lewym górnym rogu.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Wersja na komputery]{
+        \includegraphics[width=\textwidth,valign=t]{assets/interfejs/navbar_desktop.png}
+    }    
+    \hfill
+    \subfloat[Wersja na telefony]{
+        \includegraphics[width=0.5\textwidth,valign=t]{assets/interfejs/navbar_mobile.png}
+    }
+    \caption{Pasek nawigacyjny}
+\end{figure}
+
+\subsection{Widok strony głównej}
+Strona główna dostarcza użytkownikowi ogólne informacje o tym, co oferuje aplikacja webowa oraz umożliwia przejscie do różnych części projektu poprzez linki w pasku nawigacyjnym i wyeksponowane przyciski.
+
 \begin{figure}[H]
     \centering
     \subfloat[Wersja na komputery]{
@@ -233,7 +256,7 @@ Strona główna dostarcza użytkownikowi ogólne informacje, co oferuje aplikacj
     \caption{Strona główna}
 \end{figure}
 
-\subsection{Strona rozgrywek}
+\subsection{Widok listy rozgrywek}
 Strona rozgrywek zawiera listę rozgrywek, oraz pozwala na wyszukiwanie konkretnej rozgrywki po nazwie.
 Każda rozgrywka jest opisana podstawowymi informacjami, a po kliknięciu użytkownik jest przenoszony na stronę ze szczegółami.
 Dodatkowo strona zawiera przycisk "Utwórz rozgrywkę" przenoszący do widoku tworzenia rozgrywki.
@@ -252,11 +275,11 @@ Dodatkowo strona zawiera przycisk "Utwórz rozgrywkę" przenoszący do widoku tw
     \caption{Strona rozgrywek}
 \end{figure}
 
-\subsection{Strona tworzenia rozgrywki}
-Dostęp do tej strony mają tylko zalogowani użytkownicy z uprawnieniami do tworzenia rozgrywek.
+\subsection{Widok tworzenia rozgrywki}
+Dostęp do tego widoku mają tylko zalogowani użytkownicy z uprawnieniami do tworzenia rozgrywek.
 Użytkownik może dostosować wszystkie widoczne parametry. Dostępne opcje parametru liczba finalistów, są zależne od liczby zawodników.
 Liczba finalistów musi być potęgą dwójki i nie może być większa od liczby zawodników.
-Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk "Wylosuj skład grup" tworzy grupy zgodnie z podziałem na koszyki.
+Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk ``Wylosuj skład grup'' tworzy grupy zgodnie z podziałem na koszyki.
 
 \begin{figure}[H]
     \centering
@@ -268,38 +291,56 @@ Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk "Wylo
     \subfloat[Wersja na telefony]{
         \includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_mobile.png}
     }
-    \caption{Strona rozgrywek}
+    \caption{Widok tworzenia rozgrywki}
 \end{figure}
 
-\subsection{Edycja meczu}
-Wynik meczu może wprowadzić/edytować organizator rozgrywki, lub jego uczestnicy.
-Aplikacja weryfikuje, czy wynik jest poprawny, i zaznacza na czerwono błędy. Z prawej stronie wyniku
-użytkownik może wygrać zakończenie meczu zgodnie z legendą, która znajduje się po niżej.
+\subsection{Widok rozgrywki}
+Na początku widoku rozgrywki pokazane są podstawowe dane o rozgrywce i uczestnikach.
+Tu użytkownik może zdobyć dane kontaktowe innych uczestników.
+Następnie znajduje się tabela z sytuacją w grupie, użytkownik może znaleźć informację o sytuacji w grupach.
+Następnie znajduje się tabela pokazująca wyniki konkretnych meczów w danej grupie, klikając na dany mecz można go edytować.
+Na końcu znajduje się drabinka fazy pucharowej, wraz z ikoną edycji do wprowadzania wyników.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywka_desktop.png}
+    \caption{Pierwsza część widoku rozgrywki}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywka_desktop2.png}
+    \caption{Druga część widoku rozgrywki}
+\end{figure}
+
+\subsection{Widok edycji wyniku meczu}
+Wynik meczu może wprowadzić / edytować organizator rozgrywki, lub jego uczestnicy.
+Aplikacja weryfikuje, czy wynik jest poprawny, i zaznacza na czerwono błędy. Z prawej strony wyniku
+użytkownik może wybrać, jak zakończył się mecz, zgodnie z legendą, która znajduje się po niżej.
 Następnie użytkownik może zapisać zmiany klikając ikonę dyskietki.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/mecz_desktop.png}
-    \caption{Strona edycji wyniku meczu}
+    \caption{Widok edycji wyniku meczu}
 \end{figure}
 
-\subsection{Logowanie i rejestracja}
+\subsection{Widok logowania i rejestracji}
+Widoki logowania i rejestracji są do siebie bardzo podobne.
 Strona rejestracji pozwala na stworzenie konta. Nowe konta nie mają uprawnień do organizowania turnieju.
-W celu uzyskania uprawnień administrator musi dodać odpowiednie uprawnienia użytkownikowi.
+W celu uzyskania uprawnień administrator musi nadać odpowiednie uprawnienia użytkownikowi.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rejestracja_desktop.png}
-    \caption{Strona rejestracji}
+    \caption{Widok rejestracji}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/logowanie_desktop.png}
-    \caption{Strona logowania}
+    \caption{Widok logowania}
 \end{figure}
 
 \subsection{Weryfikacja wejścia}
-Opisane w tej sekcji strony zawierają wiele pól, które pozwalają na wpisywanie danych.
+Opisane w tej sekcji widoki zawierają wiele pól wprowadzania, które pozwalają na wpisywanie danych.
 Nie można zakładać, że użytkownik zawsze wpisze wszystkie dane poprawnie.
 W związku z tym wszystkie pola, które akceptują dane użytkownika są weryfikowane.
 W przypadku wykrycia błędu aplikacja wyświetla odpowiedni komunikat.
@@ -318,6 +359,9 @@ Gdy wystąpi wyjątek podczas komunikacji z backendem i zostanie on przechwycony
 \end{figure}
 
 \section{Porównanie z innymi znanymi rozwiązaniami}
+Aplikacja webowa rozgrywkitenisa.pl została porównana z innymi podobnymi rozwiązaniami.
+Porównane zostały implementowane funkcjonalności, interfejs użytkownika oraz szybkość działania.
+
 \subsection{Witryna playinga.com}
 Playinga.com~\cite{Playinga} pozwala na tworzenie turniejów różnych rozgrywek sportowych. Ta aplikacja jest darmowa i udostępnia część funkcjonalności po wykupieniu płatnej subskrypcji.
 Przykładowo darmowa wersja nie obejmuje wpisywania wyników przez zawodników.
@@ -347,11 +391,11 @@ Czas odpowiedzi wynosił od 5 do 10 sekund. Trzeba jednak wziąć pod uwagę, ż
 W celu miarodajnego porównania czasu ładowania należałoby zapełnić aplikację rozgrywkitenisa.pl podobną ilością danych.
 Ostatnim problemem jest brak obsługi języka polskiego. Ogranicza to dostępność aplikacji dla polskojęzycznych użytkowników.
 \subsection{Witryna paleta.wroclaw.pl}
-Paleta.wroclaw.pl~\cite{PaletaWroclaw} to aplikacja webowa Klubu Sportowego PALETA. 
+Paleta.wroclaw.pl~\cite{PaletaWroclaw} to aplikacja webowa Klubu Sportowego PALETA.
 Użytkownicy internetu nienależący do klubu mogą tylko przeglądać aplikację.
 Podobnie jak w aplikacji będącej tematem pracy istnieje możliwość tworzenia rozgrywek i dodawania wyników meczów.
 Niestety nie ma możliwości sprawdzenia, czy zawodnicy są uprawnieni do samodzielnego raportowania wyników spotkań.
-Interfejs użytkownika jest przejrzysty, a czas reakcji strony jest wystarczająco mały, aby nie sprawiać problemu podczas przeglądania strony. 
+Interfejs użytkownika jest przejrzysty, a czas reakcji strony jest wystarczająco mały, aby nie sprawiać problemu podczas przeglądania strony.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/paleta_wyniki.png}
@@ -368,7 +412,7 @@ W celu porównania czasu ładowania czasu ładowania aplikacji webowej będącej
 Lighthouse jest narzędziem developerskim wbudowanym w przeglądarki internetowe oparte na chromium.
 Testy zostały przeprowadzone w przeglądarce Brave w wersji 1.16.116, na laptopie z systemem operacyjnym Linux.
 Laptop był wyposażony w procesor Intel i7-10750H i kartę graficzną NVIDIA GeForce RTX 2060 Mobile.
-Test polegał na załadowaniu strony z rozgrywkami.
+Test polegał na załadowaniu strony z listą rozgrywek.
 \begin{figure}[H]
     \centering
     \begin{tabular}{|p{3.9cm}|c|c|c|}
@@ -387,6 +431,12 @@ Natomiast czas ładowania playinga.com jest znacznie dłuższy.
 Takie same wnioski wysunąłem przeglądając wyżej wymienione strony.
 Jednakże, moim zdaniem, trzeba wziąć pod uwagę także inne aspekty działania takie jak czas reakcji po kliknięciu.
 Wtedy różnica w szybkości pomiędzy \texttt{playinga.com}, a pozostałymi witrynami jest znacznie większa.
+\subsection{Podsumowanie porównania}
+Aplikacja webowa będąca tematem pracy oferuje interfejs użytkownika o podobnej przejrzystości w porównaniu do alternatywnych rozwiązań.
+Rozwiązania obecne na rynku oferują więcej funkcjonalności, ale duża część z nich wymaga wykupienia płatnej subskrypcji, lub jest niedostępna dla zwykłych użytkowników. 
+Szybkość działania aplikacji webowej opisywanej w tej pracy jest porównywalna, a nawet lepsza od rozwiązań obecnych na rynku.
+Może wynikać to z faktu, że baza danych witryny \texttt{rozgrywkitenisa.pl} zawiera tylko kilka rozgrywek.
+
 \section{Instalacja}
 \noindent
 Repozytorium aplikacji i całej pracy znajduje się pod adresem:

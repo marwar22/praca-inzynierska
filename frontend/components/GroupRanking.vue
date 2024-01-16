@@ -42,7 +42,7 @@ const results = computed(() => {
       (points.get(match.result.winnerId) ?? 0) + props.tournament.scoring.groupPointsForWin
     );
 
-    const loserId = match.result.winnerId === firstPlayerId ? firstPlayerId : secondPlayerId;
+    const loserId = match.result.winnerId === firstPlayerId ? secondPlayerId : firstPlayerId;
     points.set(
       loserId,
       (points.get(loserId) ?? 0) +
@@ -67,6 +67,7 @@ const sortedPlayers = computed(() => {
       gamesLost: results.value.gamesLost.get(playerId) ?? 0
     };
   });
+  console.log(players);
   players.sort((a, b) => {
     // prettier-ignore
     if (a.points === b.points) {
