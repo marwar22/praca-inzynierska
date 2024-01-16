@@ -143,9 +143,9 @@ Ich celem jest zademonstrowanie działania programu.
 \subsection{Tworzenie nowej rozgrywki}
 \begin{tabular}{|l|p{12cm}|}
     \hline
-    Nazwa      & Tworzenie nowej rozgrywki                                                                                                                                                              \\
+    Nazwa      & Tworzenie nowej rozgrywki                                                                                                                                                               \\
     \hline
-    Aktor      & Organizator rozgrywki                                                                                                                                                                  \\
+    Aktor      & Organizator rozgrywki                                                                                                                                                                   \\
     \hline
     Scenariusz &
     \begin{enumerate}[nosep,leftmargin=*,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
@@ -188,7 +188,7 @@ Ich celem jest zademonstrowanie działania programu.
 \subsection{Podgląd danych kontaktowych zawodników w grupie}
 \begin{tabular}{|l|p{12cm}|}
     \hline
-    Nazwa                                                      & Podgląd danych kontaktowych zawodników w grupie              \\
+    Nazwa                                                      & Podgląd danych kontaktowych zawodników w grupie                 \\
     \hline
     Aktor                                                      & Zawodnik biorący udział w rozgrywce                             \\
     \hline
@@ -226,14 +226,15 @@ Pasek nawigacyjny ułatwia poruszanie się po stronie. Logo (piłka tenisowa) z 
 Następne trzy elementy: ``Home'', ``Rozgrywki'', ``Ranking'' przenoszą odpowiednio na stronę główną, do widoku z listą rozgrywek, do widoku z listą rankingową.
 Z prawej strony znajduje się nazwa użytkownika, jeżeli użytkownik jest zalogowany i przycisk do wylogowywania się.
 Dla niezalogowanych użytkowników widoczne są przyciski przenoszące na stronę logowania oraz rejestracji.
-Na końcu znajduje się ikona konta pozwalająca zobaczyć status konta. Wersja mobilna wygląda podobnie. 
+Na końcu znajduje się ikona konta pozwalająca zobaczyć status konta. Wersja mobilna wygląda podobnie.
 Dodane zostały ikony, a linki rozwijają się i chowają po naciśnięciu przycisku menu w lewym górnym rogu.
 
+\newpage
 \begin{figure}[H]
     \centering
     \subfloat[Wersja na komputery]{
         \includegraphics[width=\textwidth,valign=t]{assets/interfejs/navbar_desktop.png}
-    }    
+    }
     \hfill
     \subfloat[Wersja na telefony]{
         \includegraphics[width=0.5\textwidth,valign=t]{assets/interfejs/navbar_mobile.png}
@@ -257,6 +258,22 @@ Strona główna dostarcza użytkownikowi ogólne informacje o tym, co oferuje ap
     \caption{Strona główna}
 \end{figure}
 
+\subsection{Widok logowania i rejestracji}
+Widoki logowania i rejestracji są do siebie bardzo podobne.
+Strona rejestracji pozwala na stworzenie konta. Nowe konta nie mają uprawnień do organizowania turnieju.
+W celu uzyskania uprawnień administrator musi nadać odpowiednie uprawnienia użytkownikowi.
+\begin{figure}[H]
+    \centering
+    \subfloat[Widok rejestracji]{
+        \includegraphics[width=0.44\textwidth,valign=t]{assets/interfejs/rejestracja_desktop.png}
+    }
+    \hfill
+    \subfloat[Widok logowania]{
+        \includegraphics[width=0.44\textwidth,valign=t]{assets/interfejs/logowanie_desktop.png}
+
+    }
+    \caption{Widoki logowania i rejestracji}
+\end{figure}
 \subsection{Widok listy rozgrywek}
 Strona rozgrywek zawiera listę rozgrywek oraz pozwala na wyszukiwanie konkretnej rozgrywki po nazwie.
 Każda rozgrywka jest opisana podstawowymi informacjami, a po kliknięciu użytkownik jest przenoszony na stronę ze szczegółami.
@@ -276,16 +293,17 @@ Dodatkowo strona zawiera przycisk "Utwórz rozgrywkę" przenoszący do widoku tw
     \caption{Strona rozgrywek}
 \end{figure}
 
+\newpage
 \subsection{Widok tworzenia rozgrywki}
 Dostęp do tego widoku mają tylko zalogowani użytkownicy z uprawnieniami do tworzenia rozgrywek.
 Użytkownik może dostosować wszystkie widoczne parametry. Dostępne opcje parametru liczba finalistów, są zależne od liczby zawodników.
 Liczba finalistów musi być potęgą dwójki i nie może być większa od liczby zawodników.
 Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk ``Wylosuj skład grup'' tworzy grupy zgodnie z podziałem na koszyki.
-\newpage
+
 \begin{figure}[H]
     \centering
     \subfloat[Wersja na komputery]{
-        \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_desktop.png}        
+        \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_desktop.png}
     }
     \hfill
     \subfloat[Wersja na telefony]{
@@ -323,22 +341,6 @@ Następnie użytkownik może zapisać zmiany klikając ikonę dyskietki.
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/mecz_desktop.png}
     \caption{Widok edycji wyniku meczu}
-\end{figure}
-
-\subsection{Widok logowania i rejestracji}
-Widoki logowania i rejestracji są do siebie bardzo podobne.
-Strona rejestracji pozwala na stworzenie konta. Nowe konta nie mają uprawnień do organizowania turnieju.
-W celu uzyskania uprawnień administrator musi nadać odpowiednie uprawnienia użytkownikowi.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rejestracja_desktop.png}
-    \caption{Widok rejestracji}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/logowanie_desktop.png}
-    \caption{Widok logowania}
 \end{figure}
 
 \subsection{Weryfikacja wejścia}
@@ -436,7 +438,7 @@ Jednakże, moim zdaniem należy wziąć pod uwagę także inne aspekty działani
 Wtedy różnica w szybkości pomiędzy \texttt{playinga.com}, a pozostałymi witrynami jest znacznie większa.
 \subsection{Podsumowanie porównania}
 Aplikacja webowa będąca tematem pracy oferuje interfejs użytkownika o podobnej przejrzystości w porównaniu do alternatywnych rozwiązań.
-Rozwiązania obecne na rynku oferują więcej funkcjonalności, ale duża część z nich wymaga wykupienia płatnej subskrypcji lub jest niedostępna dla zwykłych użytkowników. 
+Rozwiązania obecne na rynku oferują więcej funkcjonalności, ale duża część z nich wymaga wykupienia płatnej subskrypcji lub jest niedostępna dla zwykłych użytkowników.
 Szybkość działania aplikacji webowej opisywanej w tej pracy jest porównywalna, a nawet lepsza od rozwiązań obecnych na rynku.
 Może wynikać to z faktu, że baza danych witryny \texttt{rozgrywkitenisa.pl} zawiera tylko kilka rozgrywek.
 
@@ -498,7 +500,6 @@ docker compose build
 docker compose -f docker-compose-localhost.yml build
 \end{lstlisting}
 
-\newpage
 \subsection{Uruchamianie}
 \begin{lstlisting}[language=bash]
 # srodowisko produkcyjne
