@@ -3,7 +3,7 @@ import type { ApplicationUser, ApplicationUserRole } from '~/types/applicationus
 
 useSeoMeta({
   title: 'Konto',
-
+  description: 'Konto użytkownika w aplikacji do rozgrywkitenisa.pl'
 });
 
 

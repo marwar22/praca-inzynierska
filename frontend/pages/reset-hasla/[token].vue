@@ -14,7 +14,13 @@ const showEmptyError = ref(false);
 
 const arePasswordsMatching = computed(() => password.value === passwordRepeated.value);
 const passwordError = computed(() => {
-  if (password.value.trim().length == 0) return showEmptyError.value ? 'Hasło jest puste' : '';
+  if (password.value.length == 0) return showEmptyError.value ? 'Hasło jest puste' : '';
+  if (!/[a-z]/.test(password.value)) return 'Hasło powinno zawierać małą literę';
+  if (!/[A-Z]/.test(password.value)) return 'Hasło powinno zawierać dużą literę';
+  if (!/[!@#$%^&*()_\-+=\[\]{};:'"\\|,<\.>\/?]/.test(password.value))
+    return 'Hasło powinno zawierać znak specjalny';
+  if (!/\d/.test(password.value)) return 'Hasło powinno zawierać cyfrę';
+  if (password.value.length < 9) return 'Hasło powinno składać się z co najmniej 9 znaków';
   return '';
 });
 const passwordRepeatedError = computed(() => {
