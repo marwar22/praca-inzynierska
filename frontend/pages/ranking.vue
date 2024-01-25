@@ -12,11 +12,9 @@ const apiError = computed(() => {
   return error.value ? fetchErrorToApiError(error.value) : null;
 });
 
-// TODO move to server
 const sortedPlayers = computed(() => {
   const sp =
     players.value?.toSorted((p1, p2) => {
-      // return (p2.rating ?? 0) - (p1.rating ?? 0);
       return (p1.ranking ?? Number.MAX_VALUE) - (p2.ranking ?? Number.MAX_VALUE);
     }) ?? [];
   return sp.map((player, index) => {

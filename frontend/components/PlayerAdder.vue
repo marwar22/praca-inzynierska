@@ -68,7 +68,10 @@ function removeApplicationUser(index: number) {
     </div>
   </div>
   <h2 class="mb-1 mt-2 text-2xl font-bold">
-    Wybrani zawodnicy ({{ selectedApplicationUsers.length }}/{{ numberOfPlayers }})
+    Wybrani zawodnicy
+    <span :class="{ 'text-red-500': selectedApplicationUsers.length !== numberOfPlayers }">
+      ({{ selectedApplicationUsers.length }}/{{ numberOfPlayers }})</span
+    >
   </h2>
   <div class="flex flex-wrap">
     <div

@@ -104,7 +104,7 @@ Jeżeli rozgrywka posiada fazę grupową, to kolejność zależy od wyników w g
 Największe znaczenie ma pozycja w grupie, potem bilans meczów, bilans setów, a na końcu bilans gemów.
 Jeżeli rozgrywka składa się tylko z fazy pucharowej, to kolejność zawodników zależy od pozycji w rankingu ogólnym.
 
-Posortowanym zawodnikom przypisane zostają numery startowe od $0$ do $N-1$, gdzie $N$ to ilość zawodników.
+Posortowanym zawodnikom przypisane zostają numery startowe od $0$ do $N-1$, gdzie $N$ to liczba zawodników.
 Numery startowe są następnie przypisywane do drabinki według poniższego algorytmu. Jego wizualizacja znajduje się na rysunku~\ref{fig:knockout_bracket_generation}.
 \begin{lstlisting}
     numeryStartowe=[0,1]
@@ -197,7 +197,7 @@ Ich celem jest zademonstrowanie działania programu.
         \item Użytkownik wchodzi na stronę logowania.
         \item Użytkownik loguje się podając nazwę użytkownika lub email oraz hasło.
         \item Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której bierze udział.
-        \item Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie'' i~system je wyświetla.
+        \item Użytkownik klika ``Pokaż dane kontaktowe'' i~system je wyświetla.
     \end{enumerate}              \\
     \hline
     \vtop{\hbox{\strut Scenariusze}\hbox{\strut alternatywne}} &
@@ -209,7 +209,7 @@ Ich celem jest zademonstrowanie działania programu.
                                                                &
     \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
         \item [3b.] Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której nie bierze udziału.
-        \item [4b.] Użytkownik klika ``Pokaż dane kontaktowe osób w mojej grupie'' i~system nie wyświetla danych kontaktowych nikogo.
+        \item [4b.] Użytkownik klika ``Pokaż dane kontaktowe'' i~system nie wyświetla danych kontaktowych nikogo.
     \end{enumerate} \\
     \hline
 \end{tabular}
@@ -217,17 +217,17 @@ Ich celem jest zademonstrowanie działania programu.
 \chapter{Opis aplikacji}
 Ten rozdział zaczyna się od opisu interfejsu aplikacji pozwalając użytkownikowi zapoznać się z nim.
 Następnie znajduje się porównanie aplikacji z innymi znanymi rozwiązaniami.
-Na końcu przedstawione zostały kroki pozwalające instalację aplikacji lokalnie lub w środowisku produkcyjnym.
+Na końcu przedstawione zostały kroki pozwalające na instalację aplikacji lokalnie lub w środowisku produkcyjnym.
 \section{Interfejs użytkownika}
 W tej sekcji zostaną omówione elementy interfejsu użytkownika wraz z zrzutami ekranu pokazującymi wygląd aplikacji na urządzeniach stacjonarnych i mobilnych.
 Jeżeli podany został tylko zrzut ekranu w wersji dla komputerów, oznacza to, że wersja mobilna niewiele się różni.
 \subsection{Pasek nawigacyjny}
-Pasek nawigacyjny ułatwia poruszanie się po stronie. Logo (piłka tenisowa) z lewej strony przekierowuje na stronę główną.
-Następne trzy elementy: ``Home'', ``Rozgrywki'', ``Ranking'' przenoszą odpowiednio na stronę główną, do widoku z listą rozgrywek, do widoku z listą rankingową.
-Z prawej strony znajduje się nazwa użytkownika, jeżeli użytkownik jest zalogowany i przycisk do wylogowywania się.
+Pasek nawigacyjny~(\ref{fig:navigation_bar}) ułatwia poruszanie się po stronie. Logo (piłka tenisowa) z lewej strony przekierowuje na stronę główną.
+Następne trzy elementy: ``Home'', ``Rozgrywki'' i ``Ranking'' przenoszą odpowiednio na stronę główną, do widoku z listą rozgrywek i do widoku z listą rankingową.
+Z prawej strony znajduje się nazwa użytkownika, jeżeli użytkownik jest zalogowany, i przycisk do wylogowywania się.
 Dla niezalogowanych użytkowników widoczne są przyciski przenoszące na stronę logowania oraz rejestracji.
 Na końcu znajduje się ikona konta pozwalająca zobaczyć status konta. Wersja mobilna wygląda podobnie.
-Dodane zostały ikony, a linki rozwijają się i chowają po naciśnięciu przycisku menu w lewym górnym rogu.
+Dodane zostały ikony opisujące linki. Linki rozwijają się i chowają po naciśnięciu przycisku menu w lewym górnym rogu.
 
 \newpage
 \begin{figure}[H]
@@ -240,10 +240,11 @@ Dodane zostały ikony, a linki rozwijają się i chowają po naciśnięciu przyc
         \includegraphics[width=0.5\textwidth,valign=t]{assets/interfejs/navbar_mobile.png}
     }
     \caption{Pasek nawigacyjny}
+    \label{fig:navigation_bar}
 \end{figure}
 
 \subsection{Widok strony głównej}
-Strona główna dostarcza użytkownikowi ogólne informacje o tym, co oferuje aplikacja webowa oraz umożliwia przejście do różnych części projektu poprzez linki w pasku nawigacyjnym i wyeksponowane przyciski.
+Strona główna~\ref{fig:view_home_page} dostarcza użytkownikowi ogólne informacje o tym, co oferuje aplikacja webowa oraz umożliwia przejście do różnych części projektu poprzez linki w pasku nawigacyjnym i wyeksponowane przyciski.
 
 \begin{figure}[H]
     \centering
@@ -256,10 +257,11 @@ Strona główna dostarcza użytkownikowi ogólne informacje o tym, co oferuje ap
         \includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/home_mobile.png}
     }
     \caption{Strona główna}
+    \label{fig:view_home_page}
 \end{figure}
 
 \subsection{Widok logowania i rejestracji}
-Widoki logowania i rejestracji są do siebie bardzo podobne.
+Widoki logowania i rejestracji~(\ref{fig:view_login_and_registration}) są do siebie bardzo podobne.
 Strona rejestracji pozwala na stworzenie konta. Nowe konta nie mają uprawnień do organizowania turnieju.
 W celu uzyskania uprawnień administrator musi nadać odpowiednie uprawnienia użytkownikowi.
 \begin{figure}[H]
@@ -273,9 +275,10 @@ W celu uzyskania uprawnień administrator musi nadać odpowiednie uprawnienia u�
 
     }
     \caption{Widoki logowania i rejestracji}
+    \label{fig:view_login_and_registration}
 \end{figure}
 \subsection{Widok listy rozgrywek}
-Strona rozgrywek zawiera listę rozgrywek oraz pozwala na wyszukiwanie konkretnej rozgrywki po nazwie.
+Widok rozgrywek~(\ref{fig:view_tournaments}) zawiera listę rozgrywek oraz pozwala na wyszukiwanie konkretnej rozgrywki po nazwie.
 Każda rozgrywka jest opisana podstawowymi informacjami, a po kliknięciu użytkownik jest przenoszony na stronę ze szczegółami.
 Dodatkowo strona zawiera przycisk "Utwórz rozgrywkę" przenoszący do widoku tworzenia rozgrywki.
 
@@ -291,13 +294,14 @@ Dodatkowo strona zawiera przycisk "Utwórz rozgrywkę" przenoszący do widoku tw
         \includegraphics[width=0.22\textwidth,valign=t]{assets/interfejs/rozgrywki_mobile.png}
     }
     \caption{Strona rozgrywek}
+    \label{fig:view_tournaments}
 \end{figure}
 
 \newpage
 \subsection{Widok tworzenia rozgrywki}
-Dostęp do tego widoku mają tylko zalogowani użytkownicy z uprawnieniami do tworzenia rozgrywek.
-Użytkownik może dostosować wszystkie widoczne parametry. Dostępne opcje parametru liczba finalistów, są zależne od liczby zawodników.
-Liczba finalistów musi być potęgą dwójki i nie może być większa od liczby zawodników.
+Dostęp do tego widoku~(\ref{fig:view_create_tournament}) mają tylko zalogowani użytkownicy z uprawnieniami do tworzenia rozgrywek.
+Użytkownik może dostosować wszystkie widoczne parametry. Dostępne opcje parametru \texttt{liczba finalistów}, są zależne od \texttt{liczby zawodników}.
+\texttt{Liczba finalistów} musi być potęgą dwójki i nie może być większa od \texttt{liczby zawodników}.
 Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk ``Wylosuj skład grup'' tworzy grupy zgodnie z podziałem na koszyki.
 
 \begin{figure}[H]
@@ -311,28 +315,31 @@ Pole wyszukiwania zawodników pozwala na dodanie ich rozgrywki, a przycisk ``Wyl
         \vphantom{\includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywki_utworz_desktop.png}}
     }
     \caption{Widok tworzenia rozgrywki}
+    \label{fig:view_create_tournament}
 \end{figure}
 
 \newpage
 \subsection{Widok rozgrywki}
-U góry widoku rozgrywki pokazane są podstawowe dane o rozgrywce i uczestnikach.
+U góry widoku rozgrywki~(\ref{fig:view_torunament1}) pokazane są podstawowe dane o rozgrywce i uczestnikach.
 W tym miejscu użytkownik może zdobyć dane kontaktowe innych uczestników.
 Następnie znajduje się tabela z aktualną sytuacją w grupie, gdzie użytkownik może znaleźć informację o sytuacji w grupach.
-Dalej znajduje się tabela pokazująca wyniki konkretnych meczów w danej grupie, klikając na dany mecz można go edytować.
+Dalej~(\ref{fig:view_torunament2}) znajduje się tabela pokazująca wyniki konkretnych meczów w danej grupie, klikając na dany mecz można go edytować.
 Na końcu znajduje się drabinka fazy pucharowej, wraz z ikoną edycji do wprowadzania wyników.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywka_desktop.png}
     \caption{Pierwsza część widoku rozgrywki}
+    \label{fig:view_torunament1}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/rozgrywka_desktop2.png}
     \caption{Druga część widoku rozgrywki}
+    \label{fig:view_torunament2}
 \end{figure}
 
 \subsection{Widok edycji wyniku meczu}
-Wynik meczu może wprowadzić\slash edytować organizator rozgrywki lub jego uczestnicy.
+Wynik meczu może wprowadzić\slash edytować organizator rozgrywki lub jego uczestnicy używając widoku edycji meczu~(\ref{fig:view_match_edit}).
 Aplikacja weryfikuje, czy wynik jest poprawny i zaznacza na czerwono błędy. Z prawej strony wyniku
 użytkownik może wybrać, jak zakończył się mecz, zgodnie z legendą, która znajduje się po niżej.
 Następnie użytkownik może zapisać zmiany klikając ikonę dyskietki.
@@ -341,25 +348,28 @@ Następnie użytkownik może zapisać zmiany klikając ikonę dyskietki.
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/mecz_desktop.png}
     \caption{Widok edycji wyniku meczu}
+    \label{fig:view_match_edit}
 \end{figure}
 
 \subsection{Weryfikacja wejścia}
 Opisane w tej sekcji widoki zawierają wiele pól wprowadzania, które pozwalają na wpisywanie danych.
 Nie można zakładać, że użytkownik zawsze wpisze wszystkie dane poprawnie.
 W związku z tym wszystkie pola, które akceptują dane użytkownika są weryfikowane.
-W przypadku wykrycia błędu aplikacja wyświetla odpowiedni komunikat.
+W przypadku wykrycia błędu aplikacja wyświetla odpowiedni komunikat~(\ref{fig:input_verification}).
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/interfejs/weryfikacja_wejscia.png}
     \caption{Weryfikacja liczby zawodników i graczy w~widoku tworzenia rozgrywki}
+    \label{fig:input_verification}
 \end{figure}
 
 \subsection{Wyświetlanie informacji o błędach}
-Gdy wystąpi wyjątek podczas komunikacji z backendem i zostanie on przechwycony wyświetlany zostanie odpowiedni komunikat.
+Gdy wystąpi wyjątek podczas komunikacji z backendem i zostanie on przechwycony wyświetlany zostanie odpowiedni komunikat~(\ref{fig:error_mesage}).
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,valign=t]{assets/interfejs/rozgrywki_error.png}
     \caption{Komunikat wyświetlany, gdy błąd został przechwycony}
+    \label{fig:error_mesage}
 \end{figure}
 
 \section{Porównanie z innymi znanymi rozwiązaniami}
@@ -367,19 +377,21 @@ Aplikacja webowa rozgrywkitenisa.pl została porównana z innymi podobnymi rozwi
 Porównane zostały implementowane funkcjonalności, interfejs użytkownika oraz szybkość działania.
 
 \subsection{Witryna playinga.com}
-\texttt{Playinga.com}~\cite{Playinga} pozwala na tworzenie turniejów różnych rozgrywek sportowych.
-Aplikacja ta jest darmowa i udostępnia część funkcjonalności po wykupieniu płatnej subskrypcji.
+\texttt{Playinga.com}~\cite{Playinga} pozwala na tworzenie turniejów różnych rozgrywek sportowych~(\ref{fig:playinga_creating_tournament}).
+Aplikacja ta jest darmowa i udostępnia część funkcjonalności po wykupieniu płatnej subskrypcji~(\ref{fig:playinga_paid_version}).
 Przykładowo darmowa wersja nie obejmuje wpisywania wyników przez zawodników.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/playinga_tworzenie.png}
     \caption{Widok tworzenia rozgrywki playinga.com}
+    \label{fig:playinga_creating_tournament}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/playinga_tworzenie2.png}
     \caption{Wpisywanie wyników przez zawodników nie jest dostępne w podstawowej wersji aplikacji}
+    \label{fig:playinga_paid_version}
 \end{figure}
 \texttt{Playinga.com} wygląda estetycznie, a interfejs użytkownika jest responsywny. Aplikacja jest bardzo rozbudowana i umożliwia organizację turniejów z innych dziedzin sportu.
 W płatnej wersji oferowane funkcjonalności pokrywają wszystkie funkcjonalności aplikacji, która jest tematem tej pracy.
@@ -396,20 +408,22 @@ Czas odpowiedzi wynosił od 5 do 10 sekund. Trzeba jednak wziąć pod uwagę, ż
 W celu miarodajnego porównania czasu ładowania, należałoby zapełnić aplikację \texttt{rozgrywkitenisa.pl} podobną ilością danych.
 Ostatnim problemem jest brak obsługi języka polskiego. Ogranicza to dostępność aplikacji dla polskojęzycznych użytkowników.
 \subsection{Witryna paleta.wroclaw.pl}
-\texttt{Paleta.wroclaw.pl}~\cite{PaletaWroclaw} to aplikacja webowa Klubu Sportowego PALETA.
-Użytkownicy internetu nienależący do klubu mogą tylko przeglądać aplikację.
+\texttt{Paleta.wroclaw.pl}~\cite{PaletaWroclaw} to aplikacja webowa wrocławskiego Klubu Sportowego PALETA.
+Użytkownicy internetu nienależący do klubu mogą tylko przeglądać aplikację~(\ref{fig:paleta_match_results},~\ref{fig:paleta_table_results}).
 Podobnie jak w aplikacji będącej tematem pracy istnieje możliwość tworzenia rozgrywek i dodawania wyników meczów.
 Niestety nie ma możliwości sprawdzenia, czy zawodnicy są uprawnieni do samodzielnego raportowania wyników spotkań.
 Interfejs użytkownika jest przejrzysty, a czas reakcji strony jest wystarczająco mały, aby nie sprawiać problemu podczas przeglądania strony.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/paleta_wyniki.png}
-    \caption{Tabela wyników w grupie w witrynie paleta.wroclaw.pl}
+    \caption{Tabela wyników spotkań w witrynie paleta.wroclaw.pl}
+    \label{fig:paleta_match_results}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.72\textwidth,valign=t]{assets/alt_rozw/paleta_tabela.png}
-    \caption{Tabela wyników spotkań w witrynie paleta.wroclaw.pl}
+    \caption{Tabela wyników w grupie w witrynie paleta.wroclaw.pl}
+    \label{fig:paleta_table_results}
 \end{figure}
 
 \subsection{Porównanie czasu ładowania strony}
@@ -417,7 +431,7 @@ W celu porównania czasu ładowania czasu ładowania aplikacji webowej będącej
 Jest to narzędzie developerskie wbudowane w przeglądarki internetowe oparte na Chromium.
 Testy zostały przeprowadzone w przeglądarce Brave w wersji 1.16.116, na laptopie z systemem operacyjnym Linux.
 Laptop był wyposażony w procesor Intel i7-10750H i kartę graficzną NVIDIA GeForce RTX 2060 Mobile.
-Test polegał na załadowaniu strony z listą rozgrywek.
+Test polegał na załadowaniu strony z listą rozgrywek. Wyniki testu są przedstawione w tabeli~\ref{tab:lighthouse_test_results}.
 \begin{figure}[H]
     \centering
     \begin{tabular}{|p{3.9cm}|c|c|c|}
@@ -430,6 +444,7 @@ Test polegał na załadowaniu strony z listą rozgrywek.
         Speed Index                     & 0.6 s              & 2.5 s        & 0.8 s             \\\hline
     \end{tabular}
     \captionof{table}{Porównaniee metryk zmierzonych przez Lighthouse (dla każdej im mniej tym lepiej). Aplikacja będąca tematem pracy znajduje się pod adresem \texttt{rozgrywkitenisa.pl}}
+    \label{tab:lighthouse_test_results}
 \end{figure}
 Czas ładowania strony \texttt{rozgrywkitenisa.pl} jest porównywalny z czasem ładowania strony \texttt{paleta.wroclaw.pl}.
 Natomiast czas ładowania \texttt{playinga.com} jest znacznie dłuższy.
@@ -617,7 +632,7 @@ Zawartość tych folderów jest następująca:
 Oprócz wyżej wymienionych technologii zastosowałem bibliotekę TailwindCSS~\cite{TailwindCSS} do stylizacji aplikacji.
 W pliku \texttt{tailwind.config.js} znajduje się konfiguracja tej biblioteki, wraz z dedykowaną dla tego projektu paletą kolorów.
 Wielokrotnie używałem prefiksów dla stylów oferowanych przez TailwindCSS, które aktywują/dezaktywują dany styl w zależności od wielkości ekranu.
-Dzięki temu aplikacja jest responsywna i dostosowana do komputerów i urządzeń mobilnych.
+Dzięki temu aplikacja jest responsywna i dostosowana zarówno do komputerów jak i urządzeń mobilnych.
 
 
 \subsection{Backend - Spring Boot}
@@ -656,7 +671,7 @@ Jeżeli tak, to dokonuje migracji.
 Dzięki temu baza danych używana lokalnie oraz baza danych na serwerze w wersji produkcyjnej, utrzymują ten sam schemat bazy danych.
 
 \subsection{Narzędzie do odnawiania certyfikatów SSL/TLS - Certbot}
-Dla bezpieczeństwa użytkowników połączenie z stroną internetową powinno być szyfrowane.
+Dla bezpieczeństwa użytkowników połączenie ze stroną internetową powinno być szyfrowane.
 Do nawiązania szyfrowanego połączenia używane są certyfikaty SSL/TLS, które zawierają klucz publiczny i inne dane, takie jak okres ważności, dane właściciela, wystawcy.
 Każdy ma możliwość wystawić własny certyfikat, ale przeglądarka będzie ufać tylko certyfikatom wydanym przez zaufane (według twórców przeglądarki) instytucje.
 Świadomy użytkownik znając wystawcę certyfikatu może ręcznie dodać go do listy zaufanych certyfikatów. Takie rozwiązanie jest właściwe tylko wtedy, gdy nie chcemy powierzać generowania kluczy zewnętrznej instytucji i użytkownicy mogą potwierdzić jego prawdziwość (np. gdy wystawiamy certyfikat aplikacji webowej do użytku wewnętrznego firmy).
@@ -683,8 +698,8 @@ Odpowiada on za automatyczne odnawianie certyfikatów poprzez wysyłanie zapytan
     \bibitem{Flyway} Flyway \url{https://flywaydb.org/}
     \bibitem{Certbot} Certbot \url{https://certbot.eff.org/}
     \bibitem{LetsEncrypt} LetsEncrypt \url{https://letsencrypt.org/pl/}
-    \bibitem{PaletaWroclaw} www.paleta.wroclaw.pl \url{https://www.paleta.wroclaw.pl/}
-    \bibitem{Playinga} www.playinga.com \url{https://playinga.com/}
+    \bibitem{PaletaWroclaw} PALETA \url{https://www.paleta.wroclaw.pl/}
+    \bibitem{Playinga} Playinga \url{https://playinga.com/}
 \end{thebibliography}
 
 \end{document}

@@ -36,7 +36,6 @@ watch(
     let seedPositions = [0, 1];
     while (seedPositions.length < props.numberOfPlayersInKnockoutBracket)
       seedPositions = doubleSeedPositions(seedPositions);
-    console.log(seedPositions);
     props.knockoutBracket.matches = [];
     let stage = 0;
     let lastId = -1;
@@ -80,5 +79,6 @@ const players = computed(() => {
 </script>
 
 <template>
+  <h2 class="text-2xl font-bold mt-4">Drabinka fazy pucharowej</h2>
   <KnockoutBracket :knockout-bracket="knockoutBracket" :sets-to-win="setsToWin" :players="players" :show-edit="false" />
 </template>

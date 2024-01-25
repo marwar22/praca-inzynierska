@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationuser';
+import type { ApplicationUserBasic } from '~/types/applicationuser';
 
 const props = defineProps<{
   numberOfGroups: number;
@@ -35,6 +35,12 @@ const buckets = computed(() => {
     buckets.push(bucket);
   }
   return buckets;
+});
+watch([() => props.selectedApplicationUsers.length, () => props.numberOfGroups, () => props.playersInGroups], () => {
+  for (const group of props.groups) {
+    group.length = 0;
+  }
+  emit('update:groups', props.groups);
 });
 
 function generateGroups() {

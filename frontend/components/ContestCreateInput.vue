@@ -4,7 +4,7 @@ const props = defineProps<{
   modelModifiers?: any;
   type?: string;
   placeholder?: string;
-  error?: string;
+  error?: string | null;
   min?: number;
   max?: number;
 }>();

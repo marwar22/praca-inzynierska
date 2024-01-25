@@ -9,9 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ligatenisaziemnego.server.applicationuser.ApplicationUser;
-import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPrincipal;
-import pl.ligatenisaziemnego.server.applicationuser.ApplicationUserRepository;
+import pl.ligatenisaziemnego.server.applicationuser.*;
 import pl.ligatenisaziemnego.server.controlleradvice.ApiError;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 import pl.ligatenisaziemnego.server.email.EmailService;
@@ -26,6 +24,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission.ROLE__CHANGE;
 
 @Log4j2
 @Service

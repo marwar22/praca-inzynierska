@@ -10,7 +10,6 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <!-- {{ modelValue }} -->
   <div class="flex rounded-2xl" v-bind="$attrs">
     <RadioButton
       v-for="value in values"

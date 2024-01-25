@@ -45,12 +45,6 @@ export function calculateTieBreakerSetIndex(result: MatchResult | null) {
 
 function isWalkoverCorrect(result: MatchResult) {
   return result.playedSetResults.length == 0;
-  // if (result.playedSetResults.length <= 1) return false;
-
-  // if (result.playedSetResults.every((sr) => sr.gamesScored[0] === 6 && sr.gamesScored[1] === 0)) return true;
-  // if (result.playedSetResults.every((sr) => sr.gamesScored[0] === 0 && sr.gamesScored[1] === 6)) return true;
-
-  // return false;
 }
 
 export function isResultCorrect(match: Match, setsToWin: number) {

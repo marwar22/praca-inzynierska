@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.ligatenisaziemnego.server.controlleradvice.ExceptionWithResponseEntity;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -33,10 +32,14 @@ public class ApplicationUserController {
 
     @GetMapping()
     public ResponseEntity<?> getAllApplicationUsers(
+            @RequestParam(name = "all", defaultValue = "false") boolean all,
             @RequestParam(name = "name", defaultValue = "") String name,
             @RequestParam(name = "limit", defaultValue = "24") String limitString,
-            @RequestParam(name = "exclude", defaultValue = "") Long[] exclude) {
-
+            @RequestParam(name = "exclude", defaultValue = "") Long[] exclude) throws ExceptionWithResponseEntity {
+        if (all) {
+            var applicationUsers = applicationUserService.getAllDetails();
+            return ResponseEntity.ok(applicationUsers);
+        }
         int limit = Integer.parseInt(limitString);
         var applicationUsers = applicationUserService.getAllByName(name, limit, List.of(exclude));
         return ResponseEntity.ok(applicationUsers);

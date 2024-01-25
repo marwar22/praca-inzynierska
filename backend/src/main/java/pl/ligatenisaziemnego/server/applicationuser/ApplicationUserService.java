@@ -14,6 +14,9 @@ import pl.ligatenisaziemnego.server.security.SecurityService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission.ROLE__CHANGE;
+import static pl.ligatenisaziemnego.server.applicationuser.ApplicationUserPermission.USER__GET_ANY;
+
 @Log4j2
 @Service
 public class ApplicationUserService {
@@ -51,6 +54,30 @@ public class ApplicationUserService {
 
     public ApplicationUser getById(long id) throws ExceptionWithResponseEntity {
         return applicationUserRepository.findById(id).orElseThrow(() -> ApiError.NOT_FOUND_ID(ApplicationUser.class, id));
+    }
+
+    public boolean hasApplicationUserPermissions(List<ApplicationUserPermission> permissions) throws ExceptionWithResponseEntity {
+        var applicationUser = securityService.getApplicationUserFromAuthentication();
+        var applicationUserPermissions = applicationUser.getPermissions();
+        for (var permission : permissions) {
+            if (!applicationUserPermissions.contains(permission)) return false;
+        }
+        return true;
+    }
+
+    public ApplicationUser setRoles(long id, List<ApplicationUserRole> roles) throws ExceptionWithResponseEntity {
+        if (!hasApplicationUserPermissions(List.of(ROLE__CHANGE)))
+            throw ApiError.FORBIDDEN("Can't change role without role " + ROLE__CHANGE);
+
+        var applicationUser = getById(id);
+        applicationUser.setRoles(roles);
+        return applicationUserRepository.save(applicationUser);
+    }
+
+    public List<ApplicationUser> getAllDetails() throws ExceptionWithResponseEntity {
+        if (!hasApplicationUserPermissions(List.of(USER__GET_ANY)))
+            throw ApiError.FORBIDDEN("Can't get all users with details without role " + USER__GET_ANY);
+        return applicationUserRepository.findAll();
     }
 
     private List<ApplicationUserBasicDto> findAllByName(String name, int limit, List<Long> exclude) {

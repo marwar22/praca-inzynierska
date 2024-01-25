@@ -79,7 +79,6 @@ const currPage = computed(() => {
       </button>
       <nav class="mr-3 flex h-full flex-1 items-center text-white">
         <ul
-          @blur="console.log"
           :class="[
             'z-50 flex border-olive-600',
             'max-md:absolute max-md:left-0 max-md:top-12 max-md:min-h-[calc(100vh-3rem)] max-md:w-60 max-md:flex-col max-md:border-r-4 max-md:bg-white max-md:text-black',

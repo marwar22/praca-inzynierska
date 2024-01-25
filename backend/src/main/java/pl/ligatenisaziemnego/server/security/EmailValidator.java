@@ -20,7 +20,7 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
     }
 
     private boolean validateEmail(String email) {
-        if (email == null) return false; // TODO implement this in other project as well as JsonObjectAuthenticationFilter in other project
+        if (email == null) return false;
         Matcher matcher = PATTERN.matcher(email);
         return matcher.matches();
     }

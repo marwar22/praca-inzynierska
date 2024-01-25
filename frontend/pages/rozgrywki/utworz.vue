@@ -6,7 +6,6 @@ import type { ApplicationUser, ApplicationUserBasic } from '~/types/applicationu
 import VueDatePicker from '@vuepic/vue-datepicker';
 import type { KnockoutBracket, Tournament, TournamentScoring } from '~/types/tournament';
 
-
 useSeoMeta({
   title: 'Tworzenie rozgrywki',
   description: 'Tworzenie spersonalizowanej rozgrywki tenisa ziemnego na rozgrywkitenisa.pl'
@@ -20,7 +19,8 @@ const MAX_NUMBER_OF_PLAYERS = 128;
 const MIN_NUMBER_OF_GROUPS = 1;
 const MAX_NUMBER_OF_GROUPS = 24;
 
-const apiError = ref(null as ApiError | null);
+const apiError = ref<ApiError | null>(null);
+const createError = ref<string | null>(null);
 const name = ref('');
 const date = ref([new Date(), new Date()]);
 
@@ -90,14 +90,50 @@ watch(hasGroupStage, () => {
 watch([numberOfPlayersInKnockoutBracket, hasGroupStage], ([newValue, _]) => {
   if (!hasGroupStage.value) numberOfPlayers.value = newValue;
 });
-
+const nameError = computed(() => {
+  if (name.value.trim().length < 5) return 'Nazwa musi mieć co najmniej 5 znaków';
+  if (name.value.trim().length > 255) return 'Nazwa musi mieć co najwyżej 255 znaków';
+  return null;
+});
+const numberOfPlayersError = computed(() => {
+  if (isNumberOfPlayersInRange.value) return null;
+  return `Liczba graczy musi być w przedziale od ${MIN_NUMBER_OF_PLAYERS} do ${MAX_NUMBER_OF_PLAYERS}`;
+});
+const numberOfGroupsError = computed(() => {
+  if (isNumberOfGroupsInRange.value) return null;
+  return `Liczba grup musi być w przedziale od ${MIN_NUMBER_OF_GROUPS} do ${MAX_NUMBER_OF_GROUPS}`;
+});
+const numberOfSelectedPlayersError = computed(() => {
+  if (selectedApplicationUsers.value.length === numberOfPlayers.value) return null;
+  return `Liczba wybranych zawodników musi wynosić ${numberOfPlayers.value}`;
+});
+const groupsError = computed(() => {
+  if (!hasGroupStage.value) return null;
+  const playerCount = groups.value.reduce((acc, g) => {
+    return acc + g.length;
+  }, 0);
+  if (playerCount === numberOfPlayers.value) return null;
+  return 'Należy wygenerować skład grup';
+});
+watch([nameError, numberOfPlayersError, numberOfGroupsError, numberOfSelectedPlayersError, groupsError], () => {
+  createError.value = null;
+});
 async function create() {
+  createError.value = null;
+  createError.value ??= nameError.value;
+  createError.value ??= numberOfPlayersError.value;
+  createError.value ??= numberOfGroupsError.value;
+  createError.value ??= numberOfSelectedPlayersError.value;
+  createError.value ??= groupsError.value;
+
+  if (createError.value !== null) return;
+
   try {
     const [startDate, endDate] = date.value;
     const res = await $fetch<Tournament>(`${config.public.BACKEND_API}/tournament`, {
       method: 'POST',
       body: {
-        name: name.value,
+        name: name.value.trim(),
         numberOfPlayers: numberOfPlayers.value,
         hasGroupStage: hasGroupStage.value,
         numberOfGroups: hasGroupStage.value ? numberOfGroups.value : 0,
@@ -129,11 +165,7 @@ async function create() {
     <div class="flex max-md:flex-col">
       <label class="mr-5 flex flex-1 flex-col max-md:w-full">
         Nazwa
-        <ContestCreateInput
-          placeholder="Nazwa rozgrywki"
-          v-model.number="name"
-          :error="name && name.trim().length < 5 ? 'Nazwa musi mieć co najmniej 5 znaków' : ''"
-        />
+        <ContestCreateInput placeholder="Nazwa rozgrywki" v-model.number="name" :error="nameError" />
       </label>
       <label class="flex flex-col md:min-w-[24rem]">
         Czas trwania
@@ -159,11 +191,7 @@ async function create() {
           v-model.number="numberOfPlayers"
           :min="1"
           :max="nextPowerOf10(MAX_NUMBER_OF_PLAYERS) - 1"
-          :error="
-            !isNumberOfPlayersInRange
-              ? `Liczba graczy musi być w przedziale od ${MIN_NUMBER_OF_PLAYERS} do ${MAX_NUMBER_OF_PLAYERS}`
-              : ''
-          "
+          :error="numberOfPlayersError"
         />
       </label>
 
@@ -175,11 +203,7 @@ async function create() {
           v-model.number="numberOfGroups"
           :min="MIN_NUMBER_OF_GROUPS"
           :max="nextPowerOf10(MAX_NUMBER_OF_GROUPS) - 1"
-          :error="
-            !isNumberOfGroupsInRange
-              ? `Liczba grup musi być w przedziale od ${MIN_NUMBER_OF_GROUPS} do ${MAX_NUMBER_OF_GROUPS}`
-              : ''
-          "
+          :error="numberOfGroupsError"
         />
       </label>
       <div class="mb-2 mr-5 flex flex-col">
@@ -219,7 +243,6 @@ async function create() {
     <KnockoutBracketCreator
       v-else
       v-model:knockout-bracket="knockoutBracket"
-      @update:knockout-bracket="console.log('xd')"
       :numberOfPlayersInKnockoutBracket="numberOfPlayersInKnockoutBracket"
       :sets-to-win="setsToWin"
       :selectedApplicationUsers="selectedApplicationUsers"
@@ -231,6 +254,9 @@ async function create() {
     >
       Utwórz
     </button>
+    <div v-if="createError" class="my-1 font-bold text-red-500">
+      {{ createError }}
+    </div>
     <ApiError :api-error="apiError"></ApiError>
   </div>
 </template>

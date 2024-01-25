@@ -43,12 +43,12 @@ watch(
     const getContacts = async () => {
       if (!authStatus.value.loggedIn) return [];
       if (!players.value.get(authStatus.value.applicationUserId)) return [];
-      const tournamentGroup = tournament.value?.groups.find((tg) =>
-        tg.playerIds.includes(authStatus.value.applicationUserId)
-      );
-      if (!tournamentGroup) return [];
+      const player = tournament.value?.players.find((au) => au.id === authStatus.value.applicationUserId);
+      const isOrganizer = authStatus.value.applicationUserId !== tournament.value?.organizerId;
+      if (!isOrganizer && !player) return [];
+
       const { data } = await useFetch<ApplicationUserContact[]>(
-        `${config.public.BACKEND_API}/tournament/${route.params.id}/group/${tournamentGroup.id}/contact`,
+        `${config.public.BACKEND_API}/tournament/${route.params.id}/contact`,
         { credentials: 'include' }
       );
       return data.value;
@@ -143,7 +143,9 @@ async function deleteKnockoutBracket() {
             <thead>
               <tr>
                 <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">Udział w etapie</th>
-                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">{{ tournament.hasGroupStage ? 'Grupa' : 'Turniej' }}</th>
+                <th class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1">
+                  {{ tournament.hasGroupStage ? 'Grupa' : 'Turniej' }}
+                </th>
                 <th
                   v-for="[index, ratingForStage] in tournament.scoring.ratingForKnockoutStageParticipation.entries()"
                   class="border-2 border-champagne-600 bg-champagne-300 px-2 py-1"
@@ -167,8 +169,8 @@ async function deleteKnockoutBracket() {
           </table>
         </div>
       </div>
-      <h2 class="mb-1 text-2xl font-bold">Grupy</h2>
-      <div class="flex flex-wrap">
+      <h2 class="mb-1 text-2xl font-bold">{{ tournament.hasGroupStage ? 'Grupy' : 'Zawodnicy' }}</h2>
+      <div v-if="tournament.hasGroupStage" class="flex flex-wrap">
         <div v-for="(group, groupNumber) in tournament.groups" class="m-1 flex flex-col">
           <table>
             <thead>
@@ -194,9 +196,18 @@ async function deleteKnockoutBracket() {
           </table>
         </div>
       </div>
+      <div
+        v-else
+        class="grid auto-cols-auto grid-cols-[repeat(auto-fit,_minmax(25rem,_1fr))] border border-neutral-300 table__scrollbar table__scrollbar--champagne overflow-x-auto"
+      >
+        <div v-for="player in tournament.players" class="border border-neutral-300 px-2 py-1 flex justify-between flex-wrap">
+          <span class="pr-3">{{ nameFromApplicationUser(player) }}</span>
+          <span v-if="showContacts && contacts.get(player.id)">{{ contacts.get(player.id)?.email }}</span>
+        </div>
+      </div>
       <label v-if="contacts.size > 0">
         <input type="checkbox" v-model="showContacts" />
-        Pokaż dane kontaktowe osób w twojej grupie
+        Pokaż dane kontaktowe
       </label>
 
       <div v-if="tournament.hasGroupStage">

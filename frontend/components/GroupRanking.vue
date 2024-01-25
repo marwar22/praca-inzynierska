@@ -67,7 +67,6 @@ const sortedPlayers = computed(() => {
       gamesLost: results.value.gamesLost.get(playerId) ?? 0
     };
   });
-  console.log(players);
   players.sort((a, b) => {
     // prettier-ignore
     if (a.points === b.points) {

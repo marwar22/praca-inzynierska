@@ -23,7 +23,6 @@ public class TournamentController {
         this.tournamentMapper = tournamentMapper;
     }
 
-    // TODO paging
     @GetMapping
     public ResponseEntity<?> getAllTournaments(@RequestParam(name = "name", defaultValue = "") String name) {
         var tournaments = tournamentService.getAllByName(name);
@@ -32,9 +31,9 @@ public class TournamentController {
 
     }
 
-    @GetMapping("{tournamentId}/group/{groupId}/contact")
-    public ResponseEntity<?> getTournament(@PathVariable Long tournamentId, @PathVariable Long groupId) throws ExceptionWithResponseEntity {
-        var applicationUsers = tournamentService.getContact(tournamentId, groupId).stream()
+    @GetMapping("{tournamentId}/contact")
+    public ResponseEntity<?> getContact(@PathVariable Long tournamentId) throws ExceptionWithResponseEntity {
+        var applicationUsers = tournamentService.getContact(tournamentId).stream()
                                                 .map(applicationUserMapper::toContactDto).toList();
         return new ResponseEntity<>(applicationUsers, HttpStatus.OK);
 

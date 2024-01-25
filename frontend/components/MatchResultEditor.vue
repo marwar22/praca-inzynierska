@@ -266,7 +266,6 @@ const playerFields = computed(() => [
   </div>
 </template>
 <style scoped>
-/* TODO this style affects everything in this project (shouldn't be)*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

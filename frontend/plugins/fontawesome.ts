@@ -19,8 +19,9 @@ import {
   faHouse,
   faHouseMedicalFlag,
   faListOl,
+  faMinus,
   faNetworkWired,
-  faPlus,
+  faPlus,  
   faUser,
   faUsers,
   faXmark
@@ -51,6 +52,7 @@ library.add(
   faHouse,
   faHouseMedicalFlag,
   faListOl,
+  faMinus,
   faNetworkWired,
   faPlus,
   faUser,
@@ -58,7 +60,6 @@ library.add(
   faXmark
 );
 
-// This is important, we are going to let Nuxt worry about the CSS
 config.autoAddCss = false;
 
 export default defineNuxtPlugin((nuxtApp) => {
