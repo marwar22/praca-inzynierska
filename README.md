@@ -2,7 +2,7 @@
 
 ## Instrukcja Uruchomienia
 
-### Zmienne środowiskowe, certyfikat
+### Zmienne środowiskowe
 
 Należy utworzyć pliki zawierające zmienne środowiskowe (.env)
 
@@ -17,16 +17,6 @@ W `frontend/`
 cd frontend
 cp .env.example .env
 # należy ustawić wartości zmiennych środowiskowych w pliku .env
-```
-
-W przypadku uruchamiania projektu w środowisku testowym należy ręcznie wygenerować `certyfikat SSL`
-```bash
-./generate_cert.sh
-
-# Zawartość pliku generate_cert.sh:
-#
-# mkdir -p data/certbot/letsencrypt/live/rozgrywkitenisa.pl
-# openssl req -nodes -newkey rsa:2048 -keyout data/certbot/letsencrypt/live/rozgrywkitenisa.pl/privkey.pem -x509 -out data/certbot/letsencrypt/live/rozgrywkitenisa.pl/fullchain.pem
 ```
 
 

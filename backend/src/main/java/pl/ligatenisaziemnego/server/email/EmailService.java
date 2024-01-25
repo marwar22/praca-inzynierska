@@ -21,10 +21,10 @@ public class EmailService {
         message.setSubject(subject);
         message.setText(text);
         try {
-            System.err.println(String.join(", ", to));
-            System.err.println(subject);
-            System.err.println(text);
-//            emailSender.send(message);
+//            System.err.println(String.join(", ", to));
+//            System.err.println(subject);
+//            System.err.println(text);
+            emailSender.send(message);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

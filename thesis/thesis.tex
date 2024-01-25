@@ -40,6 +40,30 @@
 %\theoremstyle{plain} \newtheorem{lemma}[definition]{Lemma}
 %\renewcommand \qedsymbol {\ensuremath{\square}}
 % ...
+\usepackage{listings}
+\lstset{
+  literate={ą}{{\k a}}1
+           {Ą}{{\k A}}1
+           {ż}{{\. z}}1
+           {Ż}{{\. Z}}1
+           {ź}{{\' z}}1
+           {Ź}{{\' Z}}1
+           {ć}{{\' c}}1
+           {Ć}{{\' C}}1
+           {ę}{{\k e}}1
+           {Ę}{{\k E}}1
+           {ó}{{\' o}}1
+           {Ó}{{\' O}}1
+           {ń}{{\' n}}1
+           {Ń}{{\' N}}1
+           {ś}{{\' s}}1
+           {Ś}{{\' S}}1
+           {ł}{{\l}}1
+           {Ł}{{\L}}1
+}
+\usepackage{sourcecodepro}
+\usepackage[T1]{fontenc}
+\lstset{basicstyle=\ttfamily}
 %%%%%
 
 \begin{document}
@@ -108,16 +132,16 @@ Posortowanym zawodnikom przypisane zostają numery startowe od $0$ do $N-1$, gdz
 Numery startowe są następnie przypisywane do drabinki według poniższego algorytmu. Jego wizualizacja znajduje się na rysunku~\ref{fig:knockout_bracket_generation}.
 \begin{lstlisting}
     numeryStartowe=[0,1]
-    dopoki (numeryStartowe.rozmiar() < N) {
+    dopóki (numeryStartowe.rozmiar() < N) {
         poprzednieNumeryStartowe = numeryStartowe
         numeryStartowe = []
-        najwiekszyNumer = poprzednieNumeryStartowe.rozmiar() * 2 - 1
-        dla kazdego (ns w poprzednieNumeryStartowe) {
+        największyNumer = poprzednieNumeryStartowe.rozmiar() * 2 - 1
+        dla każdego (ns w poprzednieNumeryStartowe) {
             numeryStartowe.dodaj(ns)
-            numeryStartowe.dodaj(najwiekszyNumer - ns)
+            numeryStartowe.dodaj(największyNumer - ns)
         }
     }
-    zwroc numeryStartowe
+    zwróć numeryStartowe
 \end{lstlisting}
 Kolejne pary w zwróconej liście odpowiadają kolejnym parom w drabince fazy pucharowej.
 Przykładowo dla $N=8$ zostanie zwrócona lista $[0, 7, 3, 4, 1, 6, 2, 5]$. Odpowiada to parom
@@ -188,9 +212,9 @@ Ich celem jest zademonstrowanie działania programu.
 \subsection{Podgląd danych kontaktowych zawodników w grupie}
 \begin{tabular}{|l|p{12cm}|}
     \hline
-    Nazwa                                                      & Podgląd danych kontaktowych zawodników w grupie                 \\
+    Nazwa                                                      & Podgląd danych kontaktowych zawodników w grupie         \\
     \hline
-    Aktor                                                      & Zawodnik biorący udział w rozgrywce                             \\
+    Aktor                                                      & Zawodnik biorący udział w rozgrywce                     \\
     \hline
     Scenariusz                                                 &
     \begin{enumerate}[nosep,leftmargin=*,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
@@ -198,13 +222,13 @@ Ich celem jest zademonstrowanie działania programu.
         \item Użytkownik loguje się podając nazwę użytkownika lub email oraz hasło.
         \item Użytkownik wchodzi na stronę z listą rozgrywek i klika rozgrywkę w której bierze udział.
         \item Użytkownik klika ``Pokaż dane kontaktowe'' i~system je wyświetla.
-    \end{enumerate}              \\
+    \end{enumerate}      \\
     \hline
     \vtop{\hbox{\strut Scenariusze}\hbox{\strut alternatywne}} &
     \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
         \item [2a.] Użytkownik loguje się podając nazwę użytkownika lub email oraz niepoprawne hasło.
         \item [3a.] System wyświetla komunikat ``Niepoprawna nazwa użytkownika lub hasło''.
-    \end{enumerate}         \\
+    \end{enumerate} \\
     \cline{2-2}
                                                                &
     \begin{enumerate}[nosep,leftmargin=19.5pt,rightmargin=8pt,before=\vspace{-7.5pt},after=\vspace{-8pt}]
@@ -509,17 +533,17 @@ sudo usermod -aG docker nazwa_uzytkownika
 Aby zbudować projekt należy wykonać poniższe polecenie:
 
 \begin{lstlisting}[language=bash]
-# srodowisko produkcyjne
+# środowisko produkcyjne
 docker compose build
-# srodowisko lokalne
+# środowisko lokalne
 docker compose -f docker-compose-localhost.yml build
 \end{lstlisting}
 
 \subsection{Uruchamianie}
 \begin{lstlisting}[language=bash]
-# srodowisko produkcyjne
+# środowisko produkcyjne
 docker compose up -d
-# srodowisko lokalne
+# środowisko lokalne
 docker compose -f docker-compose-localhost.yml up -d
 \end{lstlisting}
 Flaga \texttt{-d} nie jest wymagana, uruchamia projekt w tle.

@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { ApplicationUser, ApplicationUserRole } from '~/types/applicationuser';
 
+useSeoMeta({
+  title: 'Konto',
+
+});
+
+
 definePageMeta({
   middleware: ['logged-in']
 });

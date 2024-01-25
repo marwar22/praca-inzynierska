@@ -48,7 +48,8 @@ public class SecurityConfig {
             .exceptionHandling(configurer -> configurer.accessDeniedHandler(restAccessDeniedHandler)
                                                        .authenticationEntryPoint(restAuthenticationEntryPoint))
             .securityContext((securityContext) -> securityContext.requireExplicitSave(false))
-            .with(loginCustomDsl(restAuthenticationSuccessHandler, restAuthenticationFailureHandler), loginCustomDsl -> {})
+            .with(loginCustomDsl(restAuthenticationSuccessHandler, restAuthenticationFailureHandler), loginCustomDsl -> {
+            })
             .logout(configurer -> configurer.logoutUrl("/api/v1/auth/logout")
                                             .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)));
         return http.build();
@@ -58,7 +59,9 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         corsConfiguration.setAllowedOrigins(
-                List.of("http://localhost:3000", "https://localhost", "https://www.rozgrywkitenisa.pl", "https://57.128.196.216"));
+                List.of("http://localhost:3000",
+                        "http://localhost", "https://localhost",
+                        "https://www.rozgrywkitenisa.pl", "https://57.128.196.216"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
