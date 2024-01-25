@@ -17,7 +17,7 @@ W `frontend/`
 cd frontend
 cp .env.example .env
 # należy ustawić wartości zmiennych środowiskowych w pliku .env
-```
+
 
 
 ### Instalacja zależności
